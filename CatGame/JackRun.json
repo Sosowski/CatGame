@@ -1,0 +1,60 @@
+{"frames": [
+
+{
+	"filename": "JackRun0001.png",
+	"frame": {"x":0,"y":0,"w":241,"h":294},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0004.png",
+	"frame": {"x":0,"y":294,"w":241,"h":294},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0007.png",
+	"frame": {"x":0,"y":588,"w":241,"h":294},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0010.png",
+	"frame": {"x":0,"y":882,"w":241,"h":294},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0013.png",
+	"frame": {"x":0,"y":1176,"w":241,"h":294},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0016.png",
+	"frame": {"x":0,"y":1470,"w":241,"h":294},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":294},
+	"sourceSize": {"w":241,"h":294}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "JackRun.png",
+	"format": "RGBA8888",
+	"size": {"w":241,"h":1764},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1c9d5208ce242c66b6da24431deaa750$"
+}
+}

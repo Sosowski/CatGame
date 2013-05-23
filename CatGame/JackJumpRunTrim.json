@@ -1,0 +1,124 @@
+{"frames": [
+
+{
+	"filename": "JackJump0001.png",
+	"frame": {"x":2,"y":592,"w":145,"h":294},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":49,"y":0,"w":145,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0003.png",
+	"frame": {"x":125,"y":296,"w":139,"h":294},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":0,"w":139,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0006.png",
+	"frame": {"x":266,"y":296,"w":141,"h":294},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":48,"y":0,"w":141,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0009.png",
+	"frame": {"x":2,"y":296,"w":121,"h":294},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":0,"w":121,"h":294},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0013.png",
+	"frame": {"x":355,"y":2,"w":121,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":0,"w":121,"h":290},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0024.png",
+	"frame": {"x":115,"y":2,"w":117,"h":288},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":3,"w":117,"h":288},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0028.png",
+	"frame": {"x":234,"y":2,"w":119,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":1,"w":119,"h":290},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackJump0033.png",
+	"frame": {"x":2,"y":2,"w":111,"h":292},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":65,"y":2,"w":111,"h":292},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0001.png",
+	"frame": {"x":231,"y":1162,"w":241,"h":288},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":241,"h":288},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0004.png",
+	"frame": {"x":207,"y":888,"w":201,"h":272},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":11,"w":201,"h":272},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0007.png",
+	"frame": {"x":149,"y":592,"w":167,"h":278},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":63,"y":15,"w":167,"h":278},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0010.png",
+	"frame": {"x":2,"y":1162,"w":227,"h":286},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":0,"w":227,"h":286},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0013.png",
+	"frame": {"x":2,"y":888,"w":203,"h":268},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":28,"y":11,"w":203,"h":268},
+	"sourceSize": {"w":241,"h":294}
+},
+{
+	"filename": "JackRun0016.png",
+	"frame": {"x":318,"y":592,"w":177,"h":276},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":17,"w":177,"h":276},
+	"sourceSize": {"w":241,"h":294}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "JackJumpRunTrim.png",
+	"format": "RGBA8888",
+	"size": {"w":497,"h":1452},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:dc500843a0baa592582156c3023dd26b$"
+}
+}
