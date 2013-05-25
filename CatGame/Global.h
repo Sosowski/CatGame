@@ -61,6 +61,7 @@ static bool onGround = false;
 static SDL_Surface *background = NULL;
 static SDL_Surface *jackRun = NULL;
 static SDL_Surface *jackJump = NULL;
+static SDL_Surface *plat1 = NULL;
 
 //Custom mouse cursor
 static SDL_Surface *cursor = NULL;

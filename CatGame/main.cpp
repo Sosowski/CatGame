@@ -30,10 +30,6 @@ FOR DEBUG
 //call for screen, currently declared in Window.cpp
 extern SDL_Surface *screen;
 
-SDL_Rect plat1 = { 0, 500, 500, 100 };
-SDL_Rect plat2 = { 1000, 950, 300, 100 };
-SDL_Rect plat3 = { 500, 1500, 700, 50 };
-
 //FUNCTIONS------------------------------------------------------------------------------------------------
 
 //Load / optimise images before displaying, create pointer to optimized image
@@ -127,11 +123,12 @@ bool load_files()
 	jackRun = load_image( "JackRun.png" );
 	jackJump = load_image( "JackJump.png" );
 	cursor = load_image( "cursor.bmp" );
+	plat1 = load_image( "plat1.png" );
 
 	//Open font
 	//font = TTF_OpenFont( "example.ttf", 28);
 
-	if ( background == NULL || jackRun == NULL || jackJump == NULL || cursor == NULL)
+	if ( background == NULL || jackRun == NULL || jackJump == NULL || cursor == NULL || plat1 == NULL)
 	{
 		return false;
 	}
@@ -164,6 +161,7 @@ void clean_up()
 	SDL_FreeSurface ( jackRun );
 	SDL_FreeSurface ( jackJump );
 	SDL_FreeSurface ( cursor );
+	SDL_FreeSurface ( plat1 );
 
 	//Free sounds
 	//Mix_FreeChunk ( example );
@@ -346,14 +344,27 @@ Jack::Jack()
 	yVel = 0.5;
 
 	//Create Jack's hitbox
-	box.x = x;
+	box.x = x + (JACK_WIDTH / 4);
 	box.y = y;
-	box.w = JACK_WIDTH;
+	box.w = 150;
 	box.h = JACK_HEIGHT;
 
+	//Platform hitboxes
+	plat1.x = 0;
+	plat1.y = 750;
+	plat1.w = 400;
+	plat1.h = 100;
+
+	plat2.x = 750;
+	plat2.y = 1000;
+	plat2.w = 400;
+	plat2.h = 100;
+
 	//Create probe hitbox
-	probe.w = JACK_WIDTH;
-	probe.h = JACK_HEIGHT + 1;
+	probe.x = x + (JACK_WIDTH / 2);
+	probe.y = y + (JACK_HEIGHT + 1);
+	probe.w = 1;
+	probe.h = 1;
 
 	//Animation variables
 	frame = 0;
@@ -411,35 +422,60 @@ void Jack::move()
 	std::stringstream caption;
 
 	//Generate string
-	caption << "yvel " << yVel << " x " << x;
+	//caption << "yvel: " << yVel << " xvel: " << xVel << " x pos: " << x << " y pos: " << y << " onground " << onGround;
+	caption << "probe.x " << probe.x << " probe.y " << probe.y;
 
 	//Set caption
 	SDL_WM_SetCaption( caption.str().c_str(), NULL);
 
-	//Move the square left or right
+	//Left/Right Movement
 	x += xVel;
 
-	//If the square went too far to the left or right or has collided with the wall
-	if( ( x < 0 ) || ( x + JACK_WIDTH > LEVEL_WIDTH ) )
+	//Call this to update Jack's hitbox after all movements
+	shift_boxes();
+
+	//Check if Jack left the area or walked into a platform
+	if( ( x < 0 ) || ( x + JACK_WIDTH > LEVEL_WIDTH ) || (check_collision( box, plat1 ) ) || (check_collision( box, plat2 ) ) )
 	{ 
 		//Move back
 		x -= xVel; 
+		shift_boxes();
 	} 
 
-	//Move the square up or down
-	if(yVel != 0){
+	//The probe isn't colliding with anything. We need to fall.
+	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT == false ) || (check_collision( probe, plat1 ) == false ) )
+	{
+		//Apply gravity
 		yVel += 0.5;
+		shift_boxes();
+		onGround = false;
 	}
+
+	//Up/Down Movement
 	y += yVel;
 
-	//If the square went too far up or down or has collided with the wall
-	if( ( y < 0 ) || ( y + JACK_HEIGHT > LEVEL_HEIGHT ) )
-	{
-		//Move back
-		y -= yVel;
-		yVel = 0;
+	shift_boxes();
 
-	} 
+	//Check if Jack left the area or hit a platform
+	if( onGround == false ){
+		if( ( y < 0 ) || (check_collision( box, plat1 ) ) || (check_collision( box, plat2 ) ) )
+		{
+			y -= yVel;
+			yVel = 0;
+			shift_boxes();
+			onGround = true;
+		}
+	}
+
+	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT ) ){
+		//Player fell. Reset to start
+		yVel = 0;
+		onGround = false;
+		x = 0;
+		y = 0;
+		shift_boxes();
+
+	}
 
 }
 
@@ -720,6 +756,25 @@ void Jack::set_camera()
 	camera.x = ( x + JACK_WIDTH / 2 ) - SCREEN_WIDTH / 2;
 	camera.y = ( y + JACK_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
 
+	//When the player presses S, the camera will shift down slightly.
+	if( event.type == SDL_KEYDOWN )
+	{
+		//Set velocity
+		switch( event.key.keysym.sym )
+		{
+		case SDLK_s: camera.y = (( y + JACK_HEIGHT / 2 ) - SCREEN_HEIGHT / 2) + 100;
+		}
+	}
+
+	else if( event.type == SDL_KEYUP )
+	{
+		//Set velocity
+		switch( event.key.keysym.sym )
+		{
+		case SDLK_s: camera.y = ( y + JACK_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
+		}
+	}
+
 	//Keep camera in bounds
 	if( camera.x < 0 )
 	{
@@ -742,8 +797,12 @@ void Jack::set_camera()
 void Jack::shift_boxes()
 {
 	//Shift Jack's hitbox
-	box.x = x;
+	box.x = x + (JACK_WIDTH / 4);
 	box.y = y;
+
+	//Shift the probe's hitbox
+	probe.x = x + (JACK_WIDTH / 2);
+	probe.y = y + (JACK_HEIGHT + 1);
 }
 
 //MAIN FUNCTION-----------------------------------------------------------------------------------------------------
@@ -816,10 +875,8 @@ int main( int argc, char* args[])
 		}
 
 		//Get current mouse position
-		SDL_GetMouseState(&xMouse, &yMouse);
+		//SDL_GetMouseState(&xMouse, &yMouse);
 
-		//Place custom cursor over mouse
-		apply_surface( xMouse, yMouse, cursor, screen);
 
 		//Jack movement
 		walk.move();
@@ -831,9 +888,14 @@ int main( int argc, char* args[])
 		apply_surface( 0, 0, background, screen, &camera);
 
 		//Show platforms
+		apply_surface( 0, 750, plat1, background, &camera);
+		apply_surface( 750, 1000, plat1, background, &camera);
 
 		//Show Jack
 		walk.show();
+
+		//Place custom cursor over mouse
+		//apply_surface( xMouse, yMouse, cursor, background);
 
 		//Get keystate
 		Uint8 *keystates = SDL_GetKeyState ( NULL );
