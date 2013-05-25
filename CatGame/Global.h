@@ -90,6 +90,9 @@ static TTF_Font *font = NULL;
 //Default font color
 static SDL_Color white = {255, 255, 255};
 
+//Jack's collision box
+static SDL_Rect box;
+
 //Jack's sprites
 static SDL_Rect clipsRight[6];
 static SDL_Rect clipsLeft[6];

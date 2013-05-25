@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -79,6 +80,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="Jack.h" />
     <ClInclude Include="Library.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

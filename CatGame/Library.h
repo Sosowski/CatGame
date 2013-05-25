@@ -5,6 +5,7 @@
 #include "Timer.h"
 #include "Window.h"
 #include "Jack.h"
+#include "Projectile.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"

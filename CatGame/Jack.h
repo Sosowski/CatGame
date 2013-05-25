@@ -17,9 +17,6 @@ private:
 	//Velocity variables
 	float xVel, yVel;
 
-	//Jack's collision box
-	SDL_Rect box;
-
 	//Gravity probe
 	SDL_Rect probe;
 
