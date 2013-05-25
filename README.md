@@ -5,7 +5,8 @@ is very much a work in progress and is not to be considered a finished product.
 
 ## Current Functionality
 
-The player can move left and right with a and d, and can jump with w. Wow!
+The player can move left and right with a and d, and can jump with w.
+Press s to lower the camera slightly to view areas below you.
 
 ## Known Issues
 
