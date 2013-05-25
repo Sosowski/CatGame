@@ -187,150 +187,52 @@ void set_clips()
 {
 	//Clip Sprites
 	//Right movement
-	clipsRight[0].x = 0;
-	clipsRight[0].y = 0;
-	clipsRight[0].w = JACK_WIDTH;
-	clipsRight[0].h = JACK_HEIGHT;
-
-	clipsRight[1].x = 0;
-	clipsRight[1].y = JACK_HEIGHT;
-	clipsRight[1].w = JACK_WIDTH;
-	clipsRight[1].h = JACK_HEIGHT;
-
-	clipsRight[2].x = 0;
-	clipsRight[2].y = JACK_HEIGHT * 2;
-	clipsRight[2].w = JACK_WIDTH;
-	clipsRight[2].h = JACK_HEIGHT;
-
-	clipsRight[3].x = 0;
-	clipsRight[3].y = JACK_HEIGHT * 3;
-	clipsRight[3].w = JACK_WIDTH;
-	clipsRight[3].h = JACK_HEIGHT;
-
-	clipsRight[4].x = 0;
-	clipsRight[4].y = JACK_HEIGHT * 4;
-	clipsRight[4].w = JACK_WIDTH;
-	clipsRight[4].h = JACK_HEIGHT;
-
-	clipsRight[5].x = 0;
-	clipsRight[5].y = JACK_HEIGHT * 5;
-	clipsRight[5].w = JACK_WIDTH;
-	clipsRight[5].h = JACK_HEIGHT;
+	for(int j=0; j<6; j++){
+		clipsRight[j].x = 0;
+		clipsRight[j].y = JACK_HEIGHT * j;
+		clipsRight[j].w = JACK_WIDTH;
+		clipsRight[j].h = JACK_HEIGHT;
+	}
 
 	//Left Movement
-	clipsLeft[0].x = JACK_WIDTH;
-	clipsLeft[0].y = 0;
-	clipsLeft[0].w = JACK_WIDTH;
-	clipsLeft[0].h = JACK_HEIGHT;
-
-	clipsLeft[1].x = JACK_WIDTH;
-	clipsLeft[1].y = JACK_HEIGHT;
-	clipsLeft[1].w = JACK_WIDTH;
-	clipsLeft[1].h = JACK_HEIGHT;
-
-	clipsLeft[2].x = JACK_WIDTH;
-	clipsLeft[2].y = JACK_HEIGHT * 2;
-	clipsLeft[2].w = JACK_WIDTH;
-	clipsLeft[2].h = JACK_HEIGHT;
-
-	clipsLeft[3].x = JACK_WIDTH;
-	clipsLeft[3].y = JACK_HEIGHT * 3;
-	clipsLeft[3].w = JACK_WIDTH;
-	clipsLeft[3].h = JACK_HEIGHT;
-
-	clipsLeft[4].x = JACK_WIDTH;
-	clipsLeft[4].y = JACK_HEIGHT * 4;
-	clipsLeft[4].w = JACK_WIDTH;
-	clipsLeft[4].h = JACK_HEIGHT;
-
-	clipsLeft[5].x = JACK_WIDTH;
-	clipsLeft[5].y = JACK_HEIGHT * 5;
-	clipsLeft[5].w = JACK_WIDTH;
-	clipsLeft[5].h = JACK_HEIGHT;
+	for(int j=0; j<6; j++){
+		clipsLeft[j].x = JACK_WIDTH;
+		clipsLeft[j].y = JACK_HEIGHT * j;
+		clipsLeft[j].w = JACK_WIDTH;
+		clipsLeft[j].h = JACK_HEIGHT;
+	}
 
 	//Right jump
-	clipsJumpRightStart[0].x = 0;
-	clipsJumpRightStart[0].y = 0;
-	clipsJumpRightStart[0].w = JACK_WIDTH;
-	clipsJumpRightStart[0].h = JACK_HEIGHT;
-
-	clipsJumpRightStart[1].x = JACK_WIDTH;
-	clipsJumpRightStart[1].y = 0;
-	clipsJumpRightStart[1].w = JACK_WIDTH;
-	clipsJumpRightStart[1].h = JACK_HEIGHT;
-
-	clipsJumpRightStart[2].x = JACK_WIDTH * 2;
-	clipsJumpRightStart[2].y = 0;
-	clipsJumpRightStart[2].w = JACK_WIDTH;
-	clipsJumpRightStart[2].h = JACK_HEIGHT;
-
-	clipsJumpRightStart[3].x = JACK_WIDTH * 3;
-	clipsJumpRightStart[3].y = 0;
-	clipsJumpRightStart[3].w = JACK_WIDTH;
-	clipsJumpRightStart[3].h = JACK_HEIGHT;
+	for(int j=0; j<4; j++){
+		clipsJumpRightStart[j].x = JACK_WIDTH * j;
+		clipsJumpRightStart[j].y = 0;
+		clipsJumpRightStart[j].w = JACK_WIDTH;
+		clipsJumpRightStart[j].h = JACK_HEIGHT;
+	}
 
 	//Right fall
-	clipsJumpRightEnd[0].x = JACK_WIDTH * 4;
-	clipsJumpRightEnd[0].y = 0;
-	clipsJumpRightEnd[0].w = JACK_WIDTH;
-	clipsJumpRightEnd[0].h = JACK_HEIGHT;
-
-	clipsJumpRightEnd[1].x = JACK_WIDTH * 5;
-	clipsJumpRightEnd[1].y = 0;
-	clipsJumpRightEnd[1].w = JACK_WIDTH;
-	clipsJumpRightEnd[1].h = JACK_HEIGHT;
-
-	clipsJumpRightEnd[2].x = JACK_WIDTH * 6;
-	clipsJumpRightEnd[2].y = 0;
-	clipsJumpRightEnd[2].w = JACK_WIDTH;
-	clipsJumpRightEnd[2].h = JACK_HEIGHT;
-
-	clipsJumpRightEnd[3].x = JACK_WIDTH * 7;
-	clipsJumpRightEnd[3].y = 0;
-	clipsJumpRightEnd[3].w = JACK_WIDTH;
-	clipsJumpRightEnd[3].h = JACK_HEIGHT;
+	for(int j=0; j<4; j++){
+		clipsJumpRightEnd[j].x = JACK_WIDTH * (4+j);
+		clipsJumpRightEnd[j].y = 0;
+		clipsJumpRightEnd[j].w = JACK_WIDTH;
+		clipsJumpRightEnd[j].h = JACK_HEIGHT;
+	}
 
 	//Left jump
-	clipsJumpLeftStart[0].x = JACK_WIDTH * 7;
-	clipsJumpLeftStart[0].y = JACK_HEIGHT;
-	clipsJumpLeftStart[0].w = JACK_WIDTH;
-	clipsJumpLeftStart[0].h = JACK_HEIGHT;
-
-	clipsJumpLeftStart[1].x = JACK_WIDTH * 6;
-	clipsJumpLeftStart[1].y = JACK_HEIGHT;
-	clipsJumpLeftStart[1].w = JACK_WIDTH;
-	clipsJumpLeftStart[1].h = JACK_HEIGHT;
-
-	clipsJumpLeftStart[2].x = JACK_WIDTH * 5;
-	clipsJumpLeftStart[2].y = JACK_HEIGHT;
-	clipsJumpLeftStart[2].w = JACK_WIDTH;
-	clipsJumpLeftStart[2].h = JACK_HEIGHT;
-
-	clipsJumpLeftStart[3].x = JACK_WIDTH * 4;
-	clipsJumpLeftStart[3].y = JACK_HEIGHT;
-	clipsJumpLeftStart[3].w = JACK_WIDTH;
-	clipsJumpLeftStart[3].h = JACK_HEIGHT;
+	for(int j=0; j<4; j++){
+		clipsJumpLeftStart[j].x = JACK_WIDTH * (7-j);
+		clipsJumpLeftStart[j].y = JACK_HEIGHT;
+		clipsJumpLeftStart[j].w = JACK_WIDTH;
+		clipsJumpLeftStart[j].h = JACK_HEIGHT;
+	}
 
 	//Left fall
-	clipsJumpLeftEnd[0].x = JACK_WIDTH * 3;
-	clipsJumpLeftEnd[0].y = JACK_HEIGHT;
-	clipsJumpLeftEnd[0].w = JACK_WIDTH;
-	clipsJumpLeftEnd[0].h = JACK_HEIGHT;
-
-	clipsJumpLeftEnd[1].x = JACK_WIDTH * 2;
-	clipsJumpLeftEnd[1].y = JACK_HEIGHT;
-	clipsJumpLeftEnd[1].w = JACK_WIDTH;
-	clipsJumpLeftEnd[1].h = JACK_HEIGHT;
-
-	clipsJumpLeftEnd[2].x = JACK_WIDTH;
-	clipsJumpLeftEnd[2].y = JACK_HEIGHT;
-	clipsJumpLeftEnd[2].w = JACK_WIDTH;
-	clipsJumpLeftEnd[2].h = JACK_HEIGHT;
-
-	clipsJumpLeftEnd[3].x = 0;
-	clipsJumpLeftEnd[3].y = JACK_HEIGHT;
-	clipsJumpLeftEnd[3].w = JACK_WIDTH;
-	clipsJumpLeftEnd[3].h = JACK_HEIGHT;
+	for(int j=0; j<4; j++){
+		clipsJumpLeftEnd[j].x = JACK_WIDTH * (3-j);
+		clipsJumpLeftEnd[j].y = JACK_HEIGHT;
+		clipsJumpLeftEnd[j].w = JACK_WIDTH;
+		clipsJumpLeftEnd[j].h = JACK_HEIGHT;
+	}
 }
 
 Jack::Jack()
@@ -423,7 +325,7 @@ void Jack::move()
 
 	//Generate string
 	//caption << "yvel: " << yVel << " xvel: " << xVel << " x pos: " << x << " y pos: " << y << " onground " << onGround;
-	caption << "probe.x " << probe.x << " probe.y " << probe.y;
+	caption << "probe.x " << probe.x << " probe.y " << probe.y << " clipsRight[1].y " << clipsRight[1].y;
 
 	//Set caption
 	SDL_WM_SetCaption( caption.str().c_str(), NULL);
