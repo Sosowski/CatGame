@@ -47,18 +47,32 @@ public:
 	//Initalize class
 	Jack();
 
-	//Handle input
-	void handle_events();
-
 	//Move Jack
 	void move();
 
+	// ---- functions for controling Jack ----
+	//Adds Velocity to jack
+	void accel(int xAccel, int yAccel);
+
+	void stop(); // Stops horizontal movement
+
 	//Show Jack
 	void show();
+
+	// ---- Function for Reading from Jack ----
+	/*	0 : x Position		1 : y Position
+		2 : x Velocity		3 : y Velocity	*/
+	float Read(int val);
 
 	//Set Camera over Jack
 	void set_camera();
 
 	//Shift collision boxes
 	void shift_boxes();
+
+	//Clips Jacks Sprite Sheet
+	void set_clips();
+
+	//loads files for Jacks Sprites
+	bool load_files();
 };

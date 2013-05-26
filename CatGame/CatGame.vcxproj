@@ -71,11 +71,13 @@
     <None Include="..\..\..\..\..\Desktop\hello.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="jack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FunctionLib.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Jack.h" />
     <ClInclude Include="Library.h" />

@@ -1,8 +1,8 @@
 #include "Library.h"
 
-//Screen is declared here and called as extern in main to pull modifications from this function to it.
-//Multiple usages of extern calls for this variable result in compiler errors.
-//Needs investigation if screen is to be called in other exported classes
+//Screen is Initialized here and defined in Window.h
+//This should enable it to be used global in places like main.cpp
+//Not sure if this is working
 SDL_Surface *screen = NULL;
 
 //Enable window +++++++++++++++++++

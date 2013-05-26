@@ -45,8 +45,8 @@ static int SCREEN_BPP = 32;
 static int LEVEL_WIDTH = 2000;
 static int LEVEL_HEIGHT = 2000;
 
-//Camera
-static SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+//Camera ---- Set to be modified globally, initialized in main
+extern SDL_Rect camera;
 
 //Platforms       xpos,ypos,xsize,ysize
 //SDL_Rect plat1 = { 0, 500, 500, 100 };
