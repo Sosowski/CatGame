@@ -23,3 +23,5 @@ public:
 	//Return any errors
 	bool error();
 };
+
+extern SDL_Surface *screen;

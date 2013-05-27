@@ -9,13 +9,16 @@ class Jack
 {
 private:
 	//X and Y offsets of Jack
-	float x, y;
+	double x, y;
 
 	//Records the last y coordinate
-	float yLast;
+	double yLast;
 
 	//Velocity variables
-	float xVel, yVel;
+	double xVel, yVel;
+
+	//Jack's collision box
+	SDL_Rect box;
 
 	//Gravity probe
 	SDL_Rect probe;
@@ -41,21 +44,40 @@ private:
 	int facing;
 
 public:
+
 	//Initalize class
 	Jack();
-
-	//Handle input
-	void handle_events();
 
 	//Move Jack
 	void move();
 
+	//Jack's velocity
+	void accel(int xAccel, int yAccel);
+
+	//Stop horizontal movement
+	void stop();
+
 	//Show Jack
 	void show();
+
+	//Get current values from Jack
+	/*	0 : x Position		1 : y Position
+		2 : x Velocity		3 : y Velocity
+		4 : onGround                        */
+	double Read(int val);
 
 	//Set Camera over Jack
 	void set_camera();
 
 	//Shift collision boxes
 	void shift_boxes();
+
+	//Clips Jacks Sprite Sheet
+	void set_clips();
+
+	//loads files for Jacks Sprites
+	bool load_files();
+
+	//Passes the onGround flag when called
+	bool grounded();
 };
