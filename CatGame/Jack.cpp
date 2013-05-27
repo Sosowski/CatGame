@@ -12,6 +12,8 @@ Jack::Jack()
 	//Velocity
 	xVel = 0;
 	yVel = 0.5;
+	//Flags
+	grounded = false;
 
 	//Create Jack's hitbox
 	box.x = x + (JACK_WIDTH / 4);
@@ -89,7 +91,7 @@ void Jack::move()
 
 	//Generate string
 	//caption << "yvel: " << yVel << " xvel: " << xVel << " x pos: " << x << " y pos: " << y << " onground " << onGround;
-	caption << "probe.x " << probe.x << " probe.y " << probe.y << " clipsRight[2].y " << clipsRight[2].y << " camera x: " << camera.x << " camera y: " << camera.y << " Status: " << status;
+	caption << "probe.x " << probe.x << " probe.y " << probe.y << " clipsRight[2].y " << clipsRight[2].y << " camera x: " << camera.x << " camera y: " << camera.y << " Status: " << status << " onground: " << onGround << " grounded: " << grounded;
 
 	//Set caption
 	SDL_WM_SetCaption( caption.str().c_str(), NULL);
@@ -115,6 +117,7 @@ void Jack::move()
 		yVel += 0.5;
 		shift_boxes();
 		onGround = false;
+		grounded = false;
 	}
 
 	//Up/Down Movement
@@ -124,12 +127,13 @@ void Jack::move()
 
 	//Check if Jack left the area or hit a platform
 	if( onGround == false ){
-		if( ( y < 0 ) || (check_collision( box, plat1 ) ) || (check_collision( box, plat2 ) ) )
+		if( (check_collision( box, plat1 ) ) || (check_collision( box, plat2 ) ) )
 		{
 			y -= yVel;
 			yVel = 0;
 			shift_boxes();
 			onGround = true;
+			grounded = true;
 		}
 	}
 
@@ -147,210 +151,105 @@ void Jack::move()
 
 void Jack::show()
 {
+	lastStatus = status;  // Record Previous status
+	// ---- SET STATUS ---- //
 	//If moving left
 	if( xVel < 0)
 	{
-		//Set animation left
-		lastStatus = status;
+		//Set animation right
 		status = JACK_LEFT;
 
 		//Set facing flag
 		facing = JACK_LEFT;
 
-		if( yVel < 0){
-			lastStatus = status;
+		if( yVel <= 0 && onGround == false){
 			status = JACK_LEFT_JUMP;
 		}
-
-		if( yVel > 0){
-			lastStatus = status;
+		if( yVel > 0 && onGround == false){
 			status = JACK_LEFT_FALL;
 		}
 		//Increase animation delay counter
-		delay++;
-		
-		if( (status == JACK_LEFT_JUMP) || (status == JACK_LEFT_FALL) ){
-			
-			//Hold 4th frame
-			if ( frame == 4 ) {
-				//Reset delay for other statements
-				delay = 0;
-			}
-			//Otherwise, increment
-			else if ( delay == 10 ){
-				//Reset delay
-				delay = 0;
-				
-				//Move to next frame
-				frame++;
-			}
-		}
-
-		else if( delay == 10 ){
-			//Reset delay
-			delay = 0;
-
-			//Move to next frame
-			frame++;
-		}
-
-		//Done jumping, reset frame.
-		if ((lastStatus == JACK_LEFT_JUMP) || (lastStatus == JACK_LEFT_FALL))
-		{
-			frame = 0;
-		}
-
+		//delay++;
 	}
 	//If moving right
 	else if( xVel > 0)
 	{
 		//Set animation right
-		lastStatus = status;
 		status = JACK_RIGHT;
 
 		//Set facing flag
 		facing = JACK_RIGHT;
 
-		if( yVel < 0){
+		if( yVel <= 0 && onGround == false){
 			lastStatus = status;
 			status = JACK_RIGHT_JUMP;
 		}
 
-		if( yVel > 0){
+		if( yVel > 0 && onGround == false){
 			lastStatus = status;
 			status = JACK_RIGHT_FALL;
 		}
-
-		//Increase delay
-		delay++;
-
-		if( (status == JACK_RIGHT_JUMP) || (status == JACK_RIGHT_FALL) ){
-			
-			//Hold 4th frame
-			if ( frame == 4 ) {
-				//Reset delay for other statements
-				delay = 0;
+	}
+	//If no x movement
+	else if(xVel == 0)
+	{
+		if(onGround == false)			// if in air
+		{ 
+			if(facing == JACK_LEFT){
+				if(yVel <= 0){
+					status = JACK_LEFT_JUMP;
+				}
+				else if (yVel > 0){
+					status = JACK_LEFT_FALL;
+				}
 			}
-			//Otherwise, increment
-			else if ( delay == 10 ){
-				//Reset delay
-				delay = 0;
-				
-				//Move to next frame
-				frame++;
+			else if(facing == JACK_RIGHT){
+				if(yVel <= 0){
+					status = JACK_RIGHT_JUMP;
+				}
+				else if (yVel > 0){
+					status = JACK_RIGHT_FALL;
+				}
 			}
 		}
-
-		else if( delay == 10 ){
-			//Reset delay
+		else							//if on ground
+		{
+			//show a standing frame for facing left and facing right.
+			if( facing == JACK_RIGHT )
+			{
+				status = JACK_RIGHT;
+				delay = 0;					// should reset delay so the first running fram is held.
+			}
+			else if( facing == JACK_LEFT)
+			{
+				status = JACK_LEFT;
+				delay = 0;					// should reset delay so the first running fram is held.
+			}
+		}
+	}
+	// ---- ADVANCE FRAME ---- //
+	//If jumping
+	if( onGround == false) {
+		//Hold 4th frame
+		if ( frame == 4 ) {
+			//Reset delay To hold frame
 			delay = 0;
-
-			//Move to next frame
-			frame++;
-		}
-
-		//Done jumping, reset frame.
-		if ((lastStatus == JACK_RIGHT_JUMP) || (lastStatus == JACK_RIGHT_FALL))
-		{
-			frame = 0;
 		}
 	}
-	//If falling with no x movement
-	else if( (xVel == 0) && (yVel > 0) )
+	else if ( delay == 10 ){
+		//Reset delay
+		delay = 0;
+		//Move to next frame
+		frame++;
+	}
+	else
 	{
-		//If last status was jumping, reset the frame
-		if( (lastStatus == JACK_RIGHT_JUMP) || (lastStatus == JACK_LEFT_JUMP))
-		{
-			frame = 0;
-		}
-
-		if( facing == JACK_RIGHT )
-		{
-			status = JACK_RIGHT_FALL;
-			lastStatus = status;
-		}
-		else if( facing == JACK_LEFT)
-		{
-			status = JACK_LEFT_FALL;
-			lastStatus = status;
-		}
-
 		//Increase delay
 		delay++;
-
-		if( (status == JACK_RIGHT_FALL) || (status == JACK_LEFT_FALL) ){
-			
-			//Hold 4th frame
-			if ( frame == 4 ) {
-				//Reset delay for other statements
-				delay = 0;
-			}
-			//Otherwise, increment
-			else if ( delay == 10 ){
-				//Reset delay
-				delay = 0;
-				
-				//Move to next frame
-				frame++;
-			}
-		}
-
-		//Done jumping, reset frame.
-		if ( yVel == 0 )
-		{
-			//Reset frame
-			frame = 0;
-		}
 	}
-
-	//If jumping with no x movement
-	else if( (xVel == 0) && (yVel < 0) )
+	//Reset to starting frame if changing animation.
+	if(lastStatus != status)
 	{
-		if( facing == JACK_RIGHT )
-		{
-			lastStatus = status;
-			status = JACK_RIGHT_JUMP;
-		}
-		else if( facing == JACK_LEFT)
-		{
-			lastStatus = status;
-			status = JACK_LEFT_JUMP;
-		}
-
-		//Increase delay
-		delay++;
-		if( (status == JACK_RIGHT_JUMP) || (status == JACK_LEFT_JUMP) )
-		{
-			
-			//Hold 4th frame
-			if ( frame == 4 ) {
-				//Reset delay for other statements
-				delay = 0;
-			}
-			//Otherwise, increment
-			else if ( delay == 10 ){
-				//Reset delay
-				delay = 0;
-				
-				//Move to next frame
-				frame++;
-			}
-		}
-	}
-
-	//If standing
-	else if( (xVel == 0) && (yVel == 0) )
-	{
-		//TODO: An actual standing sprite
-		//Set frame to standing
-		if( facing == JACK_RIGHT ) 
-		{
-			status = JACK_RIGHT;
-		}
-		if( facing == JACK_LEFT )
-		{
-			status = JACK_LEFT;
-		}
 		frame = 0;
 	}
 	//Loop animation
@@ -358,30 +257,27 @@ void Jack::show()
 	{
 		frame = 0;
 	}
-	//Show Jack
-	if( status == JACK_RIGHT )
-	{
-		apply_surface( x - camera.x, y - camera.y, jackRun, screen, &clipsRight[ frame ] );
-	}
-	else if( status == JACK_LEFT )
-	{
-		apply_surface( x - camera.x, y - camera.y, jackRun, screen, &clipsLeft[ frame ] );
-	}
-	else if( status == JACK_RIGHT_JUMP )
-	{
-		apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpRightStart[ frame ] );
-	}
-	else if( status == JACK_LEFT_JUMP )
-	{
-		apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpLeftStart[ frame ] );
-	}
-	else if( status == JACK_RIGHT_FALL )
-	{
-		apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpRightEnd[ frame ] );
-	}
-	else if( status == JACK_LEFT_FALL )
-	{
-		apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpLeftEnd[ frame ] );
+
+	// ---- SHOW PROPER FRAME ---- //
+	switch(status) {
+		case JACK_RIGHT:
+			apply_surface( x - camera.x, y - camera.y, jackRun, screen, &clipsRight[ frame ] );
+			break;
+		case JACK_LEFT:
+			apply_surface( x - camera.x, y - camera.y, jackRun, screen, &clipsLeft[ frame ] );
+			break;
+		case JACK_RIGHT_JUMP:
+			apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpRightStart[ frame ] );
+			break;
+		case JACK_LEFT_JUMP:
+			apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpLeftStart[ frame ] );
+			break;
+		case JACK_RIGHT_FALL:
+			apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpRightEnd[ frame ] );
+			break;
+		case JACK_LEFT_FALL:
+			apply_surface( x - camera.x, y - camera.y, jackJump, screen, &clipsJumpLeftEnd[ frame ] );
+			break;
 	}
 }
 
@@ -505,36 +401,3 @@ float Jack::Read(int val)
 
 	return ret;
 }
-
-/*
-void Jack::handle_events()
-{
-	//Check for keypress
-	if( event.type == SDL_KEYDOWN )
-	{
-
-		//Set velocity
-		switch( event.key.keysym.sym )
-		{
-		case SDLK_d: xVel += JACK_WIDTH / 50; break;
-		case SDLK_a: xVel -= JACK_WIDTH / 50; break;
-		case SDLK_w:
-			if( (yVel < 0) || (yVel > 0)){
-				break;
-			}
-			yVel -= 20.1;
-			break;	
-		}
-	}
-	//Check for key release
-	else if( event.type == SDL_KEYUP )
-	{
-		//Set velocity
-		switch( event.key.keysym.sym )
-		{
-		case SDLK_d: xVel -= JACK_WIDTH / 50; break;
-		case SDLK_a: xVel += JACK_WIDTH / 50; break;
-		}
-	}
-}
-*/

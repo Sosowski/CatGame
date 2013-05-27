@@ -54,8 +54,8 @@ extern SDL_Rect camera;
 //SDL_Rect plat3 = { 500, 1500, 700, 50 };
 
 //Player states
-static bool jumping = true;
-static bool onGround = false;
+static bool jumping = true;					//Somehow global
+static bool onGround = false;				//Somehow global
 
 //Images
 static SDL_Surface *background = NULL;

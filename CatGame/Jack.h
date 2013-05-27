@@ -17,6 +17,8 @@ private:
 	//Velocity variables
 	float xVel, yVel;
 
+	bool grounded;
+
 	//Jack's collision box
 	SDL_Rect box;
 

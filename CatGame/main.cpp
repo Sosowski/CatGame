@@ -145,7 +145,7 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 	{
 		switch( event.key.keysym.sym )
 		{
-		case SDLK_w: player.accel(0,-30); break;																//Jump
+		case SDLK_w: player.accel(0,-20); break;																//Jump
 		case SDLK_a: player.accel(-10,0); break;																//Move Left
 		case SDLK_s: camera.y = (( player.Read(1) + JACK_HEIGHT / 2 ) - SCREEN_HEIGHT / 2) + 100; break;		//Camera Look Down
 		case SDLK_d: player.accel(10,0); break;																	//Move right
