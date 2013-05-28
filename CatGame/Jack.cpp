@@ -122,7 +122,7 @@ void Jack::show()
 	//If moving left
 	if( xVel < 0)
 	{
-		//Set animation right
+		//Set animation left
 		status = JACK_LEFT;
 
 		//Set facing flag
@@ -152,13 +152,11 @@ void Jack::show()
 
 		if( yVel <= 0 && onGround == false)
 		{
-			lastStatus = status;
 			status = JACK_RIGHT_JUMP;
 		}
 
 		if( yVel > 0 && onGround == false)
 		{
-			lastStatus = status;
 			status = JACK_RIGHT_FALL;
 		}
 	}
@@ -210,6 +208,10 @@ void Jack::show()
 	}
 
 	// ---- ADVANCE FRAME ---- //
+
+	//Increase delay
+	delay++;
+
 	//If jumping
 	if( onGround == false) 
 	{
@@ -220,19 +222,12 @@ void Jack::show()
 			delay = 0;
 		}
 	}
-
-	else if ( delay == 10 )
+	if ( delay == 10 )
 	{
 		//Reset delay
 		delay = 0;
 		//Move to next frame
 		frame++;
-	}
-
-	else
-	{
-		//Increase delay
-		delay++;
 	}
 
 	//Reset to starting frame if changing animation.
