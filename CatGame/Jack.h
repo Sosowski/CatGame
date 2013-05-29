@@ -59,7 +59,7 @@ public:
 	void stop();
 
 	//Show Jack
-	void show();
+	void show(Window& aWindow);
 
 	//Get current values from Jack
 	/*	0 : x Position		1 : y Position

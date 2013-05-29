@@ -87,18 +87,9 @@ void Jack::move()
 	shift_boxes();
 }
 
-void Jack::show()
+void Jack::show(Window& aWindow)
 {
 	lastStatus = status; // Record Previous status
-	
-//Convert to string
-std::stringstream caption;
-
-//Generate string
-caption << "onGround: " << onGround << " Status: " << status << " facing: " << facing << " frame: " << frame;
-
-//Set caption
-SDL_WM_SetCaption( caption.str().c_str(), NULL);
 
 	// ---- SET STATUS ---- //
 	//If moving left
@@ -224,22 +215,22 @@ SDL_WM_SetCaption( caption.str().c_str(), NULL);
 	switch(status) 
 	{
 	case JACK_RIGHT:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, screen, &clipsRight[ frame ] );
+		apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, aWindow.getScreen(), &clipsRight[ frame ] );
 		break;
 	case JACK_LEFT:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, screen, &clipsLeft[ frame ] );
+		apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, aWindow.getScreen(), &clipsLeft[ frame ] );
 		break;
 	case JACK_RIGHT_JUMP:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, screen, &clipsJumpRightStart[ frame ] );
+		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpRightStart[ frame ] );
 		break;
 	case JACK_LEFT_JUMP:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, screen, &clipsJumpLeftStart[ frame ] );
+		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpLeftStart[ frame ] );
 		break;
 	case JACK_RIGHT_FALL:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, screen, &clipsJumpRightEnd[ frame ] );
+		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpRightEnd[ frame ] );
 		break;
 	case JACK_LEFT_FALL:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, screen, &clipsJumpLeftEnd[ frame ] );
+		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpLeftEnd[ frame ] );
 		break;
 	}
 }

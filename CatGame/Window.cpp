@@ -1,7 +1,7 @@
 #include "Library.h"
 
 //Screen is Initialized here and defined in Window.h
-//This should enable it to be used global in places like main.cpp
+//This now works and is obtained by other functions with the getScreen function
 SDL_Surface *screen = NULL;
 
 //Enable window +++++++++++++++++++
@@ -134,4 +134,9 @@ void Window::handle_events()
 bool Window::error()
 {
 	return !windowOK;
+}
+
+SDL_Surface* Window::getScreen()
+{
+	return screen;
 }

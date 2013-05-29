@@ -166,7 +166,7 @@ void clean_up()
 	SDL_FreeSurface ( jackRun );
 	SDL_FreeSurface ( jackJump );
 	SDL_FreeSurface ( cursor );
-	//SDL_FreeSurface ( plat1 );
+	SDL_FreeSurface ( plat1 );
 
 	//Free sounds
 	//Mix_FreeChunk ( example );
@@ -270,18 +270,18 @@ int main( int argc, char* args[])
 		walk.set_camera();
 
 		//Show background
-		apply_surface( 0, 0, background, screen, &camera);
+		apply_surface( 0, 0, background, myWindow.getScreen(), &camera);
 
 		//Show platforms REPLACED, platforms show themselves atm.
 
 		//Show Jack
-		walk.show();
+		walk.show(myWindow);
 
 		//Get keystate
 		Uint8 *keystates = SDL_GetKeyState ( NULL );
 
 		//Update Screen
-		if( SDL_Flip ( screen ) == -1 )
+		if( SDL_Flip ( myWindow.getScreen() ) == -1 )
 		{
 			return 1;
 		}

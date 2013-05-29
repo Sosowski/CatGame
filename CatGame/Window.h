@@ -10,6 +10,8 @@ private:
 	//Flag if window is set up fine
 	bool windowOK;
 
+	SDL_Surface *screen;
+
 public:
 	//constructor
 	Window();
@@ -22,6 +24,7 @@ public:
 
 	//Return any errors
 	bool error();
-};
 
-extern SDL_Surface *screen;
+	// Returns a pointer to the screen.
+	SDL_Surface* getScreen();
+};
