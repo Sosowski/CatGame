@@ -1,5 +1,3 @@
-#include "SDL.h"
-
 //This class handles the player and the player's interaction with his environment.
 //THIS CLASS IS CURRENTLY IN MAIN, SEE BELOW
 //TODO: The functions of this class cannot be exported to it's own file for the following reasons:
@@ -22,11 +20,6 @@ private:
 
 	//Gravity probe
 	SDL_Rect probe;
-
-	//Platform collision boxes
-	SDL_Rect plat1;
-	SDL_Rect plat2;
-	SDL_Rect plat3;
 
 	//Current animation frame
 	int frame;
@@ -78,6 +71,6 @@ public:
 	//loads files for Jacks Sprites
 	bool load_files();
 
-	//Passes the onGround flag when called
-	bool grounded();
+	//Checks Collisions with platform and responds. STILL NEED TO FIX to work with a list of platforms, instead of just one.
+	void Collide_Check(SDL_Rect plat);
 };

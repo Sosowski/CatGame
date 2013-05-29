@@ -29,17 +29,6 @@ Jack::Jack()
 	status = JACK_RIGHT;
 	facing = JACK_RIGHT;
 
-	//Platform hitboxes (Might not be needed later)
-	plat1.x = 0;
-	plat1.y = 750;
-	plat1.w = 400;
-	plat1.h = 100;
-
-	plat2.x = 750;
-	plat2.y = 1000;
-	plat2.w = 400;
-	plat2.h = 100;
-
 	// ---- Load Files ----
 	load_files();
 
@@ -66,58 +55,48 @@ void Jack::move()
 	//Left/Right Movement
 	x += xVel;
 
-	//Call this to update Jack's hitbox after all movements
-	shift_boxes();
-
-	//Check if Jack left the area or walked into a platform
-	if( ( x < 0 ) || ( x + JACK_WIDTH > LEVEL_WIDTH ) || (check_collision( box, plat1 ) ) || (check_collision( box, plat2 ) ) )
-		{
-			//Move back
-			x -= xVel;
-			shift_boxes();
-		}
-
-	//The probe isn't colliding with anything. We need to fall.
-	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT == false ) || (check_collision( probe, plat1 ) == false ) )
-		{
-			//Apply gravity
-			yVel += 0.5;
-			shift_boxes();
-			onGround = false;
-		}
+	//Check if Jack left the area
+	if( ( x < 0 ) || ( x + JACK_WIDTH > LEVEL_WIDTH ) )
+	{
+		//Move back
+		x -= xVel;
+	}
 
 	//Up/Down Movement
 	y += yVel;
 
-	shift_boxes();
-
-	//Check if Jack left the area or hit a platform
-	if( onGround == false ){
-		if( (check_collision( box, plat1 ) ) || (check_collision( box, plat2 ) ) )
-		{
-			y -= yVel;
-			yVel = 0;
-			shift_boxes();
-			onGround = true;
-		}
+	//The probe isn't colliding with anything. We need to fall.
+	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT == false ) && (onGround == false) )
+	{
+		//Apply gravity
+		yVel += 0.5;
 	}
 
 	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT ) )
 	{
 		//Player fell. Reset to start
 		yVel = 0;
-		onGround = false;
 		x = 0;
 		y = 0;
-		shift_boxes();
 	}
 
+	//Update Jack's hitbox after all movements
+	shift_boxes();
 }
 
 void Jack::show()
 {
 	lastStatus = status; // Record Previous status
 	
+//Convert to string
+std::stringstream caption;
+
+//Generate string
+caption << "onGround: " << onGround << " Status: " << status << " facing: " << facing << " frame: " << frame;
+
+//Set caption
+SDL_WM_SetCaption( caption.str().c_str(), NULL);
+
 	// ---- SET STATUS ---- //
 	//If moving left
 	if( xVel < 0)
@@ -136,9 +115,6 @@ void Jack::show()
 		{
 			status = JACK_LEFT_FALL;
 		}
-		
-		//Increase animation delay counter
-		//delay++;
 	}
 
 	//If moving right
@@ -166,17 +142,17 @@ void Jack::show()
 	{
 		if(onGround == false)	// if in air
 		{
-				if(facing == JACK_LEFT)
+			if(facing == JACK_LEFT)
+			{
+				if(yVel <= 0)
 				{
-					if(yVel <= 0)
-					{
-						status = JACK_LEFT_JUMP;
-					}
-					else if (yVel > 0)
-					{
-						status = JACK_LEFT_FALL;
-					}
+					status = JACK_LEFT_JUMP;
 				}
+				else if (yVel > 0)
+				{
+					status = JACK_LEFT_FALL;
+				}
+			}
 			else if(facing == JACK_RIGHT)
 			{
 				if(yVel <= 0)
@@ -189,20 +165,19 @@ void Jack::show()
 				}
 			}
 		}
-	
 		else	//if on ground
 		{
 			//show a standing frame for facing left and facing right.
 			if( facing == JACK_RIGHT )
 			{
 				status = JACK_RIGHT;
-				delay = 0;	// should reset delay so the first running fram is held.
+				delay = 0;	// should reset delay so the first running frame is held.
 			}
 
 			else if( facing == JACK_LEFT)
 			{
 				status = JACK_LEFT;
-				delay = 0;	// should reset delay so the first running fram is held.
+				delay = 0;	// should reset delay so the first running frame is held.
 			}
 		}
 	}
@@ -212,28 +187,28 @@ void Jack::show()
 	//Increase delay
 	delay++;
 
+	//Reset to starting frame if changing animation.
+	if(lastStatus != status)
+	{
+		frame = 0;
+	}
+
 	//If jumping
 	if( onGround == false) 
 	{
 		//Hold 4th frame
-		if ( frame == 4 ) 
+		if ( frame >= 3 ) 
 		{
 			//Reset delay To hold frame
 			delay = 0;
 		}
 	}
-	if ( delay == 10 )
+	if ( delay >= 10 )
 	{
 		//Reset delay
 		delay = 0;
 		//Move to next frame
 		frame++;
-	}
-
-	//Reset to starting frame if changing animation.
-	if(lastStatus != status)
-	{
-		frame = 0;
 	}
 
 	//Loop animation
@@ -359,6 +334,19 @@ void Jack::set_clips()
 	}
 }
 
+void Jack::Collide_Check(SDL_Rect plat)
+{
+	if(check_collision(plat,probe) == true){
+		y = (plat.y - JACK_HEIGHT);
+		yVel = 0;
+		shift_boxes();
+		onGround = true;
+	}
+	else{
+		onGround = false;
+	}
+}
+
 // ---- Functions to control Jack -------------------------------------------------------------------
 void Jack::accel(int xAccel, int yAccel)
 {
@@ -385,10 +373,4 @@ double Jack::Read(int val)
 	}
 
 	return ret;
-}
-
-bool Jack::grounded()
-{
-	//Returns the current state of onGround
-	return onGround;
 }

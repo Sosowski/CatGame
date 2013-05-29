@@ -17,12 +17,6 @@ caption << "test " << variable << " ";
 
 //Set caption
 SDL_WM_SetCaption( caption.str().c_str(), NULL);
-
-*/
-
-//TODO NEXT
-/*Fix animations, Make sure standing frame doesn't pop up in the middle of jumping
-
 */
 
 #include "Library.h"
@@ -105,13 +99,12 @@ bool load_files()
 	//example = load_image( "example.png" );
 	background = load_image( "bg.png" );
 	cursor = load_image( "cursor.bmp" );
-	plat1 = load_image( "plat1.png" );
 	//Jacks Files for sprites moved to Jack.h and Jack.cpp
 
 	//Open font
 	//font = TTF_OpenFont( "example.ttf", 28);
 
-	if ( background == NULL || cursor == NULL || plat1 == NULL)
+	if ( background == NULL || cursor == NULL )
 	{
 		return false;
 	}
@@ -137,14 +130,6 @@ bool load_files()
 
 void handle_events(Jack& player)//right now only takes thing of type Jack, ultimately I wanna be able to make that able to be switched with some other sprite.
 {
-	//Convert to string
-std::stringstream caption;
-
-//Generate string
-caption << "onGround " << onGround << " ";
-
-//Set caption
-SDL_WM_SetCaption( caption.str().c_str(), NULL);
 	//Check for keypress
 	if( event.type == SDL_KEYDOWN )
 	{
@@ -154,13 +139,8 @@ SDL_WM_SetCaption( caption.str().c_str(), NULL);
 				if(player.Read(4) == 1)
 				{
 					player.accel(0,-20);
-					onGround = false;
-					break;
 				}
-				else
-				{
-					break;
-				}
+				break;
 			case SDLK_a: player.accel(-10,0); break;	//Move Left
 			case SDLK_d: player.accel(10,0); break;	//Move right
 			}
@@ -248,6 +228,10 @@ int main( int argc, char* args[])
 	//Create Jack Sprite
 	Jack walk;
 
+	//Create Platforms
+	Platform plat1;
+	//Platform plat2(750,1000,400,100);
+
 	//Begin loop to hold screen open
 	while( quit == false )
 	{
@@ -275,9 +259,12 @@ int main( int argc, char* args[])
 		{
 			return 1;
 		}
-
 		//Jack movement
 		walk.move();
+
+		//TEMPORARY: check if Jack is colliding, sets the Grounded flag and etc.
+		SDL_Rect PlatRect = {plat1.Read(0),plat1.Read(1),plat1.Read(2),plat1.Read(3)};
+		walk.Collide_Check(PlatRect);
 
 		//Set camera
 		walk.set_camera();
@@ -285,9 +272,7 @@ int main( int argc, char* args[])
 		//Show background
 		apply_surface( 0, 0, background, screen, &camera);
 
-		//Show platforms
-		apply_surface( 0, 750, plat1, background, &camera);
-		apply_surface( 750, 1000, plat1, background, &camera);
+		//Show platforms REPLACED, platforms show themselves atm.
 
 		//Show Jack
 		walk.show();
