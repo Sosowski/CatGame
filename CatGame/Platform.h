@@ -7,6 +7,7 @@ public:
 	//Initalize class
 	Platform();
 	Platform(int xNew,int yNew, int wNew, int hNew);
+
 	bool load_files();
 	
 	//void Define(int xNew,int yNew, int wNew, int hNew);

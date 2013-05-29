@@ -15,6 +15,9 @@ private:
 	//Velocity variables
 	double xVel, yVel;
 
+	//flags for if left and right key are being pressed.
+	bool left, right;
+
 	//Jack's collision box
 	SDL_Rect box;
 
@@ -46,6 +49,11 @@ public:
 
 	//Jack's velocity
 	void accel(int xAccel, int yAccel);
+
+	//Walk function. The following are when happen on key up and key down.
+	//	0 : left down		1 : right down
+	//	2 : left up			3 : right up
+	void walk(int dir);
 
 	//Stop horizontal movement
 	void stop();

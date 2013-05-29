@@ -10,6 +10,9 @@ Jack::Jack()
 	//Velocity
 	xVel = 0;
 	yVel = 0.5;
+	//Flags
+	left = 0;
+	right = 0;
 
 	//Create Jack's hitbox
 	box.x = (Sint16)(x + (JACK_WIDTH / 4));
@@ -352,6 +355,31 @@ void Jack::accel(int xAccel, int yAccel)
 {
 	xVel += xAccel;
 	yVel += yAccel;
+}
+
+void Jack::walk(int dir)	//Handles what happens when left and right keys are pressed, sets flags.
+{
+	switch (dir)	// get the direction command.
+	{
+	case 0:			// left down
+		left = 1;
+		xVel -= 10;
+		break;
+	case 1:			// right down
+		right = 1;
+		xVel += 10;
+		break;
+	case 2:			// left up
+		left = 0;
+		xVel += 10;
+		break;
+	case 3:			// right up
+		right = 0;
+		xVel -= 10;
+		break;
+	default:
+		break;
+	}
 }
 
 void Jack::stop()

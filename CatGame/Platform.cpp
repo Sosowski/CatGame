@@ -7,10 +7,12 @@ Platform::Platform()
 	plat.y = 750;
 	plat.w = 400;
 	plat.h = 100;
+	//Initialize variables for loading image
+	//plat1 = NULL;
 
 	load_files();
-	apply_surface( plat.x, plat.y, plat1, background, &camera);
-}
+	apply_surface( plat.x, plat.y, plat1, background, &camera); // ERROR IS HERE. This does not show because background is not Global.
+}																// This could be solved when camera and background become objects of a class that can be modified via a function.
 
 Platform::Platform(int xNew,int yNew, int wNew, int hNew)
 {

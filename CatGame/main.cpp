@@ -136,13 +136,13 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 		switch( event.key.keysym.sym )
 		{
 			case SDLK_w:
-				if(player.Read(4) == 1)
+				if(player.Read(4) == 1)	//retreive onGround flag from player, check if it is set.
 				{
 					player.accel(0,-20);
 				}
 				break;
-			case SDLK_a: player.accel(-10,0); break;	//Move Left
-			case SDLK_d: player.accel(10,0); break;	//Move right
+			case SDLK_a: player.walk(0); break;	//Move Left
+			case SDLK_d: player.walk(1); break;	//Move right
 			}
 	}
 	//Check for key release
@@ -151,8 +151,8 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 		switch( event.key.keysym.sym )
 		{
 			case SDLK_w: ; break;
-			case SDLK_a: player.stop(); break;
-			case SDLK_d: player.stop(); break;
+			case SDLK_a: player.walk(2); break;
+			case SDLK_d: player.walk(3); break;
 		}
 	}
 }
@@ -166,7 +166,7 @@ void clean_up()
 	SDL_FreeSurface ( jackRun );
 	SDL_FreeSurface ( jackJump );
 	SDL_FreeSurface ( cursor );
-	SDL_FreeSurface ( plat1 );
+	//SDL_FreeSurface ( plat1 );
 
 	//Free sounds
 	//Mix_FreeChunk ( example );
