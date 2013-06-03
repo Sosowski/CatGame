@@ -277,7 +277,7 @@ int main( int argc, char* args[])
 
 		//Show background
 		myWindow.showBG();
-
+		
 			//Convert to string
 			std::stringstream caption;
 

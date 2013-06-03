@@ -25,7 +25,7 @@ Platform::Platform(int xNew,int yNew, int wNew, int hNew)
 
 bool Platform::load_files()
 {
-	//Load images For Jacks Sprite
+	//Load images For Platform
 	plat1 = load_image( "plat1.png" );
 
 	if ( plat1 == NULL)

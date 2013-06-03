@@ -1,10 +1,5 @@
 #include "Library.h"
 
-//Screen is Initialized here and defined in Window.h
-//This now works and is obtained by other functions with the getScreen function
-SDL_Surface *screen = NULL;
-//SDL_Surface *background = NULL;
-
 //Enable window +++++++++++++++++++
 Window::Window()
 {
@@ -141,8 +136,8 @@ bool Window::error()
 //load files for basic stuffsuch as background
 bool Window::load_files(std::string& BgImage)
 {
-	//background = load_image( BgImage );
-	background = load_image( "bg.png" );
+	background = load_image( BgImage );
+	
 	if(BgImage == "" || background == NULL )
 	{
 		return false;
