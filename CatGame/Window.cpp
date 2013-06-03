@@ -133,11 +133,11 @@ bool Window::error()
 	return !windowOK;
 }
 
-//load files for basic stuffsuch as background
+//load files
 bool Window::load_files(std::string& BgImage)
 {
 	background = load_image( BgImage );
-	
+
 	if(BgImage == "" || background == NULL )
 	{
 		return false;
@@ -157,5 +157,116 @@ SDL_Surface* Window::getBG()
 
 void Window::showBG()
 {
-	apply_surface( 0, 0, background, screen, &camera);
+	apply_surface( 0, 0, 1, 0, &camera );
+}
+
+void Window::apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
+{
+	//Temporary rectangle to hold offsets
+	SDL_Rect offset;
+
+	//Give offsets to rectangle
+	offset.x = x;
+	offset.y = y;
+
+	//Apply surface to screen (Blit)
+	SDL_BlitSurface( source, clip, destination, &offset );
+}
+
+void Window::apply_surface ( int x, int y, int sou, int dest, SDL_Rect* clip)
+{
+	SDL_Surface* source = NULL;
+	SDL_Surface* destination = NULL;
+	
+	switch(sou)
+	{
+	case 0:
+		source = screen;
+		break;
+	case 1:
+		source = background;
+		break;
+	default:
+		source = screen;
+		break;
+	}
+
+	switch(dest)
+	{
+	case 0:
+		destination = screen;
+		break;
+	case 1:
+		destination = background;
+		break;
+	default:
+		destination = screen;
+		break;
+	}
+
+	//Temporary rectangle to hold offsets
+	SDL_Rect offset;
+
+	//Give offsets to rectangle
+	offset.x = x;
+	offset.y = y;
+
+	//Apply surface to screen (Blit)
+	SDL_BlitSurface( source, clip, destination, &offset );
+}
+
+void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Rect* clip)
+{
+	SDL_Surface* destination = NULL;
+
+	switch(dest)
+	{
+	case 0:
+		destination = screen;
+		break;
+	case 1:
+		destination = background;
+		break;
+	default:
+		destination = screen;
+		break;
+	}
+
+	//Temporary rectangle to hold offsets
+	SDL_Rect offset;
+
+	//Give offsets to rectangle
+	offset.x = x;
+	offset.y = y;
+
+	//Apply surface to screen (Blit)
+	SDL_BlitSurface( source, clip, destination, &offset );
+}
+
+void Window::apply_surface ( int x, int y, int sou, SDL_Surface* destination, SDL_Rect* clip)
+{
+	SDL_Surface* source = NULL;
+
+	switch(sou)
+	{
+	case 0:
+		source = screen;
+		break;
+	case 1:
+		source = background;
+		break;
+	default:
+		source = screen;
+		break;
+	}
+
+	//Temporary rectangle to hold offsets
+	SDL_Rect offset;
+
+	//Give offsets to rectangle
+	offset.x = x;
+	offset.y = y;
+
+	//Apply surface to screen (Blit)
+	SDL_BlitSurface( source, clip, destination, &offset );
 }

@@ -34,4 +34,10 @@ public:
 	SDL_Surface* getBG();
 
 	void showBG();
+
+	//Apply an image onto screen
+	void apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL );
+	void apply_surface ( int x, int y, int sou, int dest, SDL_Rect* clip);
+	void apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Rect* clip);
+	void apply_surface ( int x, int y, int sou, SDL_Surface* destination, SDL_Rect* clip);
 };

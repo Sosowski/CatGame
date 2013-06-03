@@ -62,5 +62,5 @@ int Platform::Read(int val)
 
 void Platform::show(Window& aWindow)
 {
-	apply_surface( plat.x, plat.y, plat1, aWindow.getBG(), &camera);		// ERROR IS HERE. This does not show because background is not Global
-}																			// This could be solved when camera and background become objects of a class that can be modified via a function.
+	aWindow.apply_surface( plat.x, plat.y, plat1, 1, &camera);
+}

@@ -215,22 +215,22 @@ void Jack::show(Window& aWindow)
 	switch(status) 
 	{
 	case JACK_RIGHT:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, aWindow.getScreen(), &clipsRight[ frame ] );
+		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, 0, &clipsRight[ frame ] );
 		break;
 	case JACK_LEFT:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, aWindow.getScreen(), &clipsLeft[ frame ] );
+		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, 0, &clipsLeft[ frame ] );
 		break;
 	case JACK_RIGHT_JUMP:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpRightStart[ frame ] );
+		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpRightStart[ frame ] );
 		break;
 	case JACK_LEFT_JUMP:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpLeftStart[ frame ] );
+		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpLeftStart[ frame ] );
 		break;
 	case JACK_RIGHT_FALL:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpRightEnd[ frame ] );
+		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpRightEnd[ frame ] );
 		break;
 	case JACK_LEFT_FALL:
-		apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, aWindow.getScreen(), &clipsJumpLeftEnd[ frame ] );
+		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpLeftEnd[ frame ] );
 		break;
 	}
 }

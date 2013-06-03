@@ -362,17 +362,3 @@ bool check_collision( SDL_Rect A, SDL_Rect B)
 	//If none of the sides from A are outside B
 	return true;
 }
-
-//Apply an image onto screen
-void apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
-{
-	//Temporary rectangle to hold offsets
-	SDL_Rect offset;
-
-	//Give offsets to rectangle
-	offset.x = x;
-	offset.y = y;
-
-	//Apply surface to screen (Blit)
-	SDL_BlitSurface( source, clip, destination, &offset );
-}
