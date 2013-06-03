@@ -24,6 +24,8 @@ SDL_WM_SetCaption( caption.str().c_str(), NULL);
 //---- Define Stuff that is used globally here.
 SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
+std::string BgImage = "";
+
 //FUNCTIONS------------------------------------------------------------------------------------------------
 
 //Load / optimise images before displaying, create pointer to optimized image ---- Now defined as global in FunctionLib
@@ -92,23 +94,24 @@ bool init()
 		return true;
 	}
 
-// This loads the files necesary for the base game. Files for jack and others are in anotehr function in thier class.
-bool load_files()
+// This loads the files necesary for the base game. Files for jack and others are in another function in thier class.
+bool load_files(Window aWindow)
 {
+	bool BG = false;
 	//Load images
 	//example = load_image( "example.png" );
-	background = load_image( "bg.png" );
+	//USED TO BE: background = load_image( "bg.png" );
+	BG = aWindow.load_files(BgImage);
 	cursor = load_image( "cursor.bmp" );
 	//Jacks Files for sprites moved to Jack.h and Jack.cpp
 
 	//Open font
 	//font = TTF_OpenFont( "example.ttf", 28);
 
-	if ( background == NULL || cursor == NULL )
+	if (cursor == NULL || BG == false)
 	{
 		return false;
 	}
-
 
 	//Load music
 	//music = Mix_LoadMUS ( "Example.wav" );
@@ -162,7 +165,7 @@ void clean_up()
 {
 	//Free images
 	//SDL_FreeSurface ( example );
-	SDL_FreeSurface ( background );
+	//SDL_FreeSurface ( background );
 	SDL_FreeSurface ( jackRun );
 	SDL_FreeSurface ( jackJump );
 	SDL_FreeSurface ( cursor );
@@ -209,8 +212,11 @@ int main( int argc, char* args[])
 		return 1;
 	}
 
+	//Set Current Background Image Name
+	BgImage = "bg.png";
+
 	//Load files
-	if( load_files() == false)
+	if( load_files(myWindow) == false)
 	{
 		return 1;
 	}
@@ -270,9 +276,19 @@ int main( int argc, char* args[])
 		walk.set_camera();
 
 		//Show background
-		apply_surface( 0, 0, background, myWindow.getScreen(), &camera);
+		myWindow.showBG();
 
-		//Show platforms REPLACED, platforms show themselves atm.
+			//Convert to string
+			std::stringstream caption;
+
+			//Generate string
+			caption << "Camera.x: " << camera.x << " Camera.y: " << camera.y;
+
+			//Set caption
+			SDL_WM_SetCaption( caption.str().c_str(), NULL);
+
+		//Show platforms
+		plat1.show(myWindow);
 
 		//Show Jack
 		walk.show(myWindow);

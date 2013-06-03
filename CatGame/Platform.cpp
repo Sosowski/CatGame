@@ -11,8 +11,7 @@ Platform::Platform()
 	//plat1 = NULL;
 
 	load_files();
-	apply_surface( plat.x, plat.y, plat1, background, &camera); // ERROR IS HERE. This does not show because background is not Global.
-}																// This could be solved when camera and background become objects of a class that can be modified via a function.
+}
 
 Platform::Platform(int xNew,int yNew, int wNew, int hNew)
 {
@@ -21,8 +20,7 @@ Platform::Platform(int xNew,int yNew, int wNew, int hNew)
 	plat.w = wNew;
 	plat.h = hNew;
 
-	//Draw Platform
-	apply_surface( plat.x, plat.y, plat1, background, &camera);
+	load_files();
 }
 
 bool Platform::load_files()
@@ -61,3 +59,8 @@ int Platform::Read(int val)
 	}
 	return ret;
 }
+
+void Platform::show(Window& aWindow)
+{
+	apply_surface( plat.x, plat.y, plat1, aWindow.getBG(), &camera);		// ERROR IS HERE. This does not show because background is not Global
+}																			// This could be solved when camera and background become objects of a class that can be modified via a function.

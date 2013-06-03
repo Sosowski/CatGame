@@ -58,10 +58,11 @@ static bool jumping = true;
 static bool onGround = false;
 
 //Images
-static SDL_Surface *background = NULL;
+static SDL_Surface *background = NULL;//need to fix this shit.
 static SDL_Surface *jackRun = NULL;
 static SDL_Surface *jackJump = NULL;
 static SDL_Surface *plat1 = NULL;
+//static std::string BgImage =  "";
 
 //Custom mouse cursor
 static SDL_Surface *cursor = NULL;

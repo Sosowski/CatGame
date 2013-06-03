@@ -11,6 +11,7 @@ private:
 	bool windowOK;
 
 	SDL_Surface *screen;
+	//SDL_Surface *background;
 
 public:
 	//constructor
@@ -25,6 +26,12 @@ public:
 	//Return any errors
 	bool error();
 
+	bool load_files(std::string& BgImage);
+	
 	// Returns a pointer to the screen.
 	SDL_Surface* getScreen();
+	// Returns a pointer to the background.
+	SDL_Surface* getBG();
+
+	void showBG();
 };

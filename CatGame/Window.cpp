@@ -3,12 +3,14 @@
 //Screen is Initialized here and defined in Window.h
 //This now works and is obtained by other functions with the getScreen function
 SDL_Surface *screen = NULL;
+//SDL_Surface *background = NULL;
 
 //Enable window +++++++++++++++++++
 Window::Window()
 {
 	//Set up screen (Starting windowed)
 	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+	background = NULL;
 
 	if( screen == NULL )
 	{
@@ -136,7 +138,29 @@ bool Window::error()
 	return !windowOK;
 }
 
+//load files for basic stuffsuch as background
+bool Window::load_files(std::string& BgImage)
+{
+	//background = load_image( BgImage );
+	background = load_image( "bg.png" );
+	if(BgImage == "" || background == NULL )
+	{
+		return false;
+	}
+	return true;
+}
+
 SDL_Surface* Window::getScreen()
 {
 	return screen;
+}
+
+SDL_Surface* Window::getBG()
+{
+	return background;
+}
+
+void Window::showBG()
+{
+	apply_surface( 0, 0, background, screen, &camera);
 }

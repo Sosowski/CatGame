@@ -10,7 +10,7 @@ public:
 
 	bool load_files();
 	
-	//void Define(int xNew,int yNew, int wNew, int hNew);
+	void show(Window& aWindow);
 
 	//Get current values from this platform
 	/*	0 : x Position		1 : y Position
