@@ -6,6 +6,9 @@ Window::Window()
 	//Set up screen (Starting windowed)
 	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
 	background = NULL;
+	target = NULL;
+	EaseIn = 0;
+	EaseOut = 0;
 
 	if( screen == NULL )
 	{
@@ -158,6 +161,63 @@ SDL_Surface* Window::getBG()
 void Window::showBG()
 {
 	apply_surface( 0, 0, 1, 0, &camera );
+}
+
+void Window::update_Cam()
+{
+	xDiff = abs(target->x - camera.x);
+	yDiff = abs(target->y - camera.y);
+
+	// Calculate Easing.
+	if(EaseIn > 0){
+		EaseIn -= 5;
+	}
+	if(EaseOut > 0 && (EaseOut >= xDiff || EaseOut >= yDiff) ){
+		xVel = floor(xDiff*.5);
+	}
+	// Make sure The Ease amounts are not negative
+	if(EaseIn < 0){
+		EaseIn = 0;
+	}
+	if(EaseOut < 0){
+		EaseOut = 0;
+	}
+	//If The it has slowed down enough, Just snap to target
+	if(xVel < 3){
+		xVel = 0;
+		camera.x = target->x;
+	}
+	if(yVel < 3){
+		yVel = 0;
+		camera.y = target->y;
+	}
+	//If not too slow, travel to target.
+	if(xVel <= 0 && yVel <= 0){
+		camera.x += xVel - EaseIn;
+		camera.y += yVel - EaseIn;
+	}
+}
+
+void Window::set_target(SDL_Rect* tar)
+{
+	target = tar;
+	//Clear all other values to snap to target
+	xVel = 0;
+	yVel = 0;
+	EaseIn = 0;
+	EaseOut = 0;
+}
+
+void Window::set_target(SDL_Rect* tar, int Vel, int ease_in, int ease_out)
+{
+	target = tar;								//set target
+	float angle = target->x/target->y;			//Temporarily use angle, this is not the actual angle yet.
+	angle = tan(angle);							//Then some trig to get x and y velocities.
+	xVel = floor(Vel * cos(angle));
+	yVel = floor(Vel * sin(angle));
+	// Set the ease Values
+	EaseIn = ease_in;
+	EaseIn = ease_out;
 }
 
 void Window::apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)

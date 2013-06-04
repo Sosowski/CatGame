@@ -11,7 +11,15 @@ private:
 	bool windowOK;
 
 	SDL_Surface *screen;
+	SDL_Rect *target;		// for camera
 	//SDL_Surface *background;
+
+	int EaseIn;
+	int EaseOut;
+	int xDiff;
+	int yDiff;
+	int xVel;
+	int yVel;
 
 public:
 	//constructor
@@ -34,6 +42,12 @@ public:
 	SDL_Surface* getBG();
 
 	void showBG();
+
+	void update_Cam();
+
+	void set_target(SDL_Rect* tar);
+
+	void set_target(SDL_Rect* tar, int Vel, int ease_in, int ease_out);
 
 	//Apply an image onto screen
 	void apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL );

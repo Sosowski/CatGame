@@ -212,8 +212,10 @@ void Jack::show(Window& aWindow)
 	}
 
 // ---- SHOW PROPER FRAME ---- //
-	switch(status) 
-	{
+	switch(status) //The plan is that camera will now not be global, but everything will have its own camera.
+	{				//Then the main camera is The camera of the window. Meaning this Will have to change apply_surface.
+					//The new apply surface will remove the camera.x and such here, because it will be in the function instead. 
+					//The camera in the Window class is used, so this class has camera values, but the Window's values apply what is seen.
 	case JACK_RIGHT:
 		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, 0, &clipsRight[ frame ] );
 		break;
@@ -392,4 +394,9 @@ double Jack::Read(int val)
 	}
 
 	return ret;
+}
+
+SDL_Rect* Jack::get_camera()
+{
+	return &camera;
 }

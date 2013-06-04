@@ -45,7 +45,8 @@ static int LEVEL_WIDTH = 2000;
 static int LEVEL_HEIGHT = 2000;
 
 //Camera
-extern SDL_Rect camera;
+//extern SDL_Rect camera;
+static SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 //Platforms       xpos,ypos,xsize,ysize
 //SDL_Rect plat1 = { 0, 500, 500, 100 };

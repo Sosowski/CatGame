@@ -22,7 +22,7 @@ SDL_WM_SetCaption( caption.str().c_str(), NULL);
 #include "Library.h"
 
 //---- Define Stuff that is used globally here.
-SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+//SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 std::string BgImage = "";
 
@@ -234,6 +234,9 @@ int main( int argc, char* args[])
 	//Create Jack Sprite
 	Jack walk;
 
+	//Set Windows Camera focus to jack
+	myWindow.set_target(walk.get_camera());
+
 	//Create Platforms
 	Platform plat1;
 	//Platform plat2(750,1000,400,100);
@@ -272,20 +275,14 @@ int main( int argc, char* args[])
 		SDL_Rect PlatRect = {plat1.Read(0),plat1.Read(1),plat1.Read(2),plat1.Read(3)};
 		walk.Collide_Check(PlatRect);
 
-		//Set camera
+		//Set Jacks camera
 		walk.set_camera();
+
+		//Move the main camera
+		myWindow.update_Cam();
 
 		//Show background
 		myWindow.showBG();
-		
-			//Convert to string
-			std::stringstream caption;
-
-			//Generate string
-			caption << "Camera.x: " << camera.x << " Camera.y: " << camera.y;
-
-			//Set caption
-			SDL_WM_SetCaption( caption.str().c_str(), NULL);
 
 		//Show platforms
 		plat1.show(myWindow);
