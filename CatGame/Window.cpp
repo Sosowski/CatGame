@@ -279,31 +279,33 @@ void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Re
 {
 	SDL_Surface* destination = NULL;
 
+	//Temporary rectangle to hold offsets
+	SDL_Rect offset;
+
 	switch(dest)
 	{
 	case 0:
 		destination = screen;
+		//Give offsets to rectangle
+		offset.x = x - camera.x;
+		offset.y = y - camera.y;
 		break;
 	case 1:
 		destination = background;
+		//Give offsets to rectangle
+		offset.x = x;
+		offset.y = y;
 		break;
 	default:
 		destination = screen;
 		break;
 	}
 
-	//Temporary rectangle to hold offsets
-	SDL_Rect offset;
-
-	//Give offsets to rectangle
-	offset.x = x;
-	offset.y = y;
-
 	//Apply surface to screen (Blit)
 	SDL_BlitSurface( source, clip, destination, &offset );
 }
 
-void Window::apply_surface ( int x, int y, int sou, SDL_Surface* destination, SDL_Rect* clip)
+/*void Window::apply_surface ( int x, int y, int sou, SDL_Surface* destination, SDL_Rect* clip)
 {
 	SDL_Surface* source = NULL;
 
@@ -329,4 +331,4 @@ void Window::apply_surface ( int x, int y, int sou, SDL_Surface* destination, SD
 
 	//Apply surface to screen (Blit)
 	SDL_BlitSurface( source, clip, destination, &offset );
-}
+}*/

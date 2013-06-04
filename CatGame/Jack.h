@@ -9,6 +9,9 @@ private:
 	//X and Y offsets of Jack
 	double x, y;
 
+	//Offets for Jacks camera
+	int xOffset, yOffset;
+
 	//Records the last y coordinate
 	double yLast;
 
@@ -67,8 +70,13 @@ public:
 		4 : onGround                        */
 	double Read(int val);
 
+	SDL_Rect* get_camera();
+
 	//Set Camera over Jack
 	void set_camera();
+
+	//Offset Jacks Camera
+	void shift_camera(int xoffset, int yoffset);
 
 	//Shift collision boxes
 	void shift_boxes();

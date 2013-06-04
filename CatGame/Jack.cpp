@@ -14,6 +14,10 @@ Jack::Jack()
 	left = 0;
 	right = 0;
 
+	//For Jacks Camera Offset
+	xOffset = 0;
+	yOffset = 0;
+
 	//Create Jack's hitbox
 	box.x = (Sint16)(x + (JACK_WIDTH / 4));
 	box.y = (Sint16)(y);
@@ -217,22 +221,22 @@ void Jack::show(Window& aWindow)
 					//The new apply surface will remove the camera.x and such here, because it will be in the function instead. 
 					//The camera in the Window class is used, so this class has camera values, but the Window's values apply what is seen.
 	case JACK_RIGHT:
-		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, 0, &clipsRight[ frame ] );
+		aWindow.apply_surface( (int)x, (int)y, jackRun, 0, &clipsRight[ frame ] );
 		break;
 	case JACK_LEFT:
-		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackRun, 0, &clipsLeft[ frame ] );
+		aWindow.apply_surface( (int)x, (int)y, jackRun, 0, &clipsLeft[ frame ] );
 		break;
 	case JACK_RIGHT_JUMP:
-		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpRightStart[ frame ] );
+		aWindow.apply_surface( (int)x, (int)y, jackJump, 0, &clipsJumpRightStart[ frame ] );
 		break;
 	case JACK_LEFT_JUMP:
-		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpLeftStart[ frame ] );
+		aWindow.apply_surface( (int)x, (int)y, jackJump, 0, &clipsJumpLeftStart[ frame ] );
 		break;
 	case JACK_RIGHT_FALL:
-		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpRightEnd[ frame ] );
+		aWindow.apply_surface( (int)x, (int)y, jackJump, 0, &clipsJumpRightEnd[ frame ] );
 		break;
 	case JACK_LEFT_FALL:
-		aWindow.apply_surface( (int)x - camera.x, (int)y - camera.y, jackJump, 0, &clipsJumpLeftEnd[ frame ] );
+		aWindow.apply_surface( (int)x, (int)y, jackJump, 0, &clipsJumpLeftEnd[ frame ] );
 		break;
 	}
 }
@@ -242,6 +246,8 @@ void Jack::set_camera()
 	//Center camera over Jack
 	camera.x = (Sint16)(( x + JACK_WIDTH / 2 ) - SCREEN_WIDTH / 2);
 	camera.y = (Sint16)(( y + JACK_HEIGHT / 2 ) - SCREEN_HEIGHT / 2);
+	camera.x += xOffset;
+	camera.y += yOffset;
 
 	if( camera.x < 0 )
 	{
@@ -259,6 +265,12 @@ void Jack::set_camera()
 	{
 		camera.y = LEVEL_HEIGHT - camera.h;
 	}
+}
+
+void Jack::shift_camera(int xoffset, int yoffset)
+{
+	xOffset = xoffset;
+	yOffset = yoffset;
 }
 
 void Jack::shift_boxes()
