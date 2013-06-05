@@ -146,7 +146,7 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 				break;
 			case SDLK_a: player.walk(0); break;	//Move Left
 			case SDLK_d: player.walk(1); break;	//Move right
-			case SDLK_s: player.shift_camera(0,50); break;	//shift camera down a bit
+			case SDLK_s: player.shift_camera(0,100); break;	//shift camera down a bit
 			}
 	}
 	//Check for key release

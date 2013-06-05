@@ -17,6 +17,7 @@ Jack::Jack()
 	//For Jacks Camera Offset
 	xOffset = 0;
 	yOffset = 0;
+	EaseIn = 0, EaseOut = 0, xCamVel = 0, yCamVel = 0;
 
 	//Create Jack's hitbox
 	box.x = (Sint16)(x + (JACK_WIDTH / 4));
@@ -246,8 +247,55 @@ void Jack::set_camera()
 	//Center camera over Jack
 	camera.x = (Sint16)(( x + JACK_WIDTH / 2 ) - SCREEN_WIDTH / 2);
 	camera.y = (Sint16)(( y + JACK_HEIGHT / 2 ) - SCREEN_HEIGHT / 2);
-	camera.x += xOffset;
-	camera.y += yOffset;
+
+	//If Offsets are set, Ease the camera to offsets.
+	if(xOffset != 0 || yOffset != 0){
+		xDiff = xOffset - xOff;
+		yDiff = yOffset - yOff;
+		// Calculate Easing.
+		if(EaseIn > 0){
+			EaseIn -= 2;
+		}
+		if(EaseOut > 0 && (EaseOut >= abs(xDiff) || EaseOut >= abs(yDiff)) ){
+			xCamVel = floor(xDiff*.5);
+			yCamVel = floor(yDiff*.5);
+		}
+		// Make sure The Ease amounts are not negative
+		if(EaseIn < 0){
+			EaseIn = 0;
+		}
+		if(EaseOut < 0){
+			EaseOut = 0;
+		}
+		//If The it has slowed down enough, Just snap to target
+		if(xCamVel < 3 && xCamVel > -3){
+			xCamVel = 0;
+			xOff = xOffset;
+			xDiff = 0;
+		}
+		if(yCamVel < 3 && yCamVel > -3){
+			yCamVel = 0;
+			yOff = yOffset;
+			yDiff = 0;
+		}
+		//If not too slow, travel to target.
+		if(xCamVel != 0 || yCamVel != 0){
+			if(xCamVel > 0){
+				xOff += xCamVel - EaseIn;
+			}
+			else{
+				xOff += xCamVel + EaseIn;
+			}
+			if(yCamVel > 0){
+				yOff += yCamVel - EaseIn;
+			}
+			else{
+				yOff += yCamVel + EaseIn;
+			}
+		}
+		camera.x += xOff;
+		camera.y += yOff;
+	}
 
 	if( camera.x < 0 )
 	{
@@ -271,6 +319,9 @@ void Jack::shift_camera(int xoffset, int yoffset)
 {
 	xOffset = xoffset;
 	yOffset = yoffset;
+	xDiff = 0, yDiff = 0, xOff = 0, yOff = 0;
+	//Temporary Values for Easing
+	EaseIn = 10, EaseOut = 20, xCamVel = 0, yCamVel = 10;
 }
 
 void Jack::shift_boxes()

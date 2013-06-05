@@ -10,7 +10,9 @@ private:
 	double x, y;
 
 	//Offets for Jacks camera
-	int xOffset, yOffset;
+	int xOffset, yOffset, xOff, yOff, xDiff, yDiff;
+	//temporary Easing values
+	int EaseIn, EaseOut, xCamVel, yCamVel;
 
 	//Records the last y coordinate
 	double yLast;
@@ -41,7 +43,6 @@ private:
 
 	//Last known sprite direction
 	int facing;
-
 public:
 
 	//Initalize class

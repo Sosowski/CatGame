@@ -165,15 +165,16 @@ void Window::showBG()
 
 void Window::update_Cam()
 {
-	xDiff = abs(target->x - camera.x);
-	yDiff = abs(target->y - camera.y);
+	xDiff = target->x - camera.x;
+	yDiff = target->y - camera.y;
 
 	// Calculate Easing.
 	if(EaseIn > 0){
 		EaseIn -= 5;
 	}
-	if(EaseOut > 0 && (EaseOut >= xDiff || EaseOut >= yDiff) ){
+	if(EaseOut > 0 && (EaseOut >= abs(xDiff) || EaseOut >= abs(yDiff)) ){
 		xVel = floor(xDiff*.5);
+		yVel = floor(yDiff*.5);
 	}
 	// Make sure The Ease amounts are not negative
 	if(EaseIn < 0){
@@ -183,18 +184,28 @@ void Window::update_Cam()
 		EaseOut = 0;
 	}
 	//If The it has slowed down enough, Just snap to target
-	if(xVel < 3){
+	if(xVel < 3 && xVel > -3){
 		xVel = 0;
 		camera.x = target->x;
 	}
-	if(yVel < 3){
+	if(yVel < 3 && yVel > -3){
 		yVel = 0;
 		camera.y = target->y;
 	}
 	//If not too slow, travel to target.
-	if(xVel <= 0 && yVel <= 0){
-		camera.x += xVel - EaseIn;
-		camera.y += yVel - EaseIn;
+	if(xVel != 0 || yVel != 0){
+		if(xVel > 0){
+			camera.x += xVel - EaseIn;
+		}
+		else{
+			camera.x += xVel + EaseIn;
+		}
+		if(yVel > 0){
+			camera.y += yVel - EaseIn;
+		}
+		else{
+			camera.y += yVel + EaseIn;
+		}
 	}
 }
 
@@ -211,7 +222,9 @@ void Window::set_target(SDL_Rect* tar)
 void Window::set_target(SDL_Rect* tar, int Vel, int ease_in, int ease_out)
 {
 	target = tar;								//set target
-	float angle = target->x/target->y;			//Temporarily use angle, this is not the actual angle yet.
+	int base = target->x - camera.x;
+	int height = target->y - camera.y;
+	float angle = base/height;					//Temporarily use angle, this is not the actual angle yet.
 	angle = tan(angle);							//Then some trig to get x and y velocities.
 	xVel = floor(Vel * cos(angle));
 	yVel = floor(Vel * sin(angle));
