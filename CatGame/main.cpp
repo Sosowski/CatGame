@@ -26,6 +26,14 @@ SDL_WM_SetCaption( caption.str().c_str(), NULL);
 
 std::string BgImage = "";
 
+//Stores data for all current projectiles
+std::vector<Projectile> projectiles;
+
+//Temp storage for mouse position on click for projectiles
+int ClickX, ClickY;
+//Temp storage for projectile target
+SDL_Rect ProjectileTarget;
+
 //FUNCTIONS------------------------------------------------------------------------------------------------
 
 //Load / optimise images before displaying, create pointer to optimized image ---- Now defined as global in FunctionLib
@@ -65,6 +73,9 @@ SDL_Surface *load_image( std::string filename)
 		//send optimised image
 		return optimizedImage;
 	}
+
+	//Cirumvents "not all paths return a value" warning
+	return 0;
 }
 
 //Runs initilization functions
@@ -102,13 +113,13 @@ bool load_files(Window aWindow)
 	//example = load_image( "example.png" );
 	//USED TO BE: background = load_image( "bg.png" );
 	BG = aWindow.load_files(BgImage);
-	cursor = load_image( "cursor.bmp" );
+	bullet = load_image( "bullet.png" );
 	//Jacks Files for sprites moved to Jack.h and Jack.cpp
 
 	//Open font
 	//font = TTF_OpenFont( "example.ttf", 28);
 
-	if (cursor == NULL || BG == false)
+	if (bullet == NULL || BG == false)
 	{
 		return false;
 	}
@@ -133,6 +144,25 @@ bool load_files(Window aWindow)
 
 void handle_events(Jack& player)//right now only takes thing of type Jack, ultimately I wanna be able to make that able to be switched with some other sprite.
 {
+	//Create a projectile on left mouse button click
+	if(event.type == SDL_MOUSEBUTTONDOWN)
+	{
+		if(event.button.button == SDL_BUTTON_LEFT)
+		{
+					//Get the current coordinates of the mouse click
+					SDL_GetMouseState(&ClickX, &ClickY);
+					//Set attributes for the target hitbox
+					ProjectileTarget.x = ClickX;
+					ProjectileTarget.y = ClickY;
+					ProjectileTarget.w = 1;
+					ProjectileTarget.h = 1;
+					//Create the projectile, origin being Jack
+					Projectile tmp_proj(player.Read(1), player.Read(2), 1.0, ProjectileTarget);
+					//Add it to the projectile vector
+					projectiles.push_back(tmp_proj);
+		}
+	}
+
 	//Check for keypress
 	if( event.type == SDL_KEYDOWN )
 	{
@@ -160,6 +190,7 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 			case SDLK_s: player.shift_camera(0,0); break;	//shift camera back to where it was.
 		}
 	}
+	
 }
 
 //Remove all objects and close program
@@ -170,7 +201,7 @@ void clean_up()
 	//SDL_FreeSurface ( background );
 	SDL_FreeSurface ( jackRun );
 	SDL_FreeSurface ( jackJump );
-	SDL_FreeSurface ( cursor );
+	SDL_FreeSurface ( bullet );
 	SDL_FreeSurface ( plat1 );
 
 	//Free sounds
@@ -272,6 +303,26 @@ int main( int argc, char* args[])
 		}
 		//Jack movement
 		walk.move();
+
+		//Projectile movement
+		//Check if there are any projectiles before proceeding
+		if(projectiles.size()>=1)
+		{
+			//Loop for how many projectiles we have
+			 for(int proj=0; proj < (signed int) projectiles.size(); proj++)
+             {
+					//Check for disabled projectile
+					if(projectiles.at(proj).is_disabled())
+                    {
+                        //Delete this projectile
+						projectiles.erase(projectiles.begin() + proj);
+					} 
+					else 
+					{
+						projectiles.at(proj).move();
+                    }
+             }
+		}
 
 		//TEMPORARY: check if Jack is colliding, sets the Grounded flag and etc.
 		SDL_Rect PlatRect = {plat1.Read(0),plat1.Read(1),plat1.Read(2),plat1.Read(3)};

@@ -61,17 +61,17 @@ bool Jack::load_files()
 void Jack::move()
 {
 	//Left/Right Movement
-	x += xVel;
+	x += (int)xVel;
 
 	//Check if Jack left the area
 	if( ( x < 0 ) || ( x + JACK_WIDTH > LEVEL_WIDTH ) )
 	{
 		//Move back
-		x -= xVel;
+		x -= (int)xVel;
 	}
 
 	//Up/Down Movement
-	y += yVel;
+	y += (int)yVel;
 
 	//The probe isn't colliding with anything. We need to fall.
 	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT == false ) && (onGround == false) )
@@ -257,8 +257,8 @@ void Jack::set_camera()
 			EaseIn -= 2;
 		}
 		if(EaseOut > 0 && (EaseOut >= abs(xDiff) || EaseOut >= abs(yDiff)) ){
-			xCamVel = floor(xDiff*.5);
-			yCamVel = floor(yDiff*.5);
+			xCamVel = (int)floor(xDiff*.5);
+			yCamVel = (int)floor(yDiff*.5);
 		}
 		// Make sure The Ease amounts are not negative
 		if(EaseIn < 0){
@@ -293,8 +293,8 @@ void Jack::set_camera()
 				yOff += yCamVel + EaseIn;
 			}
 		}
-		camera.x += xOff;
-		camera.y += yOff;
+		camera.x += (Sint16)xOff;
+		camera.y += (Sint16)yOff;
 	}
 
 	if( camera.x < 0 )

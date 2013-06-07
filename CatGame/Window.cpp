@@ -173,8 +173,8 @@ void Window::update_Cam()
 		EaseIn -= 5;
 	}
 	if(EaseOut > 0 && (EaseOut >= abs(xDiff) || EaseOut >= abs(yDiff)) ){
-		xVel = floor(xDiff*.5);
-		yVel = floor(yDiff*.5);
+		xVel = (int)floor(xDiff*.5);
+		yVel = (int)floor(yDiff*.5);
 	}
 	// Make sure The Ease amounts are not negative
 	if(EaseIn < 0){
@@ -224,10 +224,10 @@ void Window::set_target(SDL_Rect* tar, int Vel, int ease_in, int ease_out)
 	target = tar;								//set target
 	int base = target->x - camera.x;
 	int height = target->y - camera.y;
-	float angle = base/height;					//Temporarily use angle, this is not the actual angle yet.
+	float angle = (float)base/height;					//Temporarily use angle, this is not the actual angle yet.
 	angle = tan(angle);							//Then some trig to get x and y velocities.
-	xVel = floor(Vel * cos(angle));
-	yVel = floor(Vel * sin(angle));
+	xVel = (int)floor(Vel * cos(angle));
+	yVel = (int)floor(Vel * sin(angle));
 	// Set the ease Values
 	EaseIn = ease_in;
 	EaseIn = ease_out;

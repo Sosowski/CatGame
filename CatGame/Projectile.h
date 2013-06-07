@@ -1,5 +1,7 @@
 #include "SDL.h"
 
+//Current functionality can support different types of projectiles, move()'s base is set up to guide the bullet to a target,
+//Could use this functionality to create a gun with hoaming bullets
 
 //TODO : Projectile array in main
 class Projectile
@@ -15,12 +17,16 @@ private:
 	bool disabled; //If true, projectile is disabled.
 	SDL_Rect target; //Where the bullet will travel
 
+
 public:
 	//Projectile constructor
 	Projectile(double, double, double, SDL_Rect);
 
 	//Check if the projectile is disabled
 	bool is_disabled();
+
+	//Calculates distance to target
+	double distance(double x2, double x1, double y2, double y1);
 
 	void set_ProX(double);   //Set the projectile's position
 	void set_ProY(double); 

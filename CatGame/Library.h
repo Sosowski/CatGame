@@ -2,7 +2,9 @@
 //Throw any declaration in here and save a few lines.
 
 #include "Global.h"
+#include <vector>
 #include <Windows.h>
+#include <math.h>
 #include "Projectile.h"
 #include "Timer.h"
 #include "Window.h"

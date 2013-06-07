@@ -58,13 +58,11 @@ static bool jumping = true;
 static bool onGround = false;
 
 //Images
-static SDL_Surface *background = NULL;//need to fix this shit.
+static SDL_Surface *background = NULL; //Needs to be fixed
 static SDL_Surface *jackRun = NULL;
 static SDL_Surface *jackJump = NULL;
 static SDL_Surface *plat1 = NULL;
-
-//Custom mouse cursor
-static SDL_Surface *cursor = NULL;
+static SDL_Surface *bullet = NULL;
 
 //Mouse cursor trackers
 static int xMouse = 0;
@@ -72,9 +70,6 @@ static int yMouse = 0;
 
 //Text messages
 static SDL_Surface *message = NULL;
-
-//Screen
-//SDL_Surface *screen = NULL;
 
 //Music
 static Mix_Music *music = NULL;

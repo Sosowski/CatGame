@@ -7,7 +7,7 @@ class Jack
 {
 private:
 	//X and Y offsets of Jack
-	double x, y;
+	int x, y;
 
 	//Offets for Jacks camera
 	int xOffset, yOffset, xOff, yOff, xDiff, yDiff;
@@ -15,7 +15,7 @@ private:
 	int EaseIn, EaseOut, xCamVel, yCamVel;
 
 	//Records the last y coordinate
-	double yLast;
+	int yLast;
 
 	//Velocity variables
 	double xVel, yVel;
