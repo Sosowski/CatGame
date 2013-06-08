@@ -157,9 +157,18 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 					ProjectileTarget.w = 1;
 					ProjectileTarget.h = 1;
 					//Create the projectile, origin being Jack
-					Projectile tmp_proj(player.Read(1), player.Read(2), 1.0, ProjectileTarget);
+					Projectile tmp_proj( ( player.Read(0) + (JACK_WIDTH / 2) + 50 ), ( player.Read(1) + (JACK_HEIGHT / 2) - 50 ), 5.0, ProjectileTarget);
 					//Add it to the projectile vector
 					projectiles.push_back(tmp_proj);
+
+					//Convert to string
+					std::stringstream caption;
+
+//Generate string
+caption << "x: " << ClickX << " y: " << ClickY;
+
+//Set caption
+SDL_WM_SetCaption( caption.str().c_str(), NULL);
 		}
 	}
 
@@ -342,6 +351,20 @@ int main( int argc, char* args[])
 
 		//Show Jack
 		walk.show(myWindow);
+
+		//aWindow.apply_surface( plat.x, plat.y, plat1, 1, &camera);
+		//Show projectiles
+		if(projectiles.size() >= 1)
+		{
+			for(int pr=0; pr < (signed int)projectiles.size(); pr++)
+			{
+				//If projectile is not disabled
+				if(!projectiles.at(pr).is_disabled())
+				{
+					myWindow.apply_surface((int)projectiles.at(pr).get_x(), (int)projectiles.at(pr).get_y(), bullet, 1, &camera);
+				}
+			}
+		}
 
 		//Get keystate
 		Uint8 *keystates = SDL_GetKeyState ( NULL );

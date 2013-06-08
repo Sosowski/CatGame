@@ -12,6 +12,18 @@ Projectile::Projectile(double pProX, double pProY, double pspeed, SDL_Rect ptarg
 	disabled = false;
 }
 
+double Projectile::get_x()
+{
+        //Returns the current x position
+        return ProX;
+}
+
+double Projectile::get_y()
+{
+        //Returns the current y position
+        return ProY;
+}
+
 bool Projectile::is_disabled()
 {
 	return disabled;

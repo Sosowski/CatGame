@@ -20,7 +20,7 @@ Window::Window()
 		windowOK = true;
 	}
 
-	SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
+	SDL_WM_SetCaption( "Please stop jumping off that platform.", NULL);
 
 	//Set windowed flag
 	windowed = true;

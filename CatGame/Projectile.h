@@ -28,6 +28,10 @@ public:
 	//Calculates distance to target
 	double distance(double x2, double x1, double y2, double y1);
 
+	//Return x and y position
+	double get_x();
+	double get_y();
+
 	void set_ProX(double);   //Set the projectile's position
 	void set_ProY(double); 
 	void set_speed(double); //Set projectile speed
