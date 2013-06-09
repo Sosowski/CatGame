@@ -152,23 +152,14 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 					//Get the current coordinates of the mouse click
 					SDL_GetMouseState(&ClickX, &ClickY);
 					//Set attributes for the target hitbox
-					ProjectileTarget.x = ClickX;
-					ProjectileTarget.y = ClickY;
+					ProjectileTarget.x = ClickX + (Sint16)player.get_camera_value(0);
+					ProjectileTarget.y = ClickY + (Sint16)player.get_camera_value(1);
 					ProjectileTarget.w = 1;
 					ProjectileTarget.h = 1;
 					//Create the projectile, origin being Jack
 					Projectile tmp_proj( ( player.Read(0) + (JACK_WIDTH / 2) + 50 ), ( player.Read(1) + (JACK_HEIGHT / 2) - 50 ), 5.0, ProjectileTarget);
 					//Add it to the projectile vector
 					projectiles.push_back(tmp_proj);
-
-					//Convert to string
-					std::stringstream caption;
-
-//Generate string
-caption << "x: " << ClickX << " y: " << ClickY;
-
-//Set caption
-SDL_WM_SetCaption( caption.str().c_str(), NULL);
 		}
 	}
 
@@ -361,7 +352,7 @@ int main( int argc, char* args[])
 				//If projectile is not disabled
 				if(!projectiles.at(pr).is_disabled())
 				{
-					myWindow.apply_surface((int)projectiles.at(pr).get_x(), (int)projectiles.at(pr).get_y(), bullet, 1, &camera);
+					myWindow.apply_surface((int)projectiles.at(pr).get_x(), (int)projectiles.at(pr).get_y(), bullet, 0, &camera);
 				}
 			}
 		}

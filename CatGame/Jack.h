@@ -73,6 +73,11 @@ public:
 
 	SDL_Rect* get_camera();
 
+	//Get specific camera values
+	/*	0 : x Position		1 : y Position
+		2 : Width   		3 : Height   */
+	double get_camera_value(int val);
+
 	//Set Camera over Jack
 	void set_camera();
 

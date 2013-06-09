@@ -463,3 +463,18 @@ SDL_Rect* Jack::get_camera()
 {
 	return &camera;
 }
+
+double Jack::get_camera_value(int val)
+{
+	double ret;
+	switch(val)
+	{
+		case 0: ret = camera.x; break;
+		case 1: ret = camera.y; break;
+		case 2: ret = camera.w; break;
+		case 3: ret = camera.h; break;
+		default: ret = camera.x; break;
+	}
+
+	return ret;
+}
