@@ -1,8 +1,3 @@
-//This class handles the player and the player's interaction with his environment.
-//THIS CLASS IS CURRENTLY IN MAIN, SEE BELOW
-//TODO: The functions of this class cannot be exported to it's own file for the following reasons:
-//1) Dependency on functions currently declared in main
-//2) SDL_Surface Screen and it's issues with usage between multiple files. (See window.cpp)
 class Jack
 {
 private:
@@ -94,5 +89,6 @@ public:
 	bool load_files();
 
 	//Checks Collisions with platform and responds. STILL NEED TO FIX to work with a list of platforms, instead of just one.
-	void Collide_Check(SDL_Rect plat);
+	//Added an int where if it is 1, it signifies that it is the last platform to be checked
+	void Collide_Check(SDL_Rect plat, int check);
 };

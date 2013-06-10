@@ -393,7 +393,7 @@ void Jack::set_clips()
 	}
 }
 
-void Jack::Collide_Check(SDL_Rect plat)
+void Jack::Collide_Check(SDL_Rect plat, int check)
 {
 	if(check_collision(plat,probe) == true){
 		y = (plat.y - JACK_HEIGHT);
@@ -401,7 +401,9 @@ void Jack::Collide_Check(SDL_Rect plat)
 		shift_boxes();
 		onGround = true;
 	}
-	else{
+	//If this is not the last platform to be checked
+	else if (check != 1)
+	{
 		onGround = false;
 	}
 }

@@ -9,28 +9,43 @@ Platform::Platform()
 	plat.h = 100;
 	//Initialize variables for loading image
 	//plat1 = NULL;
+	platType = 1;
 
 	load_files();
 }
 
-Platform::Platform(int xNew,int yNew, int wNew, int hNew)
+Platform::Platform(int xNew,int yNew, int wNew, int hNew, int type)
 {
 	plat.x = xNew;
 	plat.y = yNew;
 	plat.w = wNew;
 	plat.h = hNew;
+	platType = type;
 
 	load_files();
 }
 
 bool Platform::load_files()
 {
-	//Load images For Platform
-	plat1 = load_image( "plat1.png" );
-
-	if ( plat1 == NULL)
+	switch (platType)
 	{
-		return false;
+	case 1:
+		plat1 = load_image( "plat1.png" );
+		if ( plat1 == NULL)
+		{
+			return false;
+		}
+		break;
+	case 2:
+		plat2 = load_image( "plat2.png" );
+		if ( plat2 == NULL)
+		{
+			return false;
+		}
+		break;
+	default:
+		//Shouldn't happen
+		break;
 	}
 
 	return true;
@@ -53,11 +68,31 @@ int Platform::Read(int val)
 	case 3:	// height
 		ret = plat.h;
 		break;
+	case 4: //type
+		ret = platType;
+		break;
 	default: // defualt is x value
 		ret = plat.x;
 		break;
 	}
 	return ret;
+}
+
+SDL_Surface *Platform::Return(int val)
+{
+	SDL_Surface *image = NULL;
+	switch (val)
+	{
+	case 1:
+		image = plat1;
+		break;
+	case 2:
+		image = plat2;
+		break;
+	default:
+		break;
+	}
+	return image;
 }
 
 void Platform::show(Window& aWindow)

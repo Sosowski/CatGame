@@ -6,6 +6,8 @@
 #include <sstream>
 #include <vector>
 #include <cmath>
+#include <Windows.h>
+#include <math.h>
 
 //This file contains the global variables used across all files.
 /*
@@ -62,6 +64,7 @@ static SDL_Surface *background = NULL; //Needs to be fixed
 static SDL_Surface *jackRun = NULL;
 static SDL_Surface *jackJump = NULL;
 static SDL_Surface *plat1 = NULL;
+static SDL_Surface *plat2 = NULL;
 static SDL_Surface *bullet = NULL;
 
 //Mouse cursor trackers

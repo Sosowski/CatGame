@@ -29,6 +29,9 @@ std::string BgImage = "";
 //Stores data for all current projectiles
 std::vector<Projectile> projectiles;
 
+//Stores data for all platforms
+std::vector<Platform> platforms;
+
 //Temp storage for mouse position on click for projectiles
 int ClickX, ClickY;
 //Temp storage for projectile target
@@ -203,6 +206,7 @@ void clean_up()
 	SDL_FreeSurface ( jackJump );
 	SDL_FreeSurface ( bullet );
 	SDL_FreeSurface ( plat1 );
+	SDL_FreeSurface ( plat2 );
 
 	//Free sounds
 	//Mix_FreeChunk ( example );
@@ -271,8 +275,16 @@ int main( int argc, char* args[])
 	myWindow.set_target(walk.get_camera());
 
 	//Create Platforms
-	Platform plat1;
-	//Platform plat2(750,1000,400,100);
+	Platform platform1;
+	Platform platform2(750, 1000 , 500 , 100 , 2);
+
+	//Load Platform images
+	plat1 = platform1.Return(1);
+	plat2 = platform2.Return(2);
+
+	//Add platforms to vector
+	platforms.push_back(platform1);
+	platforms.push_back(platform2);
 
 	//Begin loop to hold screen open
 	while( quit == false )
@@ -325,8 +337,10 @@ int main( int argc, char* args[])
 		}
 
 		//TEMPORARY: check if Jack is colliding, sets the Grounded flag and etc.
-		SDL_Rect PlatRect = {plat1.Read(0),plat1.Read(1),plat1.Read(2),plat1.Read(3)};
-		walk.Collide_Check(PlatRect);
+		SDL_Rect PlatRect = {platform1.Read(0),platform1.Read(1),platform1.Read(2),platform1.Read(3)};
+		SDL_Rect PlatRect2 = {platform2.Read(0),platform2.Read(1),platform2.Read(2),platform2.Read(3)};
+		walk.Collide_Check(PlatRect, 0);
+		walk.Collide_Check(PlatRect2, 1);
 
 		//Set Jacks camera
 		walk.set_camera();
@@ -338,7 +352,27 @@ int main( int argc, char* args[])
 		myWindow.showBG();
 
 		//Show platforms
-		plat1.show(myWindow);
+		//plat1.show(myWindow);
+		if(platforms.size() >= 1)
+		{
+			for(int pr=0; pr < (signed int)platforms.size(); pr++)
+			{
+				//Find platform type, place on screen the correct platform
+				switch (platforms.at(pr).Read(4))
+				{
+				case 1:
+					myWindow.apply_surface((int)platforms.at(pr).Read(0), (int)platforms.at(pr).Read(1), plat1, 1, &camera);
+					break;
+				case 2:
+					myWindow.apply_surface((int)platforms.at(pr).Read(0), (int)platforms.at(pr).Read(1), plat2, 1, &camera);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
+		//aWindow.apply_surface( plat.x, plat.y, plat1, 1, &camera);
 
 		//Show Jack
 		walk.show(myWindow);
