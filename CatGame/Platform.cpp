@@ -30,14 +30,14 @@ bool Platform::load_files()
 	switch (platType)
 	{
 	case 1:
-		plat1 = load_image( "plat1.png" );
+		plat1 = load_image( "Images/plat1.png" );
 		if ( plat1 == NULL)
 		{
 			return false;
 		}
 		break;
 	case 2:
-		plat2 = load_image( "plat2.png" );
+		plat2 = load_image( "Images/plat2.png" );
 		if ( plat2 == NULL)
 		{
 			return false;

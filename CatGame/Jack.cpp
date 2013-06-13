@@ -47,8 +47,8 @@ Jack::Jack()
 bool Jack::load_files()
 {
 	//Load images For Jacks Sprite
-	jackRun = load_image( "JackRun.png" );
-	jackJump = load_image( "JackJump.png" );
+	jackRun = load_image( "Images/JackRun.png" );
+	jackJump = load_image( "Images/JackJump.png" );
 
 	if ( jackRun == NULL || jackJump == NULL)
 	{

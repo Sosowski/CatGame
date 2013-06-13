@@ -116,7 +116,7 @@ bool load_files(Window aWindow)
 	//example = load_image( "example.png" );
 	//USED TO BE: background = load_image( "bg.png" );
 	BG = aWindow.load_files(BgImage);
-	bullet = load_image( "bullet.png" );
+	bullet = load_image( "Images/bullet.png" );
 	//Jacks Files for sprites moved to Jack.h and Jack.cpp
 
 	//Open font
@@ -250,7 +250,7 @@ int main( int argc, char* args[])
 	}
 
 	//Set Current Background Image Name
-	BgImage = "bg.png";
+	BgImage = "Images/bg.png";
 
 	//Load files
 	if( load_files(myWindow) == false)
