@@ -43,6 +43,13 @@ bool Platform::load_files()
 			return false;
 		}
 		break;
+	case 3:
+		plat3 = load_image( "Images/plat3.png" );
+		if ( plat3 == NULL)
+		{
+			return false;
+		}
+		break;
 	default:
 		//Shouldn't happen
 		break;
@@ -88,6 +95,9 @@ SDL_Surface *Platform::Return(int val)
 		break;
 	case 2:
 		image = plat2;
+		break;
+	case 3:
+		image = plat3;
 		break;
 	default:
 		break;

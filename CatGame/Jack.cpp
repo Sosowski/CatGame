@@ -400,11 +400,17 @@ void Jack::Collide_Check(SDL_Rect plat, int check)
 		yVel = 0;
 		shift_boxes();
 		onGround = true;
+		collided = true;
 	}
-	//If this is not the last platform to be checked
-	else if (check != 1)
+
+	else if(check_collision(plat,probe) == false && collided == false)
 	{
 		onGround = false;
+	}
+	//If this is the last platform to be checked
+	else if (collided == true && check == 1)
+	{
+		collided = false;
 	}
 }
 

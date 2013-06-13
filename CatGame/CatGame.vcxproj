@@ -10,6 +10,25 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FunctionLib.cpp" />
+    <ClCompile Include="Jack.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\FunctionLib.h" />
+    <ClInclude Include="Headers\Global.h" />
+    <ClInclude Include="Headers\Jack.h" />
+    <ClInclude Include="Headers\Library.h" />
+    <ClInclude Include="Headers\Platform.h" />
+    <ClInclude Include="Headers\Projectile.h" />
+    <ClInclude Include="Headers\Timer.h" />
+    <ClInclude Include="Headers\Window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{205C4EE4-C3E4-4D64-9839-4EEF0D122F7E}</ProjectGuid>
     <RootNamespace>CatGame</RootNamespace>
@@ -67,27 +86,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="..\..\..\..\..\Desktop\hello.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Jack.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Platform.cpp" />
-    <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FunctionLib.h" />
-    <ClInclude Include="Global.h" />
-    <ClInclude Include="Jack.h" />
-    <ClInclude Include="Library.h" />
-    <ClInclude Include="Platform.h" />
-    <ClInclude Include="Projectile.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Window.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

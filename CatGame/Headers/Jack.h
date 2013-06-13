@@ -38,6 +38,9 @@ private:
 
 	//Last known sprite direction
 	int facing;
+
+	//Stops the collision detection if player has already hit a platform
+	bool collided;
 public:
 
 	//Initalize class

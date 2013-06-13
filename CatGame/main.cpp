@@ -8,6 +8,8 @@ TO DO MORE ACCURATE ERROR HANDLING
 #include Windows.h, MessageBox(NULL, "MessageBox Text", "MessageBox caption", MB_OK);
 Throw it into the error check statement you think is screwing up before the return
 
+Please do not #include Windows.h normally due to the increased build times.
+
 FOR DEBUG
 //Convert to string
 std::stringstream caption;
@@ -277,14 +279,17 @@ int main( int argc, char* args[])
 	//Create Platforms
 	Platform platform1;
 	Platform platform2(750, 1000 , 500 , 100 , 2);
+	Platform platform3(1300, 750, 700, 50, 3);
 
 	//Load Platform images
 	plat1 = platform1.Return(1);
 	plat2 = platform2.Return(2);
+	plat3 = platform3.Return(3);
 
 	//Add platforms to vector
 	platforms.push_back(platform1);
 	platforms.push_back(platform2);
+	platforms.push_back(platform3);
 
 	//Begin loop to hold screen open
 	while( quit == false )
@@ -336,11 +341,22 @@ int main( int argc, char* args[])
              }
 		}
 
-		//TEMPORARY: check if Jack is colliding, sets the Grounded flag and etc.
-		SDL_Rect PlatRect = {platform1.Read(0),platform1.Read(1),platform1.Read(2),platform1.Read(3)};
-		SDL_Rect PlatRect2 = {platform2.Read(0),platform2.Read(1),platform2.Read(2),platform2.Read(3)};
-		walk.Collide_Check(PlatRect, 0);
-		walk.Collide_Check(PlatRect2, 1);
+		//Do collision checking for all current platforms
+		if(platforms.size() >= 1)
+		{			
+			for(int pr=0; pr < (signed int)platforms.size(); pr++)
+			{
+				SDL_Rect PlatRect = {platforms.at(pr).Read(0), platforms.at(pr).Read(1), platforms.at(pr).Read(2), platforms.at(pr).Read(3)};
+				if(pr == (platforms.size() - 1))
+				{
+					walk.Collide_Check(PlatRect, 1);
+				}
+				else
+				{
+					walk.Collide_Check(PlatRect, 0);
+				}
+			}
+		}
 
 		//Set Jacks camera
 		walk.set_camera();
@@ -366,18 +382,18 @@ int main( int argc, char* args[])
 				case 2:
 					myWindow.apply_surface((int)platforms.at(pr).Read(0), (int)platforms.at(pr).Read(1), plat2, 1, &camera);
 					break;
+				case 3:
+					myWindow.apply_surface((int)platforms.at(pr).Read(0), (int)platforms.at(pr).Read(1), plat3, 1, &camera);
+					break;
 				default:
 					break;
 				}
 			}
 		}
 
-		//aWindow.apply_surface( plat.x, plat.y, plat1, 1, &camera);
-
 		//Show Jack
 		walk.show(myWindow);
 
-		//aWindow.apply_surface( plat.x, plat.y, plat1, 1, &camera);
 		//Show projectiles
 		if(projectiles.size() >= 1)
 		{
