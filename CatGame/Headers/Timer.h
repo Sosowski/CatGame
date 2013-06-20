@@ -8,6 +8,9 @@ private:
 	//Clock time when paused
 	int pausedTicks;
 
+	//Returns current minute for clock formatting
+	int min;
+
 	//Timer status flags
 	bool paused;
 	bool started;
@@ -24,6 +27,12 @@ public:
 
 	//Get current time
 	int get_ticks();
+
+	//Get current time - Formatted for a clock display
+	int get_ticks_clock();
+
+	//Returns the current minute
+	int return_min();
 
 	//Check status
 	bool is_started();

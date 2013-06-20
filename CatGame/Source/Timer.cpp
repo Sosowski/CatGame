@@ -5,6 +5,7 @@ Timer::Timer()
 	//Enable variables, set flags
 	startTicks = 0;
 	pausedTicks = 0;
+	min = 0;
 	paused = false;
 	started = false;
 }
@@ -57,6 +58,33 @@ int Timer::get_ticks()
 	return 0;
 }
 
+int Timer::get_ticks_clock()
+{
+	//If timer running
+	if( started == true )
+	{
+		//If paused
+		if( paused == true )
+		{
+			//return time that timer was paused at
+			return pausedTicks;
+		}
+		else
+		{
+			//Apply the time formatting
+			if((SDL_GetTicks() - startTicks) / 1000 >= 60)
+			{
+				startTicks = SDL_GetTicks();
+				min++;
+			}
+			//Return current time
+			return SDL_GetTicks() - startTicks;
+		}
+	}
+	//If timer isn't even running
+	return 0;
+}
+
 //Pause Timer
 void Timer::pause()
 {
@@ -97,4 +125,9 @@ bool Timer::is_started()
 bool Timer::is_paused()
 {
 	return paused;
+}
+
+int Timer::return_min()
+{
+	return min;
 }

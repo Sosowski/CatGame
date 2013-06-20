@@ -67,6 +67,12 @@ static SDL_Surface *plat2 = NULL;
 static SDL_Surface *plat3 = NULL;
 static SDL_Surface *bullet = NULL;
 
+//Text
+static SDL_Surface *seconds = NULL;
+
+//Text color
+static SDL_Color textColor = {255, 0, 0};
+
 //Mouse cursor trackers
 static int xMouse = 0;
 static int yMouse = 0;

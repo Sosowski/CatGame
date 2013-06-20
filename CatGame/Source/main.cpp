@@ -122,7 +122,7 @@ bool load_files(Window aWindow)
 	//Jacks Files for sprites moved to Jack.h and Jack.cpp
 
 	//Open font
-	//font = TTF_OpenFont( "example.ttf", 28);
+	font = TTF_OpenFont( "Images/QuartzMS.ttf", 28);
 
 	if (bullet == NULL || BG == false)
 	{
@@ -270,6 +270,9 @@ int main( int argc, char* args[])
 	int frame = 0;
 	Timer fps;
 
+	//Create timer for clock
+	Timer clock;
+
 	//Create Jack Sprite
 	Jack walk;
 
@@ -290,6 +293,9 @@ int main( int argc, char* args[])
 	platforms.push_back(platform1);
 	platforms.push_back(platform2);
 	platforms.push_back(platform3);
+
+	//Start clock timer
+	clock.start();
 
 	//Begin loop to hold screen open
 	while( quit == false )
@@ -406,6 +412,29 @@ int main( int argc, char* args[])
 				}
 			}
 		}
+
+		//Create string for timer
+		std::stringstream time;
+
+		//Convert time to string
+
+		if((clock.get_ticks_clock() / 1000) <= 9)
+		{
+			time << clock.return_min() << ":0" << clock.get_ticks_clock() / 1000;
+		}
+		else
+		{
+			time << clock.return_min() << ":" << clock.get_ticks_clock() / 1000;
+		}
+
+		//Render time surface
+		seconds = TTF_RenderText_Solid( font, time.str().c_str(), textColor);
+
+		//Apply time surface
+		myWindow.apply_surface( (walk.get_camera_value(0) + (SCREEN_WIDTH / 2) ), (walk.get_camera_value(1) + (SCREEN_HEIGHT - 50)), seconds, 0, &camera);
+
+		//Free time surface
+		SDL_FreeSurface( seconds );
 
 		//Get keystate
 		Uint8 *keystates = SDL_GetKeyState ( NULL );
