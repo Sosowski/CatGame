@@ -41,6 +41,10 @@ private:
 
 	//Stops the collision detection if player has already hit a platform
 	bool collided;
+
+	//Flag sent to restore velocities back to 0 after a hit
+	double knockbackX;
+
 public:
 
 	//Initalize class
@@ -91,7 +95,11 @@ public:
 	//loads files for Jacks Sprites
 	bool load_files();
 
-	//Checks Collisions with platform and responds. STILL NEED TO FIX to work with a list of platforms, instead of just one.
 	//Added an int where if it is 1, it signifies that it is the last platform to be checked
 	void Collide_Check(SDL_Rect plat, int check);
+
+	//Handles Jack taking damage
+	//Call with a number for power of hit
+	//Returns current health
+	int take_damage(int taken);
 };

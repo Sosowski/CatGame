@@ -1,0 +1,11 @@
+ABOUT THE DAMAGE KNOCKBACK
+The way it is currently coded, the player will be thrown back upon taking damage.
+The horizonal movement keys are disabled if the knockback is still deaccelerating.
+HOWEVER
+If the player hits an x level border, the knockback is reset.
+If this time the player is still holding down the opposite movement key,
+he will spring off the wall at it's default 10 units.
+PROPOSED
+Keep this feature, allowing the player to jump off platforms or walls
+after being hit and get right back into gameplay if the correct key
+is still depressed on impact. Will require some extra collision coding.

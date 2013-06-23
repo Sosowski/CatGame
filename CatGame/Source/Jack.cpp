@@ -13,6 +13,7 @@ Jack::Jack()
 	//Flags
 	left = 0;
 	right = 0;
+	knockbackX = 0;
 
 	//For Jacks Camera Offset
 	xOffset = 0;
@@ -60,6 +61,32 @@ bool Jack::load_files()
 
 void Jack::move()
 {
+
+	//Convert to string
+std::stringstream caption;
+
+//Generate string
+caption << "xVel " << xVel << " ";
+
+//Set caption
+SDL_WM_SetCaption( caption.str().c_str(), NULL); 
+
+	//An X movement key is depressed, but there is no movement.
+	if(left == 1 && xVel == 0 && knockbackX == 0){
+		 xVel -= 10;
+	}
+
+	if(right == 1 && xVel == 0 && knockbackX == 0){
+		xVel += 10;
+	}
+
+	//If knockback active, start correcting it.
+	if( knockbackX != 0 )
+	{
+		xVel += 0.5;
+		knockbackX -= 0.5;
+	}
+
 	//Left/Right Movement
 	x += (int)xVel;
 
@@ -68,6 +95,13 @@ void Jack::move()
 	{
 		//Move back
 		x -= (int)xVel;
+
+		//Stop horizontal knockback
+		if( knockbackX != 0)
+		{
+			knockbackX = 0;
+			xVel = 0;
+		}
 	}
 
 	//Up/Down Movement
@@ -83,9 +117,12 @@ void Jack::move()
 	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT ) )
 	{
 		//Player fell. Reset to start
+		player_health = 10;
+		xVel = 0;
 		yVel = 0;
 		x = 0;
 		y = 0;
+		knockbackX = 0;
 	}
 
 	//Update Jack's hitbox after all movements
@@ -423,27 +460,27 @@ void Jack::accel(int xAccel, int yAccel)
 
 void Jack::walk(int dir)	//Handles what happens when left and right keys are pressed, sets flags.
 {
-	switch (dir)	// get the direction command.
-	{
-	case 0:			// left down
-		left = 1;
-		xVel -= 10;
-		break;
-	case 1:			// right down
-		right = 1;
-		xVel += 10;
-		break;
-	case 2:			// left up
-		left = 0;
-		xVel += 10;
-		break;
-	case 3:			// right up
-		right = 0;
-		xVel -= 10;
-		break;
-	default:
-		break;
-	}
+		switch (dir)	// get the direction command.
+		{
+		case 0:			// left down
+			left = 1;
+			xVel -= 10;
+			break;
+		case 1:			// right down
+			right = 1;
+			xVel += 10;
+			break;
+		case 2:			// left up
+			left = 0;
+			xVel += 10;
+			break;
+		case 3:			// right up
+			right = 0;
+			xVel -= 10;
+			break;
+		default:
+			break;
+		}
 }
 
 void Jack::stop()
@@ -485,4 +522,35 @@ double Jack::get_camera_value(int val)
 	}
 
 	return ret;
+}
+
+int Jack::take_damage(int taken)
+{
+	//TODO : Determine which side player was hit from
+	
+	//Apply knockback force
+	yVel -= taken * 2;
+	xVel -= taken * 3;
+	onGround = false;
+
+	//Knock down health
+	player_health -= taken;
+
+	//Set flag to compensate for movement changes
+	knockbackX = ((double)taken) * 3;
+
+	//Check if ded
+	if( player_health <= 0 ) {
+		xVel = 0;
+		yVel = 0;
+		x = 0;
+		y = 0;
+		knockbackX = 0;
+		player_health = 10;
+		return player_health;
+	}
+
+	else{
+		return player_health;
+	}
 }

@@ -31,6 +31,9 @@ const int JACK_RIGHT_FALL = 3;
 const int JACK_LEFT_JUMP = 4;
 const int JACK_LEFT_FALL = 5;
 
+//Jack's health
+static int player_health = 10;
+
 //FPS Cap
 const int FRAMES_PER_SECOND = 60;
 

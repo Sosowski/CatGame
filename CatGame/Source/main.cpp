@@ -182,7 +182,19 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 			case SDLK_a: player.walk(0); break;	//Move Left
 			case SDLK_d: player.walk(1); break;	//Move right
 			case SDLK_s: player.shift_camera(0,100); break;	//shift camera down a bit
-			}
+				//TEMPORARY TESTING!!!!!!!!!!!
+				//Make player take damage ranging from 1-10
+			case SDLK_1: player.take_damage(1); break;
+			case SDLK_2: player.take_damage(2); break;
+			case SDLK_3: player.take_damage(3); break;
+			case SDLK_4: player.take_damage(4); break;
+			case SDLK_5: player.take_damage(5); break;
+			case SDLK_6: player.take_damage(6); break;
+			case SDLK_7: player.take_damage(7); break;
+			case SDLK_8: player.take_damage(8); break;
+			case SDLK_9: player.take_damage(9); break;
+			case SDLK_0: player.take_damage(10); break;
+		}
 	}
 	//Check for key release
 	else if( event.type == SDL_KEYUP )
@@ -324,6 +336,7 @@ int main( int argc, char* args[])
 		{
 			return 1;
 		}
+
 		//Jack movement
 		walk.move();
 
