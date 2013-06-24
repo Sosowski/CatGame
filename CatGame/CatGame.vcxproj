@@ -16,6 +16,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Platform.cpp" />
     <ClCompile Include="Source\Projectile.cpp" />
+    <ClCompile Include="Source\StartMenu.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
@@ -26,6 +27,7 @@
     <ClInclude Include="Headers\Library.h" />
     <ClInclude Include="Headers\Platform.h" />
     <ClInclude Include="Headers\Projectile.h" />
+    <ClInclude Include="Headers\StartMenu.h" />
     <ClInclude Include="Headers\Timer.h" />
     <ClInclude Include="Headers\Window.h" />
   </ItemGroup>

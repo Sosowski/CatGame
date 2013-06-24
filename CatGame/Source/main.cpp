@@ -119,12 +119,14 @@ bool load_files(Window aWindow)
 	//USED TO BE: background = load_image( "bg.png" );
 	BG = aWindow.load_files(BgImage);
 	bullet = load_image( "Images/bullet.png" );
+	hud = load_image( "Images/hud.png" );
+	object1 = load_image( "Images/object1.png" );
 	//Jacks Files for sprites moved to Jack.h and Jack.cpp
 
 	//Open font
 	font = TTF_OpenFont( "Images/QuartzMS.ttf", 28);
 
-	if (bullet == NULL || BG == false)
+	if (bullet == NULL || BG == false || hud == false || object1 == false)
 	{
 		return false;
 	}
@@ -210,6 +212,144 @@ void handle_events(Jack& player)//right now only takes thing of type Jack, ultim
 	
 }
 
+void handle_events_menu(StartMenu& menu, Window& window){
+
+	//Update main's start_box coordinates
+	start_box = menu.button_box();
+
+	int mouseX, mouseY;
+
+	int status = 1;
+
+	//Track mouse position
+	if( event.type == SDL_MOUSEMOTION ){
+		//Get offsets
+		mouseX = event.motion.x;
+		mouseY = event.motion.y;
+
+		//Determine if mouse is over the button
+		if( ( mouseX > start_box.x ) && ( mouseX < start_box.x + start_box.w ) && ( mouseY > start_box.y ) && ( mouseY < start_box.y + start_box.h ) )
+		{
+			//Set sprite
+			status = 0 ;
+		}
+		else {
+			status = 1 ;
+		}
+	}
+
+	//Track mouse left click
+	if( event.type == SDL_MOUSEBUTTONDOWN )
+	{
+		//If left mouse button pressed
+		if( event.button.button == SDL_BUTTON_LEFT )
+		{
+			//Get offsets
+			mouseX = event.button.x;
+			mouseY = event.button.y;
+
+			//If click was over the button
+			if( ( mouseX > start_box.x ) && ( mouseX < start_box.x + start_box.w ) && ( mouseY > start_box.y ) && ( mouseY < start_box.y + start_box.h ) )
+			{
+				//Set sprite
+				status =  2 ;
+			}
+		}
+	}
+
+	//Track mouse left click release
+	if( event.type == SDL_MOUSEBUTTONUP )
+	{
+		if( event.button.button == SDL_BUTTON_LEFT )
+		{
+			//Get moffsets
+			mouseX = event.button.x;
+			mouseY = event.button.y;
+
+			//If click was over the button
+			if( ( mouseX > start_box.x ) && ( mouseX < start_box.x + start_box.w ) && ( mouseY > start_box.y ) && ( mouseY < start_box.y + start_box.h ) )
+			{
+				//Set sprite
+				status = 3 ;
+
+				//Set game state flag
+				GAME_STATE = 1;
+			}
+		}
+	}
+
+	//Show the proper button
+	menu.show(window, status);
+}
+
+void handle_events_window(Window& myWindow){
+
+	if( myWindow.return_windowOK() == false)
+	{
+		return;
+	}
+
+	//Toggle fullscreen key (currently backspace)
+	if( ( event.type == SDL_KEYUP ) && ( event.key.keysym.sym == SDLK_BACKSPACE ) )
+	{
+		myWindow.toggle_fullscreen();
+	}
+
+	//Detect window focus loss
+	else if( event.type == SDL_ACTIVEEVENT )
+	{
+		//Detect window minimize
+		if( event.active.state & SDL_APPACTIVE)
+		{
+			if( event.active.gain == 0 )
+			{
+				//SDL_WM_SetCaption( "What, you hate cats now?", NULL);
+			}
+			else
+			{
+				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
+			}
+		}
+
+		//Detect keyboard focus loss
+		else if( event.active.state & SDL_APPINPUTFOCUS)
+		{
+			if( event.active.gain == 0)
+			{
+				//SDL_WM_SetCaption( "NYOOO, PUT THE KEYBOARD BACK!", NULL);
+			}
+			else
+			{
+				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
+			}
+		}
+		//Detect mouse focus loss
+		else if( event.active.state & SDL_APPMOUSEFOCUS)
+		{
+			if(event.active.gain == 0)
+			{
+				//SDL_WM_SetCaption( "You seem to be clicking in all the wrong places, meow.", NULL);
+			}
+			else
+			{
+				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
+			}
+		}
+	}
+
+	//If screen has been altered
+	/*else if( event.type == SDL_VIDEOEXPOSE)
+	{
+		//Update screen
+		if( SDL_Flip(screen) == -1)
+		{
+			windowOK = false;
+			return;
+		}
+	}*/
+
+}
+
 //Remove all objects and close program
 void clean_up()
 {
@@ -221,6 +361,9 @@ void clean_up()
 	SDL_FreeSurface ( bullet );
 	SDL_FreeSurface ( plat1 );
 	SDL_FreeSurface ( plat2 );
+	SDL_FreeSurface ( plat3 );
+	SDL_FreeSurface ( hud );
+	SDL_FreeSurface ( object1 );
 
 	//Free sounds
 	//Mix_FreeChunk ( example );
@@ -288,6 +431,9 @@ int main( int argc, char* args[])
 	//Create Jack Sprite
 	Jack walk;
 
+	//Create the start menu
+	StartMenu menu;
+
 	//Set Windows Camera focus to jack
 	myWindow.set_target(walk.get_camera());
 
@@ -306,8 +452,8 @@ int main( int argc, char* args[])
 	platforms.push_back(platform2);
 	platforms.push_back(platform3);
 
-	//Start clock timer
-	clock.start();
+	//flag to ensure the clock in game starts only once.
+	bool clock_started = false;
 
 	//Begin loop to hold screen open
 	while( quit == false )
@@ -318,11 +464,25 @@ int main( int argc, char* args[])
 		//Event handler
 		while( SDL_PollEvent( & event ) )
 		{
-			//Handle Controls
-			handle_events(walk);
 
 			//Handle window events
-			myWindow.handle_events();
+			//!!!THIS DOES NOT FUNCTION!!!
+			//myWindow.handle_events();
+			handle_events_window(myWindow);
+
+			if(GAME_STATE == 1){
+
+			//Handle Game Controls
+			handle_events(walk);
+
+			}
+
+			else if(GAME_STATE == 0){
+
+			//Handle button events
+			handle_events_menu(menu, myWindow);
+
+			}
 
 			//Exit if window closed
 			if( event.type == SDL_QUIT )
@@ -335,6 +495,24 @@ int main( int argc, char* args[])
 		if( myWindow.error() == true)
 		{
 			return 1;
+		}
+
+		//If player is in the start menu
+		if(GAME_STATE == 0){
+
+			if(GAME_STATE == 1){
+				//If flag just changed, clear the button's asset
+				SDL_FreeSurface( startButton );
+			}
+		}
+
+		//If player is in game
+		else if(GAME_STATE == 1){
+		
+		//Ensure that the game clock only starts once.
+		if(clock_started == false){
+			clock.start();
+			clock_started = true;
 		}
 
 		//Jack movement
@@ -380,11 +558,16 @@ int main( int argc, char* args[])
 		//Set Jacks camera
 		walk.set_camera();
 
+		walk.set_camera2();
+
 		//Move the main camera
 		myWindow.update_Cam();
 
 		//Show background
 		myWindow.showBG();
+
+		//Background object testing
+		//myWindow.apply_surface( 500, 500, object1, 0, &camera2);
 
 		//Show platforms
 		//plat1.show(myWindow);
@@ -426,6 +609,9 @@ int main( int argc, char* args[])
 			}
 		}
 
+		//Add the hud background
+		myWindow.apply_surface( (int)walk.get_camera_value(0), ((int)walk.get_camera_value(1) + (SCREEN_HEIGHT - 70)), hud, 0, &camera);
+
 		//Create string for timer
 		std::stringstream time;
 
@@ -463,6 +649,8 @@ int main( int argc, char* args[])
 
 		//Free health hud
 		SDL_FreeSurface( healthHUD );
+
+		}
 
 		//Get keystate
 		Uint8 *keystates = SDL_GetKeyState ( NULL );

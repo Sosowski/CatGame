@@ -61,4 +61,7 @@ public:
 	//The following function is best for applying to the screen in relation to the current camera. Pass a 1 for destination.
 	void apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Rect* clip);
 	//void apply_surface ( int x, int y, int sou, SDL_Surface* destination, SDL_Rect* clip);
+
+	//sends the current state of windowOK
+	bool return_windowOK();
 };

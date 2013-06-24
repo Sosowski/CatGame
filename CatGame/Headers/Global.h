@@ -19,6 +19,10 @@ it by declaring the varaible as extern. Currently, only one of these extern decl
 project. It will be crucial to figure out a method to increase this limit in the future. 
 */
 
+//Game State
+//0 - Title Screen | 1 - In Game
+static int GAME_STATE = 0;
+
 //Jack sprite dimensions
 const int JACK_WIDTH = 241;
 const int JACK_HEIGHT = 294;
@@ -38,19 +42,18 @@ static int player_health = 10;
 const int FRAMES_PER_SECOND = 60;
 
 //Starting Screen Attributes
-//THIS CANNOT BE STATIC IF AN OPTIONS MENU IS TO BE CREATED
 static int SCREEN_WIDTH = 1280;
 static int SCREEN_HEIGHT = 786;
 static int SCREEN_BPP = 32;
 
 //Stage Size
-//THIS CANNOT BE STATIC IF MULTIPLE LEVELS ARE TO BE CREATED
-static int LEVEL_WIDTH = 2000;
+static int LEVEL_WIDTH = 5000;
 static int LEVEL_HEIGHT = 2000;
 
 //Camera
 //extern SDL_Rect camera;
 static SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+static SDL_Rect camera2 = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 //Platforms       xpos,ypos,xsize,ysize
 //SDL_Rect plat1 = { 0, 500, 500, 100 };
@@ -61,6 +64,9 @@ static SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 static bool jumping = true;
 static bool onGround = false;
 
+//Buttons
+static SDL_Surface *startButton = NULL;
+
 //Images
 static SDL_Surface *background = NULL; //Needs to be fixed
 static SDL_Surface *jackRun = NULL;
@@ -69,13 +75,15 @@ static SDL_Surface *plat1 = NULL;
 static SDL_Surface *plat2 = NULL;
 static SDL_Surface *plat3 = NULL;
 static SDL_Surface *bullet = NULL;
+static SDL_Surface *hud = NULL;
+static SDL_Surface *object1 = NULL;
 
 //Text
 static SDL_Surface *seconds = NULL;
 static SDL_Surface *healthHUD = NULL;
 
 //Text color
-static SDL_Color textColor = {255, 0, 0};
+static SDL_Color textColor = {155, 0, 0};
 
 //Mouse cursor trackers
 static int xMouse = 0;
@@ -102,3 +110,9 @@ static SDL_Rect clipsJumpRightStart[4];
 static SDL_Rect clipsJumpRightEnd[4];
 static SDL_Rect clipsJumpLeftStart[4];
 static SDL_Rect clipsJumpLeftEnd[4];
+
+//Button clips
+static SDL_Rect clips[4];
+
+//Button hitbox
+static SDL_Rect start_box;

@@ -80,8 +80,13 @@ public:
 		2 : Width   		3 : Height   */
 	double get_camera_value(int val);
 
+	double get_camera_value2(int val);
+
 	//Set Camera over Jack
 	void set_camera();
+
+	//Set camera used for background objects
+	void set_camera2();
 
 	//Offset Jacks Camera
 	void shift_camera(int xoffset, int yoffset);

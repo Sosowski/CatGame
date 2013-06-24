@@ -318,6 +318,12 @@ void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Re
 	SDL_BlitSurface( source, clip, destination, &offset );
 }
 
+bool Window::return_windowOK(){
+
+	return windowOK;
+
+}
+
 /*void Window::apply_surface ( int x, int y, int sou, SDL_Surface* destination, SDL_Rect* clip)
 {
 	SDL_Surface* source = NULL;

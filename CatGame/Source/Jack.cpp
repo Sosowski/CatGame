@@ -61,16 +61,6 @@ bool Jack::load_files()
 
 void Jack::move()
 {
-
-	//Convert to string
-std::stringstream caption;
-
-//Generate string
-caption << "xVel " << xVel << " ";
-
-//Set caption
-SDL_WM_SetCaption( caption.str().c_str(), NULL); 
-
 	//An X movement key is depressed, but there is no movement.
 	if(left == true && xVel == 0 && knockbackX == 0){
 		 xVel -= 10;
@@ -78,6 +68,10 @@ SDL_WM_SetCaption( caption.str().c_str(), NULL);
 
 	if(right == true && xVel == 0 && knockbackX == 0){
 		xVel += 10;
+	}
+
+	if(right == false && left == false && knockbackX == 0){
+		xVel = 0;
 	}
 
 	//If knockback active, start correcting it.
@@ -352,6 +346,13 @@ void Jack::set_camera()
 	}
 }
 
+void Jack::set_camera2()
+{
+	//Center camera over Jack
+	camera2.x = (Sint16)(LEVEL_WIDTH / 2);
+	camera2.y = (Sint16)(LEVEL_HEIGHT / 2);
+}
+
 void Jack::shift_camera(int xoffset, int yoffset)
 {
 	xOffset = xoffset;
@@ -462,26 +463,30 @@ void Jack::walk(int dir)	//Handles what happens when left and right keys are pre
 {
 		switch (dir)	// get the direction command.
 		{
-		case 0:
-			if(!right){// left down
+		case 0:// left down
 			left = true;
 			xVel -= 10;
+			if(right == true){
+				xVel -= 10;
+				right = false;
 			}
 			break;
-		case 1:	
-			if(!left){// right down
+		case 1:	// right down
 			right = true;
 			xVel += 10;
+			if(left == true){
+				xVel += 10;
+				left = false;
 			}
 			break;
 		case 2:
-			if(!right){// left up
+			if(left == true){// left up
 			left = false;
 			xVel += 10;
 			}
 			break;
 		case 3:
-			if(!left){// right up
+			if(right == true){// right up
 			right = false;
 			xVel -= 10;
 			}
@@ -527,6 +532,21 @@ double Jack::get_camera_value(int val)
 		case 2: ret = camera.w; break;
 		case 3: ret = camera.h; break;
 		default: ret = camera.x; break;
+	}
+
+	return ret;
+}
+
+double Jack::get_camera_value2(int val)
+{
+	double ret;
+	switch(val)
+	{
+		case 0: ret = camera2.x; break;
+		case 1: ret = camera2.y; break;
+		case 2: ret = camera2.w; break;
+		case 3: ret = camera2.h; break;
+		default: ret = camera2.x; break;
 	}
 
 	return ret;
