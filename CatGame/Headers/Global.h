@@ -72,6 +72,7 @@ static SDL_Surface *bullet = NULL;
 
 //Text
 static SDL_Surface *seconds = NULL;
+static SDL_Surface *healthHUD = NULL;
 
 //Text color
 static SDL_Color textColor = {255, 0, 0};
@@ -93,9 +94,6 @@ static SDL_Event event;
 
 //Font
 static TTF_Font *font = NULL;
-
-//Default font color
-static SDL_Color white = {255, 255, 255};
 
 //Jack's sprites
 static SDL_Rect clipsRight[6];

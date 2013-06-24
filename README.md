@@ -3,13 +3,6 @@
 This is to be a platforming game using C++ and SDL. The files can be loaded into a Visual Studio 2010 project to
 view the game in it's current state. Features are being constantly added and improved with each revision.
 
-## Current Functionality
-
-The player can move left and right with a and d, and can jump with w.
-Press s to lower the camera slightly to view areas below you.
-Use the left mouse button to fire a projectile.
-1 - 0 gives the player 1-10 damage, 10 being lethal.
-
 ## Priorities
 
 * Move projectile testing code from main into it's own file, as it is currently working.
@@ -25,3 +18,9 @@ Use the left mouse button to fire a projectile.
 * Player sprite rotates and changes base based on mouse position to aim at cursor.
 * Level System
 * Audio Events
+
+## Current Functionality
+
+The player can move left and right with a and d, and can jump with w.
+Press s to lower the camera slightly to view areas below you.
+Use the left mouse button to fire a projectile.

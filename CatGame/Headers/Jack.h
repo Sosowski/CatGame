@@ -100,6 +100,11 @@ public:
 
 	//Handles Jack taking damage
 	//Call with a number for power of hit
-	//Returns current health
-	int take_damage(int taken);
+	void take_damage(int taken);
+
+	//Returns player's current health
+	int current_health();
+
+	//Returns player's current health in a string for use in HUD
+	std::string current_health_HUD();
 };

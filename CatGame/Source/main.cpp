@@ -444,10 +444,25 @@ int main( int argc, char* args[])
 		seconds = TTF_RenderText_Solid( font, time.str().c_str(), textColor);
 
 		//Apply time surface
-		myWindow.apply_surface( (walk.get_camera_value(0) + (SCREEN_WIDTH / 2) ), (walk.get_camera_value(1) + (SCREEN_HEIGHT - 50)), seconds, 0, &camera);
+		myWindow.apply_surface( ((int)walk.get_camera_value(0) + (SCREEN_WIDTH - 100) ), ((int)walk.get_camera_value(1) + (SCREEN_HEIGHT - 50)), seconds, 0, &camera);
 
 		//Free time surface
 		SDL_FreeSurface( seconds );
+
+		//Create string for health
+		std::stringstream health;
+
+		//Put player's health into string
+		health << "Health: " << walk.current_health_HUD();
+
+		//Render health surface
+		healthHUD = TTF_RenderText_Solid( font, health.str().c_str(), textColor);
+
+		//Apply health hud
+		myWindow.apply_surface( ((int)walk.get_camera_value(0) + 40 ), ((int)walk.get_camera_value(1) + (SCREEN_HEIGHT - 50)), healthHUD, 0, &camera);
+
+		//Free health hud
+		SDL_FreeSurface( healthHUD );
 
 		//Get keystate
 		Uint8 *keystates = SDL_GetKeyState ( NULL );

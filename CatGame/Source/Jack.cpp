@@ -11,8 +11,8 @@ Jack::Jack()
 	xVel = 0;
 	yVel = 0.5;
 	//Flags
-	left = 0;
-	right = 0;
+	left = false;
+	right = false;
 	knockbackX = 0;
 
 	//For Jacks Camera Offset
@@ -72,11 +72,11 @@ caption << "xVel " << xVel << " ";
 SDL_WM_SetCaption( caption.str().c_str(), NULL); 
 
 	//An X movement key is depressed, but there is no movement.
-	if(left == 1 && xVel == 0 && knockbackX == 0){
+	if(left == true && xVel == 0 && knockbackX == 0){
 		 xVel -= 10;
 	}
 
-	if(right == 1 && xVel == 0 && knockbackX == 0){
+	if(right == true && xVel == 0 && knockbackX == 0){
 		xVel += 10;
 	}
 
@@ -462,21 +462,29 @@ void Jack::walk(int dir)	//Handles what happens when left and right keys are pre
 {
 		switch (dir)	// get the direction command.
 		{
-		case 0:			// left down
-			left = 1;
+		case 0:
+			if(!right){// left down
+			left = true;
 			xVel -= 10;
+			}
 			break;
-		case 1:			// right down
-			right = 1;
+		case 1:	
+			if(!left){// right down
+			right = true;
 			xVel += 10;
+			}
 			break;
-		case 2:			// left up
-			left = 0;
+		case 2:
+			if(!right){// left up
+			left = false;
 			xVel += 10;
+			}
 			break;
-		case 3:			// right up
-			right = 0;
+		case 3:
+			if(!left){// right up
+			right = false;
 			xVel -= 10;
+			}
 			break;
 		default:
 			break;
@@ -524,7 +532,7 @@ double Jack::get_camera_value(int val)
 	return ret;
 }
 
-int Jack::take_damage(int taken)
+void Jack::take_damage(int taken)
 {
 	//TODO : Determine which side player was hit from
 	
@@ -547,10 +555,22 @@ int Jack::take_damage(int taken)
 		y = 0;
 		knockbackX = 0;
 		player_health = 10;
-		return player_health;
+	}
+}
+
+int Jack::current_health()
+{
+	return player_health;
+}
+
+std::string Jack::current_health_HUD()
+{
+	std::string health_HUD = "";
+
+	//Set string length based on current health
+	for(int j=0; j<player_health; j++){
+		health_HUD += "I";
 	}
 
-	else{
-		return player_health;
-	}
+	return health_HUD;
 }
