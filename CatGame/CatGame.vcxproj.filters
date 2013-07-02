@@ -41,31 +41,31 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\FunctionLib.h">
+    <ClInclude Include="Header\FunctionLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Global.h">
+    <ClInclude Include="Header\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Jack.h">
+    <ClInclude Include="Header\Jack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Library.h">
+    <ClInclude Include="Header\Library.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Platform.h">
+    <ClInclude Include="Header\Platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Projectile.h">
+    <ClInclude Include="Header\Projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Timer.h">
+    <ClInclude Include="Header\StartMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Window.h">
+    <ClInclude Include="Header\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\StartMenu.h">
+    <ClInclude Include="Header\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

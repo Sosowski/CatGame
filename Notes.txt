@@ -9,3 +9,8 @@ PROPOSED
 Keep this feature, allowing the player to jump off platforms or walls
 after being hit and get right back into gameplay if the correct key
 is still depressed on impact. Will require some extra collision coding.
+
+Other notes:
+Use relative directories somehow for include? The folder thing implemented doesn't wanna build.
+$(ProjectDir)CatGame\Headers
+or something like that?

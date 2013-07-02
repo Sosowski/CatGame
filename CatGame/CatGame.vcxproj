@@ -21,15 +21,15 @@
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\FunctionLib.h" />
-    <ClInclude Include="Headers\Global.h" />
-    <ClInclude Include="Headers\Jack.h" />
-    <ClInclude Include="Headers\Library.h" />
-    <ClInclude Include="Headers\Platform.h" />
-    <ClInclude Include="Headers\Projectile.h" />
-    <ClInclude Include="Headers\StartMenu.h" />
-    <ClInclude Include="Headers\Timer.h" />
-    <ClInclude Include="Headers\Window.h" />
+    <ClInclude Include="Header\FunctionLib.h" />
+    <ClInclude Include="Header\Global.h" />
+    <ClInclude Include="Header\Jack.h" />
+    <ClInclude Include="Header\Library.h" />
+    <ClInclude Include="Header\Platform.h" />
+    <ClInclude Include="Header\Projectile.h" />
+    <ClInclude Include="Header\StartMenu.h" />
+    <ClInclude Include="Header\Timer.h" />
+    <ClInclude Include="Header\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{205C4EE4-C3E4-4D64-9839-4EEF0D122F7E}</ProjectGuid>
@@ -58,7 +58,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Steve\Documents\Visual Studio 2010\Projects\CatGame\CatGame\Sources;C:\Users\Steve\Documents\Visual Studio 2010\Projects\CatGame\CatGame\Headers;C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\SDL-1.2.15\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\SDL-1.2.15\include;Header;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\Program Files %28x86%29\Microsoft Visual Studio 10.0\SDL-1.2.15\lib\x86;$(LibraryPath)</LibraryPath>
