@@ -431,24 +431,19 @@ void Jack::set_clips()
 	}
 }
 
-void Jack::Collide_Check(SDL_Rect plat, int check)
+void Jack::Collide_Response(bool hit, bool probe, int edge)
 {
-	if(check_collision(plat,probe) == true){
-		y = (plat.y - JACK_HEIGHT);
+	if(hit == true){
+		y = (edge-1 - JACK_HEIGHT);
 		yVel = 0;
 		shift_boxes();
 		onGround = true;
-		collided = true;
 	}
-
-	else if(check_collision(plat,probe) == false && collided == false)
-	{
+	if(probe == true){
+		onGround = true;
+	}
+	else{
 		onGround = false;
-	}
-	//If this is the last platform to be checked
-	else if (collided == true && check == 1)
-	{
-		collided = false;
 	}
 }
 
@@ -512,6 +507,19 @@ double Jack::Read(int val)
 		case 3: ret = yVel; break;
 		case 4: ret = onGround; break;
 		default: ret = x; break;
+	}
+
+	return ret;
+}
+
+SDL_Rect Jack::Read_rect(int val)
+{
+	SDL_Rect ret;
+	switch(val)
+	{
+		case 0: ret = box; break;
+		case 1: ret = probe; break;
+		default: ret = box; break;
 	}
 
 	return ret;

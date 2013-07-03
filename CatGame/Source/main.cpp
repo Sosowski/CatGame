@@ -541,17 +541,25 @@ int main( int argc, char* args[])
 		//Do collision checking for all current platforms
 		if(platforms.size() >= 1)
 		{			
-			for(int pr=0; pr < (signed int)platforms.size(); pr++)
+			//for(int pr=0; pr < (signed int)platforms.size(); pr++)
+			//for(std::vector<T>::iterator it = platforms.begin(); it != platforms.end(); ++it) {
+			for(std::vector<int>::size_type i = 0; i != platforms.size(); i++)
 			{
+				if(platforms[i].Collide(walk) == true){	//makes a check for a collion on a platform, and if it has collided with one, it stops checking.
+					break;
+				}
+				/*
 				SDL_Rect PlatRect = {platforms.at(pr).Read(0), platforms.at(pr).Read(1), platforms.at(pr).Read(2), platforms.at(pr).Read(3)};
 				if(pr == (platforms.size() - 1))
 				{
-					walk.Collide_Check(PlatRect, 1);
+					//walk.Collide_Check(PlatRect, 1);
+
 				}
 				else
 				{
-					walk.Collide_Check(PlatRect, 0);
+					//walk.Collide_Check(PlatRect, 0);
 				}
+				*/
 			}
 		}
 

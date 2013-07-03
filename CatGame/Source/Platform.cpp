@@ -109,3 +109,68 @@ void Platform::show(Window& aWindow)
 {
 	aWindow.apply_surface( plat.x, plat.y, plat1, 1, &camera);
 }
+
+bool Platform::Collide(Jack& player)
+{
+	bool hit = false, touch = false;
+	int edge = 0;
+	SDL_Rect hitbox = player.Read_rect(0);
+	SDL_Rect probe = player.Read_rect(1);
+
+	//if colliding with player hitbox
+	if(check_collision(plat,hitbox) == true){
+		edge=plat.y;
+		hit=true;
+	}
+	if(check_collision(plat,probe) == true){
+		edge=plat.y;
+		touch=true;
+	}
+	player.Collide_Response(hit,touch,edge);
+
+	if(hit == true || touch == true){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+Triangle::Triangle()
+{
+	//Platform default hitboxes
+	plat.x = 0;
+	plat.y = 750;
+	plat.w = 400;
+	plat.h = 100;
+	//Initialize variables for loading image
+	//plat1 = NULL;
+	platType = 1;
+
+	load_files();
+}
+
+bool Triangle::Collide(Jack& player)
+{
+	bool hit = false, touch = false;
+	int edge = 0;
+	SDL_Rect hitbox = player.Read_rect(0);
+	SDL_Rect probe = player.Read_rect(1);
+	//if colliding with player hitbox
+	if(check_collision(plat,hitbox) == true){
+		edge=plat.y;
+		hit=true;
+	}
+	if(check_collision(plat,probe) == true){
+		edge=plat.y-1;
+		touch=true;
+	}
+	player.Collide_Response(hit,touch,edge);
+
+	if(hit == true || touch == true){
+		return true;
+	}
+	else{
+		return false;
+	}
+}

@@ -73,6 +73,10 @@ public:
 		4 : onGround                        */
 	double Read(int val);
 
+	//Get current Rectangles from Jack
+	/*	0 : Hitbox		1 : Probe */
+	SDL_Rect Read_rect(int val);
+
 	SDL_Rect* get_camera();
 
 	//Get specific camera values
@@ -100,8 +104,8 @@ public:
 	//loads files for Jacks Sprites
 	bool load_files();
 
-	//Added an int where if it is 1, it signifies that it is the last platform to be checked
-	void Collide_Check(SDL_Rect plat, int check);
+	//Replacing with a response function, platforms now check for collision and call this function.
+	void Collide_Response(bool hit, bool probe, int edge);
 
 	//Handles Jack taking damage
 	//Call with a number for power of hit

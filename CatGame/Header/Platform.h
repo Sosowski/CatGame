@@ -1,12 +1,9 @@
 class Platform
 {
-private:
+protected:
 	//Platform collision boxes
 	SDL_Rect plat;
-	
-	//Selector for different platform images
 	int platType;
-
 public:
 	//Initalize class
 	Platform();
@@ -24,4 +21,15 @@ public:
 
 	//Gives loaded images files to other documents
 	SDL_Surface *Return(int val);
+
+	//Checks for collions, calls the function In Jack to react to collision.
+	virtual bool Collide(Jack& player);
+};
+
+//should be a subclass of paltform, allows polymorphism
+class Triangle: public Platform
+{
+public:
+	Triangle();
+	bool Collide(Jack& player);
 };
