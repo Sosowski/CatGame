@@ -105,7 +105,9 @@ public:
 	bool load_files();
 
 	//Replacing with a response function, platforms now check for collision and call this function.
-	void Collide_Response(bool hit, bool probe, int edge);
+	// type what type of edge is being returned, and thus what kind of movement will need to be done.
+	/*	0 : Vertical			1 : Horizontal */
+	void Collide_Response(bool hit, bool feet, bool head, int edge);
 
 	//Handles Jack taking damage
 	//Call with a number for power of hit

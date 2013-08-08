@@ -431,20 +431,40 @@ void Jack::set_clips()
 	}
 }
 
-void Jack::Collide_Response(bool hit, bool probe, int edge)
+void Jack::Collide_Response(bool hit, bool feet, bool head, int edge)
 {
+	onGround = feet;
+
 	if(hit == true){
-		y = (edge-1 - JACK_HEIGHT);
-		yVel = 0;
-		shift_boxes();
-		onGround = true;
+		y = (edge - JACK_HEIGHT);
+		if(feet){
+			yVel = 0;
+		}
+		else{
+			if(yVel < 0){
+				yVel = 0;
+			}
+		}
+		/*if(feet != head){
+			y = (edge - JACK_HEIGHT);
+			if(feet){
+				yVel = 0;
+			}
+			else{
+				if(yVel < 0){
+					yVel = 0;
+				}
+			}
+			shift_boxes();
+		}
+		else
+		{
+			x = edge;
+			xVel = 0;
+			shift_boxes();
+		}*/
 	}
-	if(probe == true){
-		onGround = true;
-	}
-	else{
-		onGround = false;
-	}
+	shift_boxes();
 }
 
 // ---- Functions to control Jack -------------------------------------------------------------------

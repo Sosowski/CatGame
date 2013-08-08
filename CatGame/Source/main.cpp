@@ -548,18 +548,6 @@ int main( int argc, char* args[])
 				if(platforms[i].Collide(walk) == true){	//makes a check for a collion on a platform, and if it has collided with one, it stops checking.
 					break;
 				}
-				/*
-				SDL_Rect PlatRect = {platforms.at(pr).Read(0), platforms.at(pr).Read(1), platforms.at(pr).Read(2), platforms.at(pr).Read(3)};
-				if(pr == (platforms.size() - 1))
-				{
-					//walk.Collide_Check(PlatRect, 1);
-
-				}
-				else
-				{
-					//walk.Collide_Check(PlatRect, 0);
-				}
-				*/
 			}
 		}
 

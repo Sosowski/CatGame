@@ -112,23 +112,37 @@ void Platform::show(Window& aWindow)
 
 bool Platform::Collide(Jack& player)
 {
-	bool hit = false, touch = false;
-	int edge = 0;
+	bool hit = false, touchFeet = false, touchHead;
+	int edge = 0, type = 0;
 	SDL_Rect hitbox = player.Read_rect(0);
-	SDL_Rect probe = player.Read_rect(1);
+	SDL_Rect feet = player.Read_rect(1);
+	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,1};
+
+	//check if the probes are colliding
+	touchFeet = check_collision(plat,feet);
+	touchHead = check_collision(plat,head);
 
 	//if colliding with player hitbox
 	if(check_collision(plat,hitbox) == true){
-		edge=plat.y;
 		hit=true;
+		edge = plat.y-1;
+		/*if(touchHead){
+			edge = plat.y + plat.h + hitbox.h + 1;
+		}
+		else if(touchFeet) {
+			edge=plat.y-1;
+		}
+		else {
+			if( hitbox.x+(hitbox.w/2) < plat.x+(plat.w/2) ) {
+				edge = plat.x-hitbox.w-5;	
+			}
+			else{
+				edge = plat.y+plat.w+1;
+			}
+		}*/
 	}
-	if(check_collision(plat,probe) == true){
-		edge=plat.y;
-		touch=true;
-	}
-	player.Collide_Response(hit,touch,edge);
-
-	if(hit == true || touch == true){
+	player.Collide_Response(hit,touchFeet,touchHead,edge);
+	if(hit == true || touchFeet){
 		return true;
 	}
 	else{
@@ -152,22 +166,38 @@ Triangle::Triangle()
 
 bool Triangle::Collide(Jack& player)
 {
-	bool hit = false, touch = false;
-	int edge = 0;
+	bool hit = false, touchFeet = false, touchHead;
+	int edge = 0, type = 0;
 	SDL_Rect hitbox = player.Read_rect(0);
-	SDL_Rect probe = player.Read_rect(1);
+	SDL_Rect feet = player.Read_rect(1);
+	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,1};
+
+	//check if the probes are colliding
+	touchFeet = check_collision(plat,feet);
+	touchHead = check_collision(plat,head);
+
 	//if colliding with player hitbox
 	if(check_collision(plat,hitbox) == true){
-		edge=plat.y;
+		if(touchHead){
+			edge = plat.y + plat.h + 1;
+		}
+		else if(touchFeet) {
+			edge=plat.y-1;
+		}
+		else {
+			if( hitbox.x+(hitbox.w/2) < plat.x+(plat.w/2) ) {
+				edge = plat.x;	
+			}
+			else{
+				edge = plat.y+plat.w;
+			}
+		}
 		hit=true;
 	}
-	if(check_collision(plat,probe) == true){
-		edge=plat.y-1;
-		touch=true;
-	}
-	player.Collide_Response(hit,touch,edge);
 
-	if(hit == true || touch == true){
+	player.Collide_Response(hit,touchFeet,touchHead,edge);
+
+	if(hit == true || touchFeet == true || touchHead == true){
 		return true;
 	}
 	else{
