@@ -435,7 +435,7 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, int edge)
 {
 	onGround = feet;
 
-	if(hit == true){
+	if(hit == true && onGround == true){
 		y = (edge - JACK_HEIGHT);
 		if(feet){
 			yVel = 0;
