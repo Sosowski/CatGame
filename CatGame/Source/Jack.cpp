@@ -32,6 +32,13 @@ Jack::Jack()
 	probe.w = 1;
 	probe.h = 1;
 
+	//Initate Pointer to Platform jack is standing on
+	dummyPlat.x = 0;
+	dummyPlat.y = 0;
+	dummyPlat.w = 0;
+	dummyPlat.h = 0;
+	standingOn = &dummyPlat;
+
 	//Animation variables
 	frame = 0;
 	delay = 0;
@@ -431,10 +438,26 @@ void Jack::set_clips()
 	}
 }
 
-void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge)
+void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge, SDL_Rect& currentPlat)
 {
-	onGround = feet;
+	//check to see if the dimensions of this platform match the dimensions of the one that was stored as the one that was being stood on
+	bool samePlat = false;
+	if(standingOn->x == currentPlat.x && standingOn->y == currentPlat.y && standingOn->w == currentPlat.w && standingOn->h == currentPlat.h){
+		samePlat = true;
+	}
 
+	//Check to see if we need to set or reset the onGround flag
+	if(feet == true && onGround == false){
+		onGround = true;
+		standingOn = &currentPlat;
+	}
+	if(feet == false && onGround == true && samePlat == true)			//we only want to unset the onGround flag if the platform you are
+	{																	//standing on no longer touches the feet
+		onGround = false;
+		standingOn = &dummyPlat;
+	}
+
+	//Check conditions to set the player position to meet the edge of the platform.
 	if(upper == true){
 		x = edge - box.w;					// for side collision. Upper is the area of the upper body that, when collided,
 		xVel = 0;							//you fall as if hitting a wall, instead of landing on top.

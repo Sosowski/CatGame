@@ -407,7 +407,7 @@ int main( int argc, char* args[])
 	}
 
 	//Set Current Background Image Name
-	BgImage = "Images/bg.png";
+	BgImage = "Images/bgGrid50by50.png";
 
 	//Load files
 	if( load_files(myWindow) == false)

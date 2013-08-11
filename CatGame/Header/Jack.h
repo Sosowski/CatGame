@@ -24,6 +24,10 @@ private:
 	//Gravity probe
 	SDL_Rect probe;
 
+	//the platform Jack is standing on.
+	SDL_Rect dummyPlat;
+	SDL_Rect* standingOn;
+
 	//Current animation frame
 	int frame;
 
@@ -107,7 +111,7 @@ public:
 	//Replacing with a response function, platforms now check for collision and call this function.
 	// type what type of edge is being returned, and thus what kind of movement will need to be done.
 	/*	0 : Vertical			1 : Horizontal */
-	void Collide_Response(bool hit, bool feet, bool head, bool upper, int edge);
+	void Collide_Response(bool hit, bool feet, bool head, bool upper, int edge, SDL_Rect& currentPlat);
 
 	//Handles Jack taking damage
 	//Call with a number for power of hit
