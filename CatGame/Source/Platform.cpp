@@ -114,24 +114,24 @@ bool Platform::Collide(Jack& player)
 {
 	bool hit = false, touchFeet = false, touchHead=false, touchUpper=false;
 	int edge = 0, type = 0;
+	SDL_Rect currentPlat = this->plat;
 	SDL_Rect hitbox = player.Read_rect(0);
 	SDL_Rect feet = player.Read_rect(1);
 	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,hitbox.h/4};
 	SDL_Rect upper = {hitbox.x-1,hitbox.y,hitbox.w+2,hitbox.h/2};
 
 	//check if the probes are colliding
-	touchFeet = check_collision(plat,feet);
-	touchHead = check_collision(plat,head);
-	touchUpper = check_collision(plat,upper);
+	hit = check_collision(currentPlat,hitbox);
+	touchFeet = check_collision(currentPlat,feet);
+	touchHead = check_collision(currentPlat,head);
+	touchUpper = check_collision(currentPlat,upper);
 
-
-	//if colliding with player hitbox
-	if(check_collision(plat,hitbox) == true){
-		hit=true;
-		edge = plat.y-1;
-		if(touchUpper){
-			edge = plat.x-1;
-		}
+	//if colliding with upper body, to detect a side collision.
+	if(touchUpper == true){
+		edge = currentPlat.x-1;
+	}
+	if(hit == true && touchFeet == true){
+		edge = currentPlat.y-1;
 		/*if(touchHead){
 			edge = plat.y + plat.h + hitbox.h + 1;
 		}

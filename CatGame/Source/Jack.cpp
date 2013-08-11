@@ -435,11 +435,11 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge
 {
 	onGround = feet;
 
+	if(upper == true){
+		x = edge - box.w;					// for side collision. Upper is the area of the upper body that, when collided,
+		xVel = 0;							//you fall as if hitting a wall, instead of landing on top.
+	}
 	if(hit == true && onGround == true){
-		if(upper == true){					// for side collision. Upper is the area of the upper body that, when collided, 
-			x = edge + box.w;				//you fall as if hitting a wall, instead of landing on top.
-			xVel = 0;
-		}
 		y = (edge - JACK_HEIGHT);
 		if(feet){
 			yVel = 0;
@@ -467,12 +467,6 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge
 			xVel = 0;
 			shift_boxes();
 		}*/
-	}
-	else if(hit == true){
-		if(upper == true){					// for side collision. Upper is the area of the upper body that, when collided, 
-			x = edge - JACK_WIDTH;			//you fall as if hitting a wall, instead of landing on top.
-			xVel = 0;
-		}
 	}
 	shift_boxes();
 }

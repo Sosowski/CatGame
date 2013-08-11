@@ -439,7 +439,7 @@ int main( int argc, char* args[])
 
 	//Create Platforms
 	Platform platform1;
-	Platform platform2(750, 1000 , 500 , 100 , 2);
+	Platform platform2(900, 1000 , 500 , 100 , 2);	//blue platform
 	Platform platform3(1300, 750, 700, 50, 3);
 
 	//Load Platform images
