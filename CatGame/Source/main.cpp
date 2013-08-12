@@ -545,9 +545,10 @@ int main( int argc, char* args[])
 			//for(std::vector<T>::iterator it = platforms.begin(); it != platforms.end(); ++it) {
 			for(std::vector<int>::size_type i = 0; i != platforms.size(); i++)
 			{
-				if(platforms[i].Collide(walk) == true){	//makes a check for a collion on a platform, and if it has collided with one, it stops checking.
+				platforms[i].Collide(walk);					//simply check all platforms in the list
+				/*if(platforms[i].Collide(walk) == true){	//makes a check for a collion on a platform, and if it has collided with one, it stops checking.
 					break;
-				}
+				}*/
 			}
 		}
 

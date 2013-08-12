@@ -445,33 +445,28 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge
 	if(standingOn->x == currentPlat.x && standingOn->y == currentPlat.y && standingOn->w == currentPlat.w && standingOn->h == currentPlat.h){
 		samePlat = true;
 	}
+	else{
+		samePlat = false;
+	}
 
 	//Check to see if we need to set or reset the onGround flag
-	if(feet == true && onGround == false){
+	if(feet == true && onGround == false && samePlat == false){
 		onGround = true;
 		standingOn = &currentPlat;
 	}
-	if(feet == false && onGround == true && samePlat == true)			//we only want to unset the onGround flag if the platform you are
-	{																	//standing on no longer touches the feet
-		onGround = false;
+	else if(feet == false && onGround == true && samePlat == true){		//we only want to unset the onGround flag if the platform you are
+		onGround = false;												//standing on no longer touches the feet
 		standingOn = &dummyPlat;
 	}
 
 	//Check conditions to set the player position to meet the edge of the platform.
 	if(upper == true){
-		x = edge - box.w;					// for side collision. Upper is the area of the upper body that, when collided,
-		xVel = 0;							//you fall as if hitting a wall, instead of landing on top.
+		x = edge - box.w - ((JACK_WIDTH-box.w)/2) -6;			// for side collision. Upper is the area of the upper body that, when 
+		xVel = 0;												// collided, you fall as if hitting a wall, instead of landing on top.
 	}
-	if(hit == true && onGround == true){
+	if(hit == true && feet == true){							//for ground collision.
 		y = (edge - JACK_HEIGHT);
-		if(feet){
-			yVel = 0;
-		}
-		else{
-			if(yVel < 0){
-				yVel = 0;
-			}
-		}
+		yVel = 0;
 		/*if(feet != head){
 			y = (edge - JACK_HEIGHT);
 			if(feet){

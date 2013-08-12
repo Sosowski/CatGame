@@ -147,7 +147,7 @@ bool Platform::Collide(Jack& player)
 			}
 		}*/
 	}
-	player.Collide_Response(hit,touchFeet,touchHead, touchUpper, edge, thisPlat);
+	player.Collide_Response(hit,touchFeet,touchHead, touchUpper, edge, this->plat);
 	if(hit == true || touchFeet == true || touchUpper == true){
 		return true;
 	}
