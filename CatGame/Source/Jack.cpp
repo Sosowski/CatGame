@@ -11,6 +11,9 @@ Jack::Jack()
 	xVel = 0;
 	yVel = 0.5;
 	//Flags
+	onGround = false;
+	onLeft = false;
+	onRight = false;
 	left = false;
 	right = false;
 	knockbackX = 0;
@@ -88,8 +91,16 @@ void Jack::move()
 		knockbackX -= 0.5;
 	}
 
-	//Left/Right Movement
-	x += (int)xVel;
+	//Horizontal Movement
+	//Apply velocity if not touching sides in that direction
+	if(onRight == false && xVel > 0){				//travel right
+		x += (int)xVel;
+		onLeft = false;				//unset the flag for side collide
+	}
+	else if(onLeft == false && xVel < 0){			//travel left
+		x += (int)xVel;
+		onRight = false;			//unset the flag for side collide
+	}
 
 	//Check if Jack left the area
 	if( ( x < 0 ) || ( x + JACK_WIDTH > LEVEL_WIDTH ) )
@@ -438,7 +449,7 @@ void Jack::set_clips()
 	}
 }
 
-void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge, SDL_Rect& currentPlat)
+void Jack::Collide_Response(bool hit, bool feet, bool head, bool touchRight, bool touchLeft, int edge, SDL_Rect& currentPlat)
 {
 	//check to see if the dimensions of this platform match the dimensions of the one that was stored as the one that was being stood on
 	bool samePlat = false;
@@ -460,31 +471,29 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, bool upper, int edge
 	}
 
 	//Check conditions to set the player position to meet the edge of the platform.
-	if(upper == true){
+	if(touchRight == true && xVel >= 0){
 		x = edge - box.w - ((JACK_WIDTH-box.w)/2) -6;			// for side collision. Upper is the area of the upper body that, when 
-		xVel = 0;												// collided, you fall as if hitting a wall, instead of landing on top.
+		onRight = true;											// collided, you fall as if hitting a wall, instead of landing on top.
 	}
+	else if(touchLeft == true && xVel <= 0){
+		x = edge + 1;
+		onLeft = true;
+	}
+	//The check to unset the onLeft and onRight plags is currently in the move() function.
+	//It currently unsets the flag only when it receives a velocity in the direction opposite the side it is touching.
+	/**/
+	//Convert to string
+	std::stringstream caption;
+
+	//Generate string
+	caption << "onRight: " << onRight << "onLeft: " << onLeft << "xVel: " << xVel;
+
+	//Set caption
+	SDL_WM_SetCaption( caption.str().c_str(), NULL); //*/
+
 	if(hit == true && feet == true){							//for ground collision.
 		y = (edge - JACK_HEIGHT);
 		yVel = 0;
-		/*if(feet != head){
-			y = (edge - JACK_HEIGHT);
-			if(feet){
-				yVel = 0;
-			}
-			else{
-				if(yVel < 0){
-					yVel = 0;
-				}
-			}
-			shift_boxes();
-		}
-		else
-		{
-			x = edge;
-			xVel = 0;
-			shift_boxes();
-		}*/
 	}
 	shift_boxes();
 }

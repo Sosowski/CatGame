@@ -15,6 +15,9 @@ private:
 	//Velocity variables
 	double xVel, yVel;
 
+	//Player State flags
+	bool onGround, onRight, onLeft;
+
 	//flags for if left and right key are being pressed.
 	bool left, right;
 
@@ -42,9 +45,6 @@ private:
 
 	//Last known sprite direction
 	int facing;
-
-	//Stops the collision detection if player has already hit a platform
-	bool collided;
 
 	//Flag sent to restore velocities back to 0 after a hit
 	double knockbackX;
@@ -109,9 +109,7 @@ public:
 	bool load_files();
 
 	//Replacing with a response function, platforms now check for collision and call this function.
-	// type what type of edge is being returned, and thus what kind of movement will need to be done.
-	/*	0 : Vertical			1 : Horizontal */
-	void Collide_Response(bool hit, bool feet, bool head, bool upper, int edge, SDL_Rect& currentPlat);
+	void Collide_Response(bool hit, bool feet, bool head, bool touchRight, bool touchLeft, int edge, SDL_Rect& currentPlat);
 
 	//Handles Jack taking damage
 	//Call with a number for power of hit

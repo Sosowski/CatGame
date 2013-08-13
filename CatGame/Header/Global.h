@@ -62,7 +62,6 @@ static SDL_Rect camera2 = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 //Player states
 static bool jumping = true;
-static bool onGround = false;
 
 //Buttons
 static SDL_Surface *startButton = NULL;

@@ -1,4 +1,4 @@
-﻿Build started 8/11/2013 10:13:03 PM.
+﻿Build started 8/12/2013 9:48:43 PM.
      1>Project "C:\Users\Daeleth\GitHub\CatGame\CatGame\CatGame.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\CatGame.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -25,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.67
+Time Elapsed 00:00:03.99

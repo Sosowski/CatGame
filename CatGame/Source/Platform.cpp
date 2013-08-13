@@ -112,43 +112,34 @@ void Platform::show(Window& aWindow)
 
 bool Platform::Collide(Jack& player)
 {
-	bool hit = false, touchFeet = false, touchHead=false, touchUpper=false;
+	bool hit = false, touchFeet = false, touchHead=false, touchLeft=false, touchRight=false;
 	int edge = 0, type = 0;
 	SDL_Rect thisPlat = this->plat;
 	SDL_Rect hitbox = player.Read_rect(0);
 	SDL_Rect feet = player.Read_rect(1);
 	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,hitbox.h/4};
-	SDL_Rect upper = {hitbox.x-1,hitbox.y,hitbox.w+2,hitbox.h/2};
+	SDL_Rect sideLeft = {hitbox.x-1,hitbox.y,hitbox.w/2+2,hitbox.h/2};
+	SDL_Rect sideRight = {hitbox.x+(hitbox.w/2),hitbox.y,hitbox.w/2+2,hitbox.h/2};
 
 	//check if the probes are colliding
 	hit = check_collision(thisPlat,hitbox);
 	touchFeet = check_collision(thisPlat,feet);
 	touchHead = check_collision(thisPlat,head);
-	touchUpper = check_collision(thisPlat,upper);
+	touchLeft = check_collision(thisPlat,sideLeft);
+	touchRight = check_collision(thisPlat,sideRight);
 
-	//if colliding with upper body, to detect a side collision.
-	if(touchUpper == true){
+	//detect a side collision and give appropriate edge
+	if(touchRight == true && touchLeft == false){
+		edge = thisPlat.x;
+	}
+	if(touchRight == false && touchLeft == true){
 		edge = thisPlat.x;
 	}
 	if(hit == true && touchFeet == true){
 		edge = thisPlat.y;
-		/*if(touchHead){
-			edge = plat.y + plat.h + hitbox.h + 1;
-		}
-		else if(touchFeet) {
-			edge=plat.y-1;
-		}
-		else {
-			if( hitbox.x+(hitbox.w/2) < plat.x+(plat.w/2) ) {
-				edge = plat.x-hitbox.w-5;	
-			}
-			else{
-				edge = plat.y+plat.w+1;
-			}
-		}*/
 	}
-	player.Collide_Response(hit,touchFeet,touchHead, touchUpper, edge, this->plat);
-	if(hit == true || touchFeet == true || touchUpper == true){
+	player.Collide_Response(hit,touchFeet,touchHead, touchRight, touchLeft, edge, this->plat);
+	if(hit == true || touchFeet == true || touchRight == true || touchLeft == true){
 		return true;
 	}
 	else{
@@ -172,43 +163,34 @@ Triangle::Triangle()
 
 bool Triangle::Collide(Jack& player)
 {
-	bool hit = false, touchFeet = false, touchHead=false, touchUpper=false;
+	bool hit = false, touchFeet = false, touchHead=false, touchLeft=false, touchRight=false;
 	int edge = 0, type = 0;
+	SDL_Rect thisPlat = this->plat;
 	SDL_Rect hitbox = player.Read_rect(0);
 	SDL_Rect feet = player.Read_rect(1);
 	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,hitbox.h/4};
-	SDL_Rect upper = {hitbox.x-1,hitbox.y,hitbox.w+2,hitbox.h/2};
+	SDL_Rect sideLeft = {hitbox.x-1,hitbox.y,hitbox.w/2+2,hitbox.h/2};
+	SDL_Rect sideRight = {hitbox.x+(hitbox.w/2),hitbox.y,hitbox.w/2+2,hitbox.h/2};
 
 	//check if the probes are colliding
-	touchFeet = check_collision(plat,feet);
-	touchHead = check_collision(plat,head);
-	touchUpper = check_collision(plat,upper);
+	hit = check_collision(thisPlat,hitbox);
+	touchFeet = check_collision(thisPlat,feet);
+	touchHead = check_collision(thisPlat,head);
+	touchLeft = check_collision(thisPlat,sideLeft);
+	touchRight = check_collision(thisPlat,sideRight);
 
-
-	//if colliding with player hitbox
-	if(check_collision(plat,hitbox) == true){
-		hit=true;
-		edge = plat.y-1;
-		if(touchUpper){
-			edge = plat.x-1;
-		}
-		/*if(touchHead){
-			edge = plat.y + plat.h + hitbox.h + 1;
-		}
-		else if(touchFeet) {
-			edge=plat.y-1;
-		}
-		else {
-			if( hitbox.x+(hitbox.w/2) < plat.x+(plat.w/2) ) {
-				edge = plat.x-hitbox.w-5;	
-			}
-			else{
-				edge = plat.y+plat.w+1;
-			}
-		}*/
+	//detect a side collision and give appropriate edge
+	if(touchRight == true && touchLeft == false){
+		edge = thisPlat.x;
 	}
-	player.Collide_Response(hit,touchFeet,touchHead, touchUpper, edge, this->plat);
-	if(hit == true || touchFeet == true){
+	if(touchRight == false && touchLeft == true){
+		edge = thisPlat.x;
+	}
+	if(hit == true && touchFeet == true){
+		edge = thisPlat.y;
+	}
+	player.Collide_Response(hit,touchFeet,touchHead, touchRight, touchLeft, edge, this->plat);
+	if(hit == true || touchFeet == true || touchRight == true || touchLeft == true){
 		return true;
 	}
 	else{
