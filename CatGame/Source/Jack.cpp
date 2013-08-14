@@ -476,7 +476,7 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, bool touchRight, boo
 		onRight = true;											// collided, you fall as if hitting a wall, instead of landing on top.
 	}
 	else if(touchLeft == true && xVel <= 0){
-		x = edge + 1;
+		x = edge - ((JACK_WIDTH-box.w)/2);
 		onLeft = true;
 	}
 	//The check to unset the onLeft and onRight plags is currently in the move() function.

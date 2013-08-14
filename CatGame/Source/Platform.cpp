@@ -133,7 +133,7 @@ bool Platform::Collide(Jack& player)
 		edge = thisPlat.x;
 	}
 	if(touchRight == false && touchLeft == true){
-		edge = thisPlat.x;
+		edge = thisPlat.x + thisPlat.w;
 	}
 	if(hit == true && touchFeet == true){
 		edge = thisPlat.y;
