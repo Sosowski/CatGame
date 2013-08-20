@@ -26,7 +26,7 @@ public:
 	virtual bool Collide(Jack& player);
 };
 
-//should be a subclass of paltform, allows polymorphism
+//should be a subclass of platform, allows polymorphism
 class Triangle: public Platform
 {
 public:

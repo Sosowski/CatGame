@@ -29,11 +29,11 @@ Jack::Jack()
 	box.w = 150;
 	box.h = JACK_HEIGHT;
 
-	//Create probe hitbox
-	probe.x = (Sint16)(x + (JACK_WIDTH / 2));
-	probe.y = (Sint16)(y + (JACK_HEIGHT + 1));
-	probe.w = 1;
-	probe.h = 1;
+	//Create feet hitbox
+	feet.x = (Sint16)(x + (JACK_WIDTH / 2));
+	feet.y = (Sint16)(y + (JACK_HEIGHT + 1));
+	feet.w = 1;
+	feet.h = 1;
 
 	//Initate Pointer to Platform jack is standing on
 	dummyPlat.x = 0;
@@ -41,6 +41,7 @@ Jack::Jack()
 	dummyPlat.w = 0;
 	dummyPlat.h = 0;
 	standingOn = &dummyPlat;
+	touchSide = &dummyPlat;
 
 	//Animation variables
 	frame = 0;
@@ -91,15 +92,28 @@ void Jack::move()
 		knockbackX -= 0.5;
 	}
 
+	//If Side flags are set, call to check if they must be reset
+	if( onRight == true ){
+		if( touchSide->y > (box.y+(box.h*.75)) || box.y > touchSide->y+touchSide->h ){	
+			onRight = false;
+		}
+	}
+	else if( onLeft == true ){
+		if( touchSide->y > (box.y+(box.h*.75)) || box.y > touchSide->y+touchSide->h ){	
+			onLeft = false;
+		}
+	}
 	//Horizontal Movement
 	//Apply velocity if not touching sides in that direction
 	if(onRight == false && xVel > 0){				//travel right
 		x += (int)xVel;
 		onLeft = false;				//unset the flag for side collide
+		touchSide = &dummyPlat;
 	}
 	else if(onLeft == false && xVel < 0){			//travel left
 		x += (int)xVel;
 		onRight = false;			//unset the flag for side collide
+		touchSide = &dummyPlat;
 	}
 
 	//Check if Jack left the area
@@ -119,7 +133,29 @@ void Jack::move()
 	//Up/Down Movement
 	y += (int)yVel;
 
-	//The probe isn't colliding with anything. We need to fall.
+	//Final checks to clear the onGround flag before gravity is applied
+	if( onGround = true ){
+		if( yVel < 0 ) {
+			onGround = false;
+			standingOn = &dummyPlat;
+		}
+		else if( (feet.x+5 < standingOn->x) || (feet.x-5 > standingOn->x+standingOn->w) ){
+			onGround = false;
+			standingOn = &dummyPlat;
+		}
+	}
+
+	/**/
+	//Convert to string
+	std::stringstream caption;
+
+	//Generate string
+	caption << "onRight: " << onRight << " onLeft: " << onLeft  << " standingOn->x: " << standingOn->x  << " onGround: " << onGround << " yVel: " << yVel;
+
+	//Set caption
+	SDL_WM_SetCaption( caption.str().c_str(), NULL); //*/
+
+	//Apply gravity if not on ground
 	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT == false ) && (onGround == false) )
 	{
 		//Apply gravity
@@ -386,9 +422,9 @@ void Jack::shift_boxes()
 	box.x = (Sint16)(x + (JACK_WIDTH / 4));
 	box.y = (Sint16)(y);
 
-	//Shift the probe's hitbox
-	probe.x = (Sint16)(x + (JACK_WIDTH / 2));
-	probe.y = (Sint16)(y + (JACK_HEIGHT + 1));
+	//Shift the feet's hitbox
+	feet.x = (Sint16)(x + (JACK_WIDTH / 2));
+	feet.y = (Sint16)(y + (JACK_HEIGHT + 1));
 }
 
 void Jack::set_clips()
@@ -449,8 +485,36 @@ void Jack::set_clips()
 	}
 }
 
-void Jack::Collide_Response(bool hit, bool feet, bool head, bool touchRight, bool touchLeft, int edge, SDL_Rect& currentPlat)
+void Jack::Collide_Response(bool feet, bool head, bool touchRight, bool touchLeft, int edge, SDL_Rect& currentPlat)
 {
+	//Note: after changes, the "hit" bool should not be needed, and the platform pointer shouldn't either.
+	//if the collision was with the feet, put on top, set the flag.
+	if( feet == true ){
+		y = (edge - box.h)-1;
+		yVel = 0;
+		//the onGround flag stops gravity in move().
+		onGround = true;
+		//conditions in move() will unset the flag. 
+		//That function needs values from the current platform to know when the player walks off.
+		standingOn = &currentPlat;
+	}
+	else if(touchRight == true){
+		x = edge - box.w - ((JACK_WIDTH-box.w)/2) -6;			// for side collision. Upper is the area of the upper body that, when 
+		onRight = true;											// collided, you fall as if hitting a wall, instead of landing on top.
+		touchSide = &currentPlat;
+	}
+	else if(touchLeft == true){
+		x = edge - ((JACK_WIDTH-box.w)/2);
+		onLeft = true;
+		touchSide = &currentPlat;
+	}
+	/*
+	if( onRight == true || onLeft == true ){
+		if( touchSide->y < (box.y+(box.h*.75)) && box.y < touchSide->y+touchSide->h ){	
+
+		}	
+	} //Apply velocity if not touching sides in that direction
+
 	//check to see if the dimensions of this platform match the dimensions of the one that was stored as the one that was being stood on
 	bool samePlat = false;
 	if(standingOn->x == currentPlat.x && standingOn->y == currentPlat.y && standingOn->w == currentPlat.w && standingOn->h == currentPlat.h){
@@ -458,43 +522,7 @@ void Jack::Collide_Response(bool hit, bool feet, bool head, bool touchRight, boo
 	}
 	else{
 		samePlat = false;
-	}
-
-	//Check to see if we need to set or reset the onGround flag
-	if(feet == true && onGround == false && samePlat == false){
-		onGround = true;
-		standingOn = &currentPlat;
-	}
-	else if(feet == false && onGround == true && samePlat == true){		//we only want to unset the onGround flag if the platform you are
-		onGround = false;												//standing on no longer touches the feet
-		standingOn = &dummyPlat;
-	}
-
-	//Check conditions to set the player position to meet the edge of the platform.
-	if(touchRight == true && xVel >= 0){
-		x = edge - box.w - ((JACK_WIDTH-box.w)/2) -6;			// for side collision. Upper is the area of the upper body that, when 
-		onRight = true;											// collided, you fall as if hitting a wall, instead of landing on top.
-	}
-	else if(touchLeft == true && xVel <= 0){
-		x = edge - ((JACK_WIDTH-box.w)/2);
-		onLeft = true;
-	}
-	//The check to unset the onLeft and onRight plags is currently in the move() function.
-	//It currently unsets the flag only when it receives a velocity in the direction opposite the side it is touching.
-	/**/
-	//Convert to string
-	std::stringstream caption;
-
-	//Generate string
-	caption << "onRight: " << onRight << "onLeft: " << onLeft << "xVel: " << xVel;
-
-	//Set caption
-	SDL_WM_SetCaption( caption.str().c_str(), NULL); //*/
-
-	if(hit == true && feet == true){							//for ground collision.
-		y = (edge - JACK_HEIGHT);
-		yVel = 0;
-	}
+	}*/
 	shift_boxes();
 }
 
@@ -569,7 +597,7 @@ SDL_Rect Jack::Read_rect(int val)
 	switch(val)
 	{
 		case 0: ret = box; break;
-		case 1: ret = probe; break;
+		case 1: ret = feet; break;
 		default: ret = box; break;
 	}
 

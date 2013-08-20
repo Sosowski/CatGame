@@ -24,12 +24,13 @@ private:
 	//Jack's collision box
 	SDL_Rect box;
 
-	//Gravity probe
-	SDL_Rect probe;
+	//Gravity feet
+	SDL_Rect feet;
 
-	//the platform Jack is standing on.
+	//pointers for platforms that jack is touching
 	SDL_Rect dummyPlat;
 	SDL_Rect* standingOn;
+	SDL_Rect* touchSide;
 
 	//Current animation frame
 	int frame;
@@ -78,7 +79,7 @@ public:
 	double Read(int val);
 
 	//Get current Rectangles from Jack
-	/*	0 : Hitbox		1 : Probe */
+	/*	0 : Hitbox		1 : feet */
 	SDL_Rect Read_rect(int val);
 
 	SDL_Rect* get_camera();
@@ -109,7 +110,7 @@ public:
 	bool load_files();
 
 	//Replacing with a response function, platforms now check for collision and call this function.
-	void Collide_Response(bool hit, bool feet, bool head, bool touchRight, bool touchLeft, int edge, SDL_Rect& currentPlat);
+	void Collide_Response(bool feet, bool head, bool touchRight, bool touchLeft, int edge, SDL_Rect& currentPlat);
 
 	//Handles Jack taking damage
 	//Call with a number for power of hit

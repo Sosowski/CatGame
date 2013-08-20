@@ -113,20 +113,45 @@ void Platform::show(Window& aWindow)
 bool Platform::Collide(Jack& player)
 {
 	bool hit = false, touchFeet = false, touchHead=false, touchLeft=false, touchRight=false;
-	int edge = 0, type = 0;
+	int edge = 0;
 	SDL_Rect thisPlat = this->plat;
 	SDL_Rect hitbox = player.Read_rect(0);
-	SDL_Rect feet = player.Read_rect(1);
-	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,hitbox.h/4};
-	SDL_Rect sideLeft = {hitbox.x-1,hitbox.y,hitbox.w/2+2,hitbox.h/2};
-	SDL_Rect sideRight = {hitbox.x+(hitbox.w/2),hitbox.y,hitbox.w/2+2,hitbox.h/2};
 
-	//check if the probes are colliding
-	hit = check_collision(thisPlat,hitbox);
-	touchFeet = check_collision(thisPlat,feet);
-	touchHead = check_collision(thisPlat,head);
-	touchLeft = check_collision(thisPlat,sideLeft);
-	touchRight = check_collision(thisPlat,sideRight);
+	//check if the the player collides with overall bounds of platform
+	if(check_collision(thisPlat,hitbox)){
+		hit = true;
+		//check if within height for a side collision
+		if( hitbox.y+(hitbox.h*.75) > thisPlat.y ){
+			//if player is on the left half of the platform, then his right touched, otherwise it is his left.
+			if( hitbox.x+(hitbox.w/2) < thisPlat.x+(thisPlat.x/2) ){
+				touchRight = true;
+				edge = thisPlat.x;
+			}
+			else{
+				touchLeft = true;
+				edge = thisPlat.x + thisPlat.w;
+			}
+			//check for head collision
+			if( hitbox.y-1 < thisPlat.y+thisPlat.h ){
+				touchHead = true;
+				//edge = thisPlat.y+thisPlat.h;
+			}
+		}
+		//check if feet are colliding
+		else if(check_collision(thisPlat,player.Read_rect(1))){
+			touchFeet = true;
+			edge = thisPlat.y;
+		}
+		player.Collide_Response(touchFeet,touchHead, touchRight, touchLeft, edge, this->plat);
+		return true;
+	}
+	else{
+		hit = false;
+		return false;
+	}
+	/*
+//New plan: Move() calls a function to the platform object it has stored in the touchSide pointer.
+//this function checks the conditions in which to unset flags.
 
 	//detect a side collision and give appropriate edge
 	if(touchRight == true && touchLeft == false){
@@ -145,6 +170,17 @@ bool Platform::Collide(Jack& player)
 	else{
 		return false;
 	}
+	/*
+	SDL_Rect feet = player.Read_rect(1);
+	SDL_Rect head = {hitbox.x,hitbox.y-1,hitbox.w,hitbox.h/4};
+	SDL_Rect sideLeft = {hitbox.x-1,hitbox.y,hitbox.w/2+2,hitbox.h/2};
+	SDL_Rect sideRight = {hitbox.x+(hitbox.w/2),hitbox.y,hitbox.w/2+2,hitbox.h/2};
+
+	touchFeet = check_collision(thisPlat,feet);
+	touchHead = check_collision(thisPlat,head);
+	touchLeft = check_collision(thisPlat,sideLeft);
+	touchRight = check_collision(thisPlat,sideRight);
+	*/
 }
 
 Triangle::Triangle()
@@ -189,7 +225,7 @@ bool Triangle::Collide(Jack& player)
 	if(hit == true && touchFeet == true){
 		edge = thisPlat.y;
 	}
-	player.Collide_Response(hit,touchFeet,touchHead, touchRight, touchLeft, edge, this->plat);
+	player.Collide_Response(touchFeet,touchHead, touchRight, touchLeft, edge, this->plat);
 	if(hit == true || touchFeet == true || touchRight == true || touchLeft == true){
 		return true;
 	}
