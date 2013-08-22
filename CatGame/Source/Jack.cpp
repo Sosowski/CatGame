@@ -489,7 +489,7 @@ void Jack::Collide_Response(bool feet, bool head, bool touchRight, bool touchLef
 {
 	//Note: after changes, the "hit" bool should not be needed, and the platform pointer shouldn't either.
 	//if the collision was with the feet, put on top, set the flag.
-	if( feet == true ){
+	if( feet == true && head == false){
 		y = (edge - box.h)-1;
 		yVel = 0;
 		//the onGround flag stops gravity in move().
@@ -497,6 +497,9 @@ void Jack::Collide_Response(bool feet, bool head, bool touchRight, bool touchLef
 		//conditions in move() will unset the flag. 
 		//That function needs values from the current platform to know when the player walks off.
 		standingOn = &currentPlat;
+	}
+	else if(head == true){
+		y = edge;
 	}
 	else if(touchRight == true){
 		x = edge - box.w - ((JACK_WIDTH-box.w)/2) -6;			// for side collision. Upper is the area of the upper body that, when 

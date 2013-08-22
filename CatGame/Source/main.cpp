@@ -362,6 +362,8 @@ void clean_up()
 	SDL_FreeSurface ( plat1 );
 	SDL_FreeSurface ( plat2 );
 	SDL_FreeSurface ( plat3 );
+	SDL_FreeSurface ( plat4 );
+	SDL_FreeSurface ( plat5 );
 	SDL_FreeSurface ( hud );
 	SDL_FreeSurface ( object1 );
 
@@ -441,16 +443,22 @@ int main( int argc, char* args[])
 	Platform platform1;
 	Platform platform2(900, 1000 , 500 , 100 , 2);	//blue platform
 	Platform platform3(1300, 750, 700, 50, 3);
+	Platform platform4(2000, 1100 , 500 , 100 , 2);	//blue platform
+	Platform platform5(1300, 200, 700, 50, 3);
 
 	//Load Platform images
 	plat1 = platform1.Return(1);
 	plat2 = platform2.Return(2);
 	plat3 = platform3.Return(3);
+	plat4 = platform4.Return(2);
+	plat5 = platform5.Return(3);
 
 	//Add platforms to vector
 	platforms.push_back(platform1);
 	platforms.push_back(platform2);
 	platforms.push_back(platform3);
+	platforms.push_back(platform4);
+	platforms.push_back(platform5);
 
 	//flag to ensure the clock in game starts only once.
 	bool clock_started = false;
