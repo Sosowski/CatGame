@@ -359,13 +359,19 @@ void clean_up()
 	SDL_FreeSurface ( jackRun );
 	SDL_FreeSurface ( jackJump );
 	SDL_FreeSurface ( bullet );
-	SDL_FreeSurface ( plat1 );
-	SDL_FreeSurface ( plat2 );
-	SDL_FreeSurface ( plat3 );
-	SDL_FreeSurface ( plat4 );
-	SDL_FreeSurface ( plat5 );
 	SDL_FreeSurface ( hud );
 	SDL_FreeSurface ( object1 );
+
+	//Free Platform images
+	//Do clean up function for all current platforms
+	if(platforms.size() >= 1)
+	{			
+		for(std::vector<int>::size_type i = 0; i != platforms.size(); i++)
+		{
+			platforms[i].clean_up();	
+		}
+	}
+	//SDL_FreeSurface ( platImg );	// Need to replace with a loop that cleans up each surface for platforms via a clean_up() function in platform object.
 
 	//Free sounds
 	//Mix_FreeChunk ( example );
@@ -447,11 +453,11 @@ int main( int argc, char* args[])
 	Platform platform5(1300, 200, 700, 50, 3);
 
 	//Load Platform images
-	plat1 = platform1.Return(1);
-	plat2 = platform2.Return(2);
-	plat3 = platform3.Return(3);
-	plat4 = platform4.Return(2);
-	plat5 = platform5.Return(3);
+	platform1.load_files( "Images/plat1.png" );
+	platform2.load_files( "Images/plat2.png" );
+	platform3.load_files( "Images/plat3.png" );
+	platform4.load_files( "Images/plat2.png" );
+	platform5.load_files( "Images/plat3.png" );
 
 	//Add platforms to vector
 	platforms.push_back(platform1);
@@ -575,13 +581,14 @@ int main( int argc, char* args[])
 		//myWindow.apply_surface( 500, 500, object1, 0, &camera2);
 
 		//Show platforms
-		//plat1.show(myWindow);
+		//platform1.show(myWindow);
 		if(platforms.size() >= 1)
 		{
 			for(int pr=0; pr < (signed int)platforms.size(); pr++)
 			{
 				//Find platform type, place on screen the correct platform
-				switch (platforms.at(pr).Read(4))
+				platforms.at(pr).show(myWindow);
+				/*switch (platforms.at(pr).Read(4))
 				{
 				case 1:
 					myWindow.apply_surface((int)platforms.at(pr).Read(0), (int)platforms.at(pr).Read(1), plat1, 1, &camera);
@@ -594,7 +601,7 @@ int main( int argc, char* args[])
 					break;
 				default:
 					break;
-				}
+				}*/
 			}
 		}
 

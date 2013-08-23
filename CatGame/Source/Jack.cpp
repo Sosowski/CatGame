@@ -145,16 +145,6 @@ void Jack::move()
 		}
 	}
 
-	/**/
-	//Convert to string
-	std::stringstream caption;
-
-	//Generate string
-	caption << "onRight: " << onRight << " onLeft: " << onLeft  << " standingOn->x: " << standingOn->x  << " onGround: " << onGround << " yVel: " << yVel;
-
-	//Set caption
-	SDL_WM_SetCaption( caption.str().c_str(), NULL); //*/
-
 	//Apply gravity if not on ground
 	if( ( y + JACK_HEIGHT > LEVEL_HEIGHT == false ) && (onGround == false) )
 	{
