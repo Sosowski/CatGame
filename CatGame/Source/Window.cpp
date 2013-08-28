@@ -5,15 +5,16 @@ Window::Window()
 {
 	//Set up screen (Starting windowed)
 	//screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
-	SDL_Init(SDL_INIT_VIDEO);
 
-	sdlWindow = SDL_CreateWindow("Please stop jumping off that platform.",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
+	screen = SDL_CreateWindow("Please stop jumping off that platform.",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
+	sdlRenderer = SDL_CreateRenderer(screen, -1, 0);
+
 	background = NULL;
 	target = NULL;
 	EaseIn = 0;
 	EaseOut = 0;
 
-	if( sdlWindow == NULL )
+	if( screen == NULL )
 	{
 		windowOK = false;
 		return;
@@ -23,7 +24,7 @@ Window::Window()
 		windowOK = true;
 	}
 
-	SDL_WM_SetCaption( "Please stop jumping off that platform.", NULL);
+	//SDL_WM_SetCaption( "Please stop jumping off that platform.", NULL);
 
 	//Set windowed flag
 	windowed = true;
@@ -37,7 +38,12 @@ void Window::toggle_fullscreen()
 	if( windowed == true )
 	{
 		//Set screen to fullscreen
-		screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE | SDL_FULLSCREEN);
+		screen = SDL_CreateWindow("Please stop jumping off that platform.",
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			0,
+			0,
+			SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 		if( screen == NULL )
 		{
@@ -52,7 +58,12 @@ void Window::toggle_fullscreen()
 	else if( windowed == false )
 	{
 		//Remove fullscreen flag
-		screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+		screen = SDL_CreateWindow("Please stop jumping off that platform.",
+			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED,
+			SCREEN_WIDTH,
+			SCREEN_HEIGHT,
+			SDL_WINDOW_INPUT_GRABBED);
 
 		if( screen == NULL )
 		{
@@ -80,56 +91,29 @@ void Window::handle_events()
 	}
 
 	//Detect window focus loss
-	else if( event.type == SDL_ACTIVEEVENT )
+	else if( event.type == SDL_WINDOWEVENT )
 	{
 		//Detect window minimize
-		if( event.active.state & SDL_APPACTIVE)
+		if( event.window.event & SDL_WINDOWEVENT_MINIMIZED)
 		{
-			if( event.active.gain == 0 )
-			{
-				//SDL_WM_SetCaption( "What, you hate cats now?", NULL);
-			}
-			else
-			{
-				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
-			}
+			
 		}
-
 		//Detect keyboard focus loss
-		else if( event.active.state & SDL_APPINPUTFOCUS)
+		else if( event.window.event & SDL_WINDOWEVENT_FOCUS_LOST)
 		{
-			if( event.active.gain == 0)
-			{
-				//SDL_WM_SetCaption( "NYOOO, PUT THE KEYBOARD BACK!", NULL);
-			}
-			else
-			{
-				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
-			}
+
 		}
 		//Detect mouse focus loss
-		else if( event.active.state & SDL_APPMOUSEFOCUS)
+		else if( event.window.event & SDL_WINDOWEVENT_LEAVE)
 		{
-			if(event.active.gain == 0)
-			{
-				//SDL_WM_SetCaption( "You seem to be clicking in all the wrong places, meow.", NULL);
-			}
-			else
-			{
-				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
-			}
+
 		}
 	}
 
 	//If screen has been altered
-	else if( event.type == SDL_VIDEOEXPOSE)
+	else if( event.window.event == SDL_WINDOWEVENT_EXPOSED)
 	{
-		//Update screen
-		if( SDL_Flip(screen) == -1)
-		{
-			windowOK = false;
-			return;
-		}
+		SDL_RenderPresent(sdlRenderer);
 	}
 }
 
@@ -151,9 +135,14 @@ bool Window::load_files(std::string& BgImage)
 	return true;
 }
 
-SDL_Surface* Window::getScreen()
+SDL_Window* Window::getScreen()
 {
 	return screen;
+}
+
+SDL_Renderer* Window::getRenderer()
+{
+	return sdlRenderer;
 }
 
 SDL_Surface* Window::getBG()
@@ -252,31 +241,33 @@ void Window::apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* des
 void Window::apply_surface ( int x, int y, int sou, int dest, SDL_Rect* clip)
 {
 	SDL_Surface* source = NULL;
+	SDL_Window* wSource = NULL;
 	SDL_Surface* destination = NULL;
+	SDL_Window* wDestination = NULL;
 	
 	switch(sou)
 	{
 	case 0:
-		source = screen;
+		wSource = screen;
 		break;
 	case 1:
 		source = background;
 		break;
 	default:
-		source = screen;
+		wSource = screen;
 		break;
 	}
 
 	switch(dest)
 	{
 	case 0:
-		destination = screen;
+		wDestination = screen;
 		break;
 	case 1:
 		destination = background;
 		break;
 	default:
-		destination = screen;
+		wDestination = screen;
 		break;
 	}
 
@@ -294,6 +285,7 @@ void Window::apply_surface ( int x, int y, int sou, int dest, SDL_Rect* clip)
 void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Rect* clip)
 {
 	SDL_Surface* destination = NULL;
+	SDL_Window* wDestination = NULL;
 
 	//Temporary rectangle to hold offsets
 	SDL_Rect offset;
@@ -301,7 +293,7 @@ void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Re
 	switch(dest)
 	{
 	case 0:
-		destination = screen;
+		wDestination = screen;
 		//Give offsets to rectangle
 		offset.x = x - camera.x;
 		offset.y = y - camera.y;
@@ -313,12 +305,13 @@ void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Re
 		offset.y = y;
 		break;
 	default:
-		destination = screen;
+		wDestination = screen;
 		break;
 	}
 
 	//Apply surface to screen (Blit)
 	SDL_BlitSurface( source, clip, destination, &offset );
+
 }
 
 bool Window::return_windowOK(){

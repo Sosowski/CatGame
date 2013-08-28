@@ -10,7 +10,7 @@ private:
 	//Flag if window is set up fine
 	bool windowOK;
 
-	SDL_Window *sdlWindow;
+	SDL_Window *screen;
 	SDL_Renderer *sdlRenderer;
 	//SDL_Surface *screen;
 	SDL_Rect *target;		// for camera
@@ -39,7 +39,9 @@ public:
 	bool load_files(std::string& BgImage);
 	
 	// Returns a pointer to the screen.
-	SDL_Surface* getScreen();
+	SDL_Window* getScreen();
+	//Returns a pointer to the renderer
+	SDL_Renderer* getRenderer();
 	// Returns a pointer to the background.
 	SDL_Surface* getBG();
 

@@ -18,7 +18,9 @@ std::stringstream caption;
 caption << "test " << variable << " ";
 
 //Set caption
-SDL_WM_SetCaption( caption.str().c_str(), NULL);
+OUTDATED -- SDL_WM_SetCaption( caption.str().c_str(), NULL);
+
+IS NOW SDL_SetWindowTitle(screen, "title");
 */
 
 #include "Library.h"
@@ -57,23 +59,26 @@ SDL_Surface *load_image( std::string filename)
 	//Check for errors
 	if( loadedImage != NULL )
 	{
-		//Create optimised image
-		optimizedImage = SDL_DisplayFormatAlpha ( loadedImage );
+		//!!--NOTE--!!
+		//DisplayFormatAlpha is removed. Does this mean images no longer have to be "optimized?"
 
-		//Free old image
-		SDL_FreeSurface ( loadedImage );
+		////Create optimised image
+		//optimizedImage = SDL_DisplayFormatAlpha ( loadedImage );
 
-		//These checks should hopefully be self explanitory, so I'll only comment if it's purpose isn't clear
-		if( optimizedImage != NULL )
-		{
-			//The following two statements handle color keying, if nessisary
+		////Free old image
+		//SDL_FreeSurface ( loadedImage );
 
-			//Map the color key
-			//Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0, 0xFF, 0xFF);
+		////These checks should hopefully be self explanitory, so I'll only comment if it's purpose isn't clear
+		//if( optimizedImage != NULL )
+		//{
+		//	//The following two statements handle color keying, if nessisary
 
-			//Render pixels for color specified above transparent
-			//SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey);
-		}
+		//	//Map the color key
+		//	//Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0, 0xFF, 0xFF);
+
+		//	//Render pixels for color specified above transparent
+		//	//SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey);
+		//}
 
 		//send optimised image
 		return optimizedImage;
@@ -295,58 +300,6 @@ void handle_events_window(Window& myWindow){
 		myWindow.toggle_fullscreen();
 	}
 
-	//Detect window focus loss
-	else if( event.type == SDL_ACTIVEEVENT )
-	{
-		//Detect window minimize
-		if( event.active.state & SDL_APPACTIVE)
-		{
-			if( event.active.gain == 0 )
-			{
-				//SDL_WM_SetCaption( "What, you hate cats now?", NULL);
-			}
-			else
-			{
-				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
-			}
-		}
-
-		//Detect keyboard focus loss
-		else if( event.active.state & SDL_APPINPUTFOCUS)
-		{
-			if( event.active.gain == 0)
-			{
-				//SDL_WM_SetCaption( "NYOOO, PUT THE KEYBOARD BACK!", NULL);
-			}
-			else
-			{
-				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
-			}
-		}
-		//Detect mouse focus loss
-		else if( event.active.state & SDL_APPMOUSEFOCUS)
-		{
-			if(event.active.gain == 0)
-			{
-				//SDL_WM_SetCaption( "You seem to be clicking in all the wrong places, meow.", NULL);
-			}
-			else
-			{
-				//SDL_WM_SetCaption( "This is the real deal, nya! (Translator's note: nya means meow)", NULL);
-			}
-		}
-	}
-
-	//If screen has been altered
-	/*else if( event.type == SDL_VIDEOEXPOSE)
-	{
-		//Update screen
-		if( SDL_Flip(screen) == -1)
-		{
-			windowOK = false;
-			return;
-		}
-	}*/
 
 }
 
@@ -665,13 +618,13 @@ int main( int argc, char* args[])
 		}
 
 		//Get keystate
-		Uint8 *keystates = SDL_GetKeyState ( NULL );
+		const Uint8 *keystates = SDL_GetKeyboardState ( NULL );
 
 		//Update Screen
-		if( SDL_Flip ( myWindow.getScreen() ) == -1 )
-		{
-			return 1;
-		}
+		SDL_RenderPresent( myWindow.getRenderer() );
+		//{
+			//return 1;
+		//}
 
 		//Increment frame counter
 		frame++;
