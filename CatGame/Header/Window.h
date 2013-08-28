@@ -10,7 +10,9 @@ private:
 	//Flag if window is set up fine
 	bool windowOK;
 
-	SDL_Surface *screen;
+	SDL_Window *sdlWindow;
+	SDL_Renderer *sdlRenderer;
+	//SDL_Surface *screen;
 	SDL_Rect *target;		// for camera
 	//SDL_Surface *background;
 

@@ -4,13 +4,16 @@
 Window::Window()
 {
 	//Set up screen (Starting windowed)
-	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+	//screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
+	SDL_Init(SDL_INIT_VIDEO);
+
+	sdlWindow = SDL_CreateWindow("Please stop jumping off that platform.",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
 	background = NULL;
 	target = NULL;
 	EaseIn = 0;
 	EaseOut = 0;
 
-	if( screen == NULL )
+	if( sdlWindow == NULL )
 	{
 		windowOK = false;
 		return;
