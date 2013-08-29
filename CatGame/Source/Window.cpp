@@ -6,7 +6,7 @@ Window::Window()
 	//Set up screen (Starting windowed)
 	//screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE);
 
-	screen = SDL_CreateWindow("Please stop jumping off that platform.",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
+	screen = SDL_CreateWindow("Please stop jumping off that platform.",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 	sdlRenderer = SDL_CreateRenderer(screen, -1, 0);
 
 	background = NULL;
@@ -16,6 +16,7 @@ Window::Window()
 
 	if( screen == NULL )
 	{
+		MessageBox(NULL, "Screen Is Null!", "MessageBox caption", MB_OK);
 		windowOK = false;
 		return;
 	}
@@ -37,6 +38,8 @@ void Window::toggle_fullscreen()
 	//Check if screen currently windowed
 	if( windowed == true )
 	{
+		//Window has to be recreated to change flags, remove the previous window.
+		SDL_DestroyWindow(screen);
 		//Set screen to fullscreen
 		screen = SDL_CreateWindow("Please stop jumping off that platform.",
 			SDL_WINDOWPOS_CENTERED,
@@ -58,12 +61,14 @@ void Window::toggle_fullscreen()
 	else if( windowed == false )
 	{
 		//Remove fullscreen flag
+		//Window has to be recreated to change flags, remove the previous window.
+		SDL_DestroyWindow(screen);
 		screen = SDL_CreateWindow("Please stop jumping off that platform.",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
 			SCREEN_WIDTH,
 			SCREEN_HEIGHT,
-			SDL_WINDOW_INPUT_GRABBED);
+			SDL_WINDOW_OPENGL);
 
 		if( screen == NULL )
 		{
@@ -81,6 +86,7 @@ void Window::handle_events()
 {
 	if( windowOK == false)
 	{
+		MessageBox(NULL, "Window is not OK!", "MessageBox caption", MB_OK);
 		return;
 	}
 
@@ -130,6 +136,7 @@ bool Window::load_files(std::string& BgImage)
 
 	if(BgImage == "" || background == NULL )
 	{
+		MessageBox(NULL, "Background could not load!", "MessageBox caption", MB_OK);
 		return false;
 	}
 	return true;
@@ -241,33 +248,31 @@ void Window::apply_surface ( int x, int y, SDL_Surface* source, SDL_Surface* des
 void Window::apply_surface ( int x, int y, int sou, int dest, SDL_Rect* clip)
 {
 	SDL_Surface* source = NULL;
-	SDL_Window* wSource = NULL;
 	SDL_Surface* destination = NULL;
-	SDL_Window* wDestination = NULL;
 	
 	switch(sou)
 	{
 	case 0:
-		wSource = screen;
+		source = screen;
 		break;
 	case 1:
 		source = background;
 		break;
 	default:
-		wSource = screen;
+		source = screen;
 		break;
 	}
 
 	switch(dest)
 	{
 	case 0:
-		wDestination = screen;
+		destination = screen;
 		break;
 	case 1:
 		destination = background;
 		break;
 	default:
-		wDestination = screen;
+		destination = screen;
 		break;
 	}
 
@@ -280,6 +285,13 @@ void Window::apply_surface ( int x, int y, int sou, int dest, SDL_Rect* clip)
 
 	//Apply surface to screen (Blit)
 	SDL_BlitSurface( source, clip, destination, &offset );
+
+	//Target Function - SDL_RenderCopy(renderer, source(as texture), srcrect, &offset)
+	//srcrect = NULL is the entire source texture, a rect indicates what PART of the picture will be passed
+	//aka the frames
+	//use it for frames
+	//USE IT FOR THE GODDAMN FRAMES
+	//http://wiki.libsdl.org/SDL_RenderCopy
 }
 
 void Window::apply_surface ( int x, int y, SDL_Surface* source, int dest, SDL_Rect* clip)

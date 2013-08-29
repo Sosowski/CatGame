@@ -7,6 +7,7 @@
 #include <vector>
 #include <cmath>
 #include <math.h>
+#include "Windows.h"
 
 //This file contains the global variables used across all files.
 /*

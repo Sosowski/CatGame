@@ -50,7 +50,7 @@ SDL_Surface *load_image( std::string filename)
 	SDL_Surface* loadedImage = NULL;
 
 	//Optimised image
-	SDL_Surface* optimizedImage = NULL;
+	//SDL_Surface* optimizedImage = NULL;
 
 	//Load image
 	//Supported : bmp, pnm, xpm, pcx, gif, jpeg, tga, png
@@ -81,9 +81,9 @@ SDL_Surface *load_image( std::string filename)
 		//}
 
 		//send optimised image
-		return optimizedImage;
+		//return optimizedImage;
+		return loadedImage;
 	}
-
 	//Cirumvents "not all paths return a value" warning
 	return 0;
 }
@@ -621,6 +621,7 @@ int main( int argc, char* args[])
 		const Uint8 *keystates = SDL_GetKeyboardState ( NULL );
 
 		//Update Screen
+		SDL_RenderClear( myWindow.getRenderer() );
 		SDL_RenderPresent( myWindow.getRenderer() );
 		//{
 			//return 1;

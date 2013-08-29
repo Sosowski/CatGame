@@ -1,0 +1,3 @@
+New window rendering allows for multiple windows to be created.
+(Create a window specifically to render debug information?)
+
